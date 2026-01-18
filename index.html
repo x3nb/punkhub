@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase Auth Test</title>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      text-align: center;
+      margin-top: 100px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Supabase Auth Test</h1>
+
+  <input id="email" type="email" placeholder="email"><br>
+  <input id="password" type="password" placeholder="password"><br>
+
+  <button id="signup">Sign Up</button>
+  <button id="login">Log In</button>
+
+  <p id="message"></p>
+
+<script>
+  // 1️⃣ Create Supabase client
+  const supabaseUrl = 'YOUR_SUPABASE_URL';
+  const supabaseKey = 'YOUR_PUBLIC_ANON_KEY';
+
+  const supabaseClient = supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+  );
+
+  // 2️⃣ Cache elements
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const message = document.getElementById('message');
+
+  // 3️⃣ Sign up
+  document.getElementById('signup').onclick = async () => {
+    const { error } = await supabaseClient.auth.signUp({
+      email: emailInput.value,
+      password: passwordInput.value
+    });
+
+    message.innerText = error
+      ? error.message
+      : 'Signup successful! You can now log in.';
+  };
+
+  // 4️⃣ Log in
+  document.getElementById('login').onclick = async () => {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: emailInput.value,
+      password: passwordInput.value
+    });
+
+    if (error) {
+      message.innerText = error.message;
+      return;
+    }
+
+    message.innerText = `Logged in as ${data.user.email}`;
+  };
+</script>
+
+</body>
+</html>
