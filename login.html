@@ -10,12 +10,10 @@
 <style>
 body {
   margin: 0;
-  background: #000;
-  color: #fff;
+  background: #222; /* darker background for papercut effect */
   font-family: 'Press Start 2P', monospace;
+  color: #333; /* base text color */
 }
-
-.hidden { display:none; }
 
 /* AUTH */
 #auth {
@@ -26,34 +24,49 @@ body {
 }
 
 .auth-box {
-  border: 3px solid #ff00ff;
+  border: 3px solid #4B0082; /* deep purple border for papercut style */
   padding: 30px;
-  background:#000;
-  box-shadow: 0 0 20px #00ffff;
+  background:#f0f0f0; /* light grey for papercut look */
+  box-shadow: inset 4px 4px 8px #999, inset -4px -4px 8px #fff; /* shading for depth */
   text-align:center;
+  border-radius: 10px;
+  max-width: 300px;
+}
+
+.auth-box h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #4B0082; /* deep purple text */
 }
 
 .auth-box input {
   width: 90%;
   margin: 8px 0;
   padding: 10px;
-  background:#111;
-  color:#0ff;
-  border:2px solid #ff0;
+  background:#f0f0f0;
+  color:#333;
+  border:2px solid #999; /* grey border for papercut look */
   font-family:inherit;
+  border-radius: 5px;
+  box-shadow: inset 2px 2px 5px #ccc, inset -2px -2px 5px #fff;
 }
 
 .auth-box button {
   margin-top:10px;
   padding:10px 20px;
-  background:#ff0;
+  background:#4B0082; /* deep purple */
+  color:#fff;
   border:none;
   cursor:pointer;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #999, -2px -2px 5px #fff; /* papercut shading */
+  font-family: 'Press Start 2P', monospace;
 }
 
-/* BOARD */
 #board {
   padding:20px;
+  background: #222; /* match body for consistency */
 }
 
 header {
@@ -61,14 +74,25 @@ header {
   align-items:center;
   gap:15px;
   margin-bottom:20px;
+  padding: 10px;
+  background: #444; /* grey papercut background */
+  box-shadow: inset 4px 4px 8px #222, inset -4px -4px 8px #666; 
+  border-radius: 10px;
 }
 
 header img {
   width:60px;
   height:60px;
   border-radius:50%;
-  border:3px solid #ff0;
+  border:3px solid #4B0082; /* deep purple border */
   object-fit:cover;
+  box-shadow: 2px 2px 4px #222, -2px -2px 4px #ccc; /* shading for depth */
+}
+
+#welcome {
+  color:#eee; /* light text */
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8em;
 }
 
 #notes {
@@ -81,23 +105,26 @@ header img {
   width:140px;
   min-height:110px;
   padding:10px;
-  background:#ffeb3b;
-  color:#000;
+  background:#d3d3d3; /* greyish papercut look */
+  color:#222;
   transform: rotate(var(--r));
-  box-shadow:5px 5px 0 #000;
+  box-shadow: inset 4px 4px 8px #999, inset -4px -4px 8px #fff; /* shading for depth */
   font-size:0.6em;
+  border-radius: 8px;
 }
 
+/* Textarea styling with papercut shading */
 textarea {
   width:100%;
   margin-top:15px;
   padding:10px;
-  background:#111;
-  color:#fff;
-  border:2px dashed #0ff;
+  background:#f0f0f0;
+  color:#333;
+  border:2px dashed #999;
   font-family:inherit;
+  border-radius: 5px;
+  box-shadow: inset 2px 2px 5px #ccc, inset -2px -2px 5px #fff;
 }
-
 </style>
 </head>
 <body>
@@ -117,7 +144,7 @@ textarea {
 <!-- BOARD -->
 <div id="board" class="hidden">
   <header>
-    <img id="avatar">
+    <img id="avatar" src="https://placehold.co/100x100" />
     <div>
       <div id="welcome"></div>
       <input type="file" onchange="uploadAvatar(event)">
@@ -131,9 +158,9 @@ textarea {
 </div>
 
 <script>
-const supabase = supabasejs.createClient(
-  'https://hwymepujsvfqjkbullaf.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3eW1lcHVqc3ZmcWprYnVsbGFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3MDczOTQsImV4cCI6MjA4NDI4MzM5NH0.V6-Cm331IocSXDqe-v6iAZA3TV1STyEHyQI43lcXU_4'
+const supabase = supabase.createClient(
+  'https://YOUR_SUPABASE_URL', // <-- Replace with your Supabase URL
+  'YOUR_PUBLIC_ANON_KEY'     // <-- Replace with your Supabase anon key
 );
 
 let user = null;
@@ -150,7 +177,7 @@ async function signup() {
   });
 
   if (error) alert(error.message);
-  else alert('Check your email.');
+  else alert('Check your email to confirm registration.');
 }
 
 async function login() {
