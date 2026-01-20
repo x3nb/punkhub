@@ -160,164 +160,104 @@ textarea {
 </div>
 
 <script>
-const supabase = supabase.createClient(
-  'https://hwymepujsvfqjkbullaf.supabase.co', // <-- Replace with your Supabase URL
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3eW1lcHVqc3ZmcWprYnVsbGFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3MDczOTQsImV4cCI6MjA4NDI4MzM5NH0.V6-Cm331IocSXDqe-v6iAZA3TV1STyEHyQI43lcXU_4'      // <-- Replace with your Supabase anon key
-);
-
-let user = null;
-
-/* AUTH */
-async function signup() {
-  const email = emailInput().value.trim();
-  const password = passwordInput().value.trim();
-  const username = usernameInput().value.trim();
-
-  if (!email || !password || !username) {
-    alert('Please fill in all fields.');
-    return;
+document.addEventListener('DOMContentLoaded', () => {
+  // Floating shapes
+  const shapeCount = 20;
+  const shapesContainer = document.getElementById('shapes');
+  for(let i=0;i<shapeCount;i++){
+    const shape=document.createElement('div');
+    shape.className='shape';
+    shape.style.width=(10+Math.random()*30)+'px';
+    shape.style.height=shape.style.width;
+    shape.style.top=Math.random()*100+'%';
+    shape.style.left=Math.random()*100+'%';
+    shape.style.background='linear-gradient(45deg,#f0f,#0ff,#ff0)';
+    shape.style.transform=`rotate(${Math.random()*360}deg)`;
+    shape.style.animationDuration=(10+Math.random()*20)+'s';
+    shapesContainer.appendChild(shape);
   }
 
-  // Sign up user
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { username }
+  // Supabase init
+  const supabaseUrl = 'https://hwymepujsvfqjkbullaf.supabase.co'; // <-- Your Supabase URL
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3eW1lcHVqc3ZmcWprYnVsbGFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3MDczOTQsImV4cCI6MjA4NDI4MzM5NH0.V6-Cm331IocSXDqe-v6iAZA3TV1STyEHyQI43lcXU_4'; // <-- Your Supabase anon key
+  window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  window.authMode = null;
+
+  // Show forms
+  window.showSignUp = () => { window.authMode='signup'; showForm(); }
+  window.showSignIn = () => { window.authMode='signin'; showForm(); }
+  window.cancelAuth = () => { document.getElementById('auth-form').style.display='none'; document.getElementById('auth-buttons').style.display='flex'; document.getElementById('signup-message').innerText=''; window.authMode=null; }
+
+  function showForm() {
+    document.getElementById('auth-form').style.display='block';
+    document.getElementById('auth-buttons').style.display='none';
+    document.getElementById('signup-message').innerText='';
+  }
+
+  // Submit auth
+  window.submitAuth = async () => {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    if(!email||!password){ alert('Enter email and password'); return; }
+
+    if(window.authMode==='signup'){
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if(error){ alert('Sign-up error: '+error.message); return; }
+      document.getElementById('signup-message').innerText='Sign-up successful! Check your email for confirmation.';
+      // Only show Log In button after signup
+      document.getElementById('auth-buttons').innerHTML='<button onclick="showSignIn()">Log In</button>';
+      document.getElementById('auth-buttons').style.display='flex';
+      document.getElementById('auth-form').style.display='none';
+    } else if(window.authMode==='signin'){
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if(error){
+        if(error.message.includes('Email not confirmed')){
+          alert('Your email is not confirmed yet. Check your inbox or request a new confirmation.');
+        } else {
+          alert('Sign-in error: '+error.message);
+        }
+        return;
+      }
+      // Login success
+      window.currentUser = data.user;
+      document.getElementById('auth-form').style.display='none';
+      document.getElementById('auth-buttons').style.display='none';
+      document.getElementById('main-content').style.display='block';
+      showGreeting();
     }
+  };
+
+  // Greeting
+  function showGreeting() {
+    const header=document.getElementById('chat-header');
+    const loading=document.getElementById('loading-indicator');
+    header.innerText=`Welcome, ${window.currentUser.email}`;
+    loading.style.display='none';
+    const chatDiv=document.getElementById('chat');
+    chatDiv.innerHTML=`<p>Hello ${window.currentUser.email}! Welcome to your punky community!</p>`;
+    chatDiv.style.display='block';
+  }
+
+  // Menu setup
+  const menuItems=[
+    { title:'ABOUT', synopsis:'Learn about the punky community and its roots.', link:'https://en.wikipedia.org/wiki/Punk_rock' },
+    { title:'MUSIC', synopsis:'Discover punk-inspired tunes and playlists.', link:'https://www.punknews.org/' },
+    { title:'SHOP', synopsis:'Get punk fashion and accessories.', link:'https://punkclothing.com/' },
+    { title:'BLOG', synopsis:'Read stories and updates from the community.', link:'https://punkblog.com/' }
+  ];
+
+  const menuContainer=document.getElementById('menu');
+  const synopsisDiv=document.getElementById('synopsis');
+  menuItems.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='menu-item';
+    div.innerText=item.title;
+    div.onclick=()=>{ synopsisDiv.innerHTML=`<p>${item.synopsis}</p><a href="${item.link}" target="_blank" style="color:#f0f;">Visit Link</a>`; };
+    menuContainer.appendChild(div);
   });
 
-  if (error) {
-    alert('Error during sign up: ' + error.message);
-    return;
-  }
-
-  // After signup, create profile record in your profiles table
-  const userId = data.user.id;
-  const { error: profileError } = await supabase
-    .from('profiles')
-    .insert({ id: userId, username: username });
-
-  if (profileError) {
-    alert('Error creating profile: ' + profileError.message);
-    return;
-  }
-
-  alert('Check your email to confirm registration.');
-}
-
-/* LOGIN */
-async function login() {
-  const emailVal = emailInput().value.trim();
-  const passwordVal = passwordInput().value.trim();
-
-  if (!emailVal || !passwordVal) {
-    alert('Please enter email and password.');
-    return;
-  }
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: emailVal,
-    password: passwordVal
-  });
-
-  if (error) {
-    alert('Login error: ' + error.message);
-  } else {
-    init(data.user);
-  }
-}
-
-/* SESSION */
-supabase.auth.onAuthStateChange((_, session) => {
-  if (session?.user) {
-    init(session.user);
-  }
 });
-
-async function init(u) {
-  user = u;
-  document.getElementById('auth').classList.add('hidden');
-  document.getElementById('board').classList.remove('hidden');
-
-  document.getElementById('welcome').innerText =
-    `welcome ${user.user_metadata?.username || ''}`;
-
-  loadProfile();
-  loadNotes();
-}
-
-/* PROFILE */
-async function loadProfile() {
-  const { data } = await supabase
-    .from('profiles')
-    .select('avatar_url')
-    .eq('id', user.id)
-    .single();
-
-  document.getElementById('avatar').src =
-    data?.avatar_url || 'https://placehold.co/100x100';
-}
-
-async function uploadAvatar(e) {
-  const file = e.target.files[0];
-  const path = `${user.id}.png`;
-
-  await supabase.storage.from('avatars').upload(path, file, {
-    upsert:true
-  });
-
-  const url = supabase.storage.from('avatars')
-    .getPublicUrl(path).data.publicUrl;
-
-  await supabase.from('profiles').upsert({
-    id:user.id,
-    avatar_url:url
-  });
-
-  loadProfile();
-}
-
-/* NOTES */
-async function loadNotes() {
-  const { data } = await supabase
-    .from('chalkboard_notes')
-    .select('*')
-    .order('created_at', { ascending:false });
-
-  const board = document.getElementById('notes');
-  board.innerHTML = '';
-
-  data.forEach(n => {
-    const d = document.createElement('div');
-    d.className = 'note';
-    d.style.setProperty('--r', `${n.rotation}deg`);
-    d.innerHTML = `<strong>${n.username}</strong><br>${n.message}`;
-    board.appendChild(d);
-  });
-}
-
-async function postNote() {
-  const msg = noteInput().value.trim();
-  if (!msg) return;
-
-  await supabase.from('chalkboard_notes').insert({
-    user_id:user.id,
-    username:user.user_metadata.username,
-    message:msg,
-    rotation:Math.random()*10-5
-  });
-
-  noteInput().value='';
-  loadNotes();
-}
-
-/* HELPERS */
-const emailInput = () => document.getElementById('email');
-const passwordInput = () => document.getElementById('password');
-const usernameInput = () => document.getElementById('username');
-const noteInput = () => document.getElementById('noteInput');
 </script>
-
 </body>
 </html>
