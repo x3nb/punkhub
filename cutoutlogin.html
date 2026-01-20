@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>My Punky Community</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Vast+Shadow&display=swap" rel="stylesheet" />
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: #222; /* darker background for aesthetic */
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+  overflow: hidden;
+}
+
+/* Shapes background (floating shapes like before) */
+.background-shapes { position: absolute; top:0; left:0; width:100%; height:100%; overflow:hidden; z-index:0; }
+.shape {
+  position: absolute; border-radius:50%; animation:float 10s infinite linear;
+}
+@keyframes float {
+  0% { transform:translateY(0) rotate(0deg);}
+  100% { transform:translateY(-100vh) rotate(360deg);}
+}
+
+/* Container for main content */
+.container {
+  position: relative; z-index: 1; text-align: center; padding: 20px; min-height: 100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+
+/* Avatar & headline styling with shaded papercut look */
+#user-avatar {
+  display:flex; flex-direction:column; align-items:center; margin:20px auto;
+}
+#avatar-img {
+  width:100px; height:100px; border-radius:50%; border: 3px solid #4B0082;
+  box-shadow: inset 4px 4px 8px #222, inset -4px -4px 8px #666;
+  background:#f0f;
+}
+#avatar-title {
+  font-family: 'Vast Shadow', cursive; color:#f0f; margin-top:10px; font-size:1.2em; text-shadow:2px 2px #000;
+}
+
+/* Auth buttons */
+#auth-buttons {
+  margin-top:20px; display:flex; justify-content:center; gap:15px;
+}
+#auth-buttons button {
+  margin:0; padding:10px 20px; background:#f0f; color:white; border:none; cursor:pointer; font-family:'Press Start 2P',cursive;
+  border-radius:5px;
+  box-shadow: inset 4px 4px 8px #222, inset -4px -4px 8px #666;
+}
+
+/* Auth form style with shaded papercut look */
+#auth-form {
+  display:none; margin-top:20px;
+}
+.auth-box {
+  background: rgba(0,0,0,0.8);
+  border: 2px solid #4B0082; /* deep purple border */
+  padding: 20px;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: inset 4px 4px 8px #222, inset -4px -4px 8px #666;
+  display:flex; flex-direction:column; align-items:center;
+}
+.auth-box h2 {
+  font-family: 'Vast Shadow', cursive;
+  margin-bottom:10px;
+  font-size:1.2em;
+  color:#f0f;
+}
+.auth-box input {
+  width:90%;
+  margin:10px 0;
+  padding:10px;
+  background:#f0f0f0;
+  border:2px solid #999;
+  border-radius:5px;
+  font-family: 'Press Start 2P', cursive;
+  box-shadow: inset 2px 2px 5px #ccc, inset -2px -2px 5px #fff;
+}
+.auth-box button {
+  margin-top:10px;
+  padding:10px 20px;
+  background:#4B0082;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  border-radius:5px;
+  box-shadow: inset 2px 2px 5px #222, inset -2px -2px 5px #666;
+  font-family:'Press Start 2P',cursive;
+}
+
+/* Main content styling */
+#main-content {
+  display:none; margin-top:20px; width:100%;
+}
+#chat-header {
+  font-family:'Vast Shadow', cursive; font-size:1.2em; margin-bottom:10px; color:#f0f;
+}
+#loading-indicator {
+  color:#0ff; margin-bottom:10px;
+}
+#chat {
+  background: rgba(0,0,0,0.6);
+  padding:10px;
+  border-radius:8px;
+  min-height:100px;
+  max-width:600px;
+  margin:auto;
+  box-shadow: inset 4px 4px 8px #222, inset -4px -4px 8px #666;
+}
+#menu {
+  display:flex; flex-wrap:wrap; justify-content:center; margin-top:20px; gap:10px;
+}
+.menu-item {
+  cursor:pointer; padding:10px 15px; background:#ff0; color:black; border-radius:5px; font-family:'Press Start 2P',cursive; font-size:0.8em;
+  box-shadow: inset 2px 2px 4px #222, inset -2px -2px 4px #666;
+}
+#synopsis {
+  margin-top:20px; max-width:600px; margin-left:auto; margin-right:auto; text-align:left; padding:10px; background: rgba(255,255,255,0.1); border-radius:8px; box-shadow: inset 4px 4px 8px #222, inset -4px -4px 8px #666;
+  color:#fff; font-family:'Press Start 2P', cursive; font-size:0.9em;
+}
+
+/* Notes styling, if you add later */
+.note {
+  width:140px; min-height:110px; padding:10px;
+  background:#d3d3d3; color:#222; border-radius:8px;
+  box-shadow: inset 4px 4px 8px #999, inset -4px -4px 8px #fff;
+  font-size:0.6em; transform: rotate(var(--r));
+}
+#noteInput {
+  width:90%; padding:10px; margin-top:20px; border:2px dashed #999; border-radius:5px;
+  background:#f0f0f0; box-shadow: inset 2px 2px 4px #ccc, inset -2px -2px 4px #fff; font-family:'Press Start 2P', cursive;
+}
+</style>
+</head>
+<body>
+
+<div class="background-shapes" id="shapes"></div>
+
+<div class="container">
+  <!-- Avatar + headline -->
+  <div id="user-avatar">
+    <img id="avatar-img" src="officialsticker.png" alt="User Avatar">
+    <div id="avatar-title">Punk Zen</div>
+  </div>
+
+  <!-- Auth buttons -->
+  <div id="auth-buttons">
+    <button onclick="showSignUp()">Sign Up</button>
+    <button onclick="showSignIn()">Log In</button>
+  </div>
+
+  <!-- Auth form -->
+  <div class="auth-box" id="auth-form" style="display:none;">
+    <h2>Welcome to the Punk Tribe</h2>
+    <input type="email" id="auth-email" placeholder="Email" />
+    <input type="password" id="auth-password" placeholder="Password" />
+    <button onclick="submitAuth()">Submit</button>
+    <button onclick="cancelAuth()">Cancel</button>
+    <div id="signup-message"></div>
+  </div>
+
+  <!-- Main content -->
+  <div id="main-content">
+    <div class="chat-header" id="chat-header">Loading...</div>
+    <div class="loading" id="loading-indicator">Connecting to the punk chat...</div>
+    <div id="chat" class="greet"></div>
+    <div class="menu" id="menu"></div>
+    <div id="synopsis"></div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Generate floating shapes background
+  const shapeCount=20;
+  const shapesContainer=document.getElementById('shapes');
+  for(let i=0;i<shapeCount;i++){
+    const shape=document.createElement('div');
+    shape.className='shape';
+    shape.style.width=(10+Math.random()*30)+'px';
+    shape.style.height=shape.style.width;
+    shape.style.top=Math.random()*100+'%';
+    shape.style.left=Math.random()*100+'%';
+    shape.style.background='linear-gradient(45deg,#f0f,#0ff,#ff0)';
+    shape.style.transform=`rotate(${Math.random()*360}deg)`;
+    shape.style.animationDuration=(10+Math.random()*20)+'s';
+    shapesContainer.appendChild(shape);
+  }
+
+  // Initialize Supabase
+  const supabaseUrl='https://hwymepujsvfqjkbullaf.supabase.co'; // YOUR URL
+  const supabaseKey='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3eW1lcHVqc3ZmcWprYnVsbGFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3MDczOTQsImV4cCI6MjA4NDI4MzM5NH0.V6-Cm331IocSXDqe-v6iAZA3TV1STyEHyQI43lcXU_4'; // YOUR anon key
+  window.supabase=supabase.createClient(supabaseUrl, supabaseKey);
+
+  window.authMode=null;
+
+  // Show forms
+  window.showSignUp=()=>{ window.authMode='signup'; showForm(); }
+  window.showSignIn=()=>{ window.authMode='signin'; showForm(); }
+  window.cancelAuth=()=>{ document.getElementById('auth-form').style.display='none'; document.getElementById('auth-buttons').style.display='flex'; document.getElementById('signup-message').innerText=''; window.authMode=null; }
+
+  function showForm() {
+    document.getElementById('auth-form').style.display='block';
+    document.getElementById('auth-buttons').style.display='none';
+    document.getElementById('signup-message').innerText='';
+  }
+
+  // Submit auth (sign up or login)
+  window.submitAuth=async ()=> {
+    const email=document.getElementById('auth-email').value;
+    const password=document.getElementById('auth-password').value;
+    if(!email||!password){ alert('Enter email and password'); return; }
+
+    if(window.authMode==='signup'){
+      // Sign up
+      const { data, error }=await supabase.auth.signUp({ email, password });
+      if(error){ alert('Sign-up error: '+error.message); return; }
+
+      // Save username in profile table
+      const userId=data.user.id;
+      // You might want to ask for username during sign-up, but for now we'll set as email prefix
+      // Or add an input for username if you'd like
+      // For simplicity, let's set username as email prefix
+      const username=email.split('@')[0];
+      await supabase.from('profiles').upsert({ id:userId, username:username });
+
+      document.getElementById('signup-message').innerText='Sign-up successful! Check your email for confirmation.';
+      // Show login button after sign-up
+      document.getElementById('auth-buttons').innerHTML='<button onclick="showSignIn()">Log In</button>';
+      document.getElementById('auth-buttons').style.display='flex';
+      document.getElementById('auth-form').style.display='none';
+
+    } else if(window.authMode==='signin'){
+      // Sign in
+      const { data, error }=await supabase.auth.signInWithPassword({ email, password });
+      if(error){
+        if(error.message.includes('Email not confirmed')){
+          alert('Your email is not confirmed yet. Check your inbox or request a new confirmation.');
+        } else {
+          alert('Sign-in error: '+error.message);
+        }
+        return;
+      }
+      // Successful login
+      window.currentUser=data.user;
+      document.getElementById('auth-form').style.display='none';
+      document.getElementById('auth-buttons').style.display='none';
+      document.getElementById('main-content').style.display='block';
+      showGreeting();
+    }
+  };
+
+  function showGreeting() {
+    const header=document.getElementById('chat-header');
+    const loading=document.getElementById('loading-indicator');
+    header.innerText=`Welcome, ${window.currentUser.email}`;
+    loading.style.display='none';
+    const chatDiv=document.getElementById('chat');
+    chatDiv.innerHTML=`<p>Hello ${window.currentUser.email}! Welcome to your punky community!</p>`;
+    chatDiv.style.display='block';
+
+    // Load profile info
+    loadProfile();
+  }
+
+  // Load profile avatar
+  async function loadProfile() {
+    const { data }=await supabase
+      .from('profiles')
+      .select('avatar_url, username')
+      .eq('id', window.currentUser.id)
+      .single();
+
+    document.getElementById('avatar-img').src=data?.avatar_url || 'https://placehold.co/100x100';
+  }
+
+  // Upload avatar
+  window.uploadAvatar=async (e)=>{
+    const file=e.target.files[0];
+    const path=`${window.currentUser.id}.png`;
+    await supabase.storage.from('avatars').upload(path, file,{ upsert:true });
+    const url=supabase.storage.from('avatars').getPublicUrl(path).data.publicUrl;
+    await supabase.from('profiles').upsert({ id:window.currentUser.id, avatar_url:url });
+    loadProfile();
+  }
+
+  // Setup menu (unchanged)
+  const menuItems=[
+    { title:'ABOUT', synopsis:'Learn about the punky community and its roots.', link:'https://en.wikipedia.org/wiki/Punk_rock' },
+    { title:'MUSIC', synopsis:'Discover punk-inspired tunes and playlists.', link:'https://www.punknews.org/' },
+    { title:'SHOP', synopsis:'Get punk fashion and accessories.', link:'https://punkclothing.com/' },
+    { title:'BLOG', synopsis:'Read stories and updates from the community.', link:'https://punkblog.com/' }
+  ];
+  const menuContainer=document.getElementById('menu');
+  const synopsisDiv=document.getElementById('synopsis');
+  menuItems.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='menu-item';
+    div.innerText=item.title;
+    div.onclick=()=>{ synopsisDiv.innerHTML=`<p>${item.synopsis}</p><a href="${item.link}" target="_blank" style="color:#f0f;">Visit Link</a>`; };
+    menuContainer.appendChild(div);
+  });
+
+});
+</script>
+
+</body>
+</html>
