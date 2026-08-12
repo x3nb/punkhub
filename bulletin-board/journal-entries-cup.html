@@ -753,7 +753,14 @@ function showZenHubContent() {
     <button onclick="location.reload()">RETURN TO GALLERY</button>
   `;
 }
-function saveJournalEntry() {
+
+
+  
+  
+let journalEntries = [];
+
+function showJournalContent() {
+  function saveJournalEntry() {
   const field = document.getElementById('journal-input-field');
   const text = field.value.trim();
   
@@ -768,9 +775,6 @@ function saveJournalEntry() {
   journalEntries.unshift(newEntry); // Add new entry to top
   showJournalContent(); // Refresh the panel to show the new entry
 }
-let journalEntries = [];
-
-function showJournalContent() {
   let entriesHTML = journalEntries.map(e => `
     <div style="background: rgba(13, 6, 20, 0.6); border-left: 3px solid var(--accent-fuchsia); padding: 10px; margin-bottom: 8px; font-family: var(--hand-font);">
       <time style="font-family: 'Cinzel', serif; font-size: 10px; color: var(--accent-hot-pink); font-weight: bold; display: block; margin-bottom: 4px;">${e.date}</time>
