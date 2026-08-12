@@ -753,14 +753,8 @@ function showZenHubContent() {
     <button onclick="location.reload()">RETURN TO GALLERY</button>
   `;
 }
-
-
-  
-  
-let journalEntries = [];
-
-function showJournalContent() {
-  function saveJournalEntry() {
+ 
+function saveJournalEntry() {
   const field = document.getElementById('journal-input-field');
   const text = field.value.trim();
   
@@ -774,18 +768,7 @@ function showJournalContent() {
   
   journalEntries.unshift(newEntry); // Add new entry to top
   showJournalContent(); // Refresh the panel to show the new entry
-}
-  let entriesHTML = journalEntries.map(e => `
-    <div style="background: rgba(13, 6, 20, 0.6); border-left: 3px solid var(--accent-fuchsia); padding: 10px; margin-bottom: 8px; font-family: var(--hand-font);">
-      <time style="font-family: 'Cinzel', serif; font-size: 10px; color: var(--accent-hot-pink); font-weight: bold; display: block; margin-bottom: 4px;">${e.date}</time>
-      <div style="color: var(--text-main); font-size: 14px;">${e.text}</div>
-    </div>
-  `).join('');
-
-  document.getElementById('center-panel').innerHTML = `
-  
-  `;
-}
+}   
 </script>
 </body>
 </html>
