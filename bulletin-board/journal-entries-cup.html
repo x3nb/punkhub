@@ -627,7 +627,21 @@ function showZenHubContent() {
     <button onclick="location.reload()">RETURN TO GALLERY</button>
   `;
 }
+function saveJournalEntry() {
+  const field = document.getElementById('journal-input-field');
+  const text = field.value.trim();
+  
+  if (!text) return;
 
+  // Add entry with current time
+  const newEntry = { 
+    date: new Date().toLocaleString(), 
+    text: text 
+  };
+  
+  journalEntries.unshift(newEntry); // Add new entry to top
+  showJournalContent(); // Refresh the panel to show the new entry
+}
 function showJournalContent() {
   document.getElementById('center-panel').innerHTML = `
     <h3>JOURNAL LOGS</h3>
