@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Violet Vision 2026 - Neon Gothic Brutalism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Klee+One:wght@400;600&family=Space+Mono:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
+<style>
+/* ====== BRUTALIST PUNK-VAMPIRE GOTH (ORIGINAL NEON PALETTE) ====== */
+:root {
+  --bg-deep-black: #0d0614;
+  --bg-dark-purple: #1a0b2e;
+  --panel-bg: rgba(26, 11, 46, 0.9);
+  
+  --accent-hot-pink: #ff007f;
+  --accent-fuchsia: #d900ff;
+  --accent-violet: #8a2be2;
+  
+  --stark-white: #ffffff;
+  --text-main: #e6d5f7;
+  --text-muted: #c4a9e8;
+  
+  --thick-border-pink: 4px solid var(--accent-hot-pink);
+  --thick-border-fuchsia: 4px solid var(--accent-fuchsia);
+  
+  --hand-font: 'Klee One', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Space Mono', monospace;
+  color: var(--text-main);
+  background-color: var(--bg-deep-black);
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(217, 0, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 127, 0.12) 0%, transparent 35%),
+    linear-gradient(to right, rgba(217, 0, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 0, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-deep-black); }
+::-webkit-scrollbar-thumb { background: var(--accent-hot-pink); border: 2px solid var(--bg-deep-black); }
+
+/* ====== 4-SECOND LOADING SCREEN WITH 360° SPIDER ANIMATION ====== */
+#loading-screen {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: var(--bg-deep-black);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 10px solid var(--accent-hot-pink);
+}
+
+/* 360 Degree Spinning Web & Spider Assembly */
+.spider-web-loader {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin-bottom: 20px;
+}
+
+.web-svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--accent-fuchsia);
+  stroke-width: 1.5;
+  fill: none;
+  filter: drop-shadow(0 0 8px var(--accent-fuchsia));
+}
+
+.spider-spinner {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  animation: spin360 2s linear infinite;
+}
+
+.spider-icon-loader {
+  position: absolute;
+  top: 0px;
+  left: calc(50% - 12px);
+  width: 24px;
+  height: 24px;
+  fill: var(--accent-hot-pink);
+  filter: drop-shadow(0 0 10px var(--accent-hot-pink));
+}
+
+@keyframes spin360 {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  color: var(--accent-hot-pink);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 15px var(--accent-fuchsia);
+}
+
+.loader-bar-box {
+  width: 300px;
+  height: 24px;
+  border: 3px solid var(--accent-fuchsia);
+  background: var(--bg-dark-purple);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 15px var(--accent-fuchsia);
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-hot-pink);
+  animation: fillProgress 4s linear forwards;
+}
+
+.loader-percent {
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--stark-white);
+}
+
+@keyframes fillProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* ====== SPIDERWEB RAY SVG ACCENTS ====== */
+.web-ray-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+/* ====== LOGIN GATE SCREEN ====== */
+#login-gate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.login-card {
+  background: var(--panel-bg);
+  border: var(--thick-border-pink);
+  padding: 40px;
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 10px 10px 0px var(--accent-fuchsia);
+  position: relative;
+}
+
+.login-card h2 {
+  font-family: 'Cinzel', serif;
+  color: var(--stark-white);
+  letter-spacing: 2px;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+.login-card input {
+  width: 100%;
+  background: var(--bg-deep-black);
+  border: 2px solid var(--accent-fuchsia);
+  color: var(--stark-white);
+  padding: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  margin: 20px 0;
+  box-sizing: border-box;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: var(--accent-hot-pink);
+  box-shadow: 0 0 10px var(--accent-hot-pink);
+}
+
+.login-card button {
+  width: 100%;
+  background: var(--accent-hot-pink);
+  color: var(--stark-white);
+  border: 2px solid var(--stark-white);
+  padding: 12px;
+  font-family: 'Space Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-card button:hover {
+  background: var(--stark-white);
+  color: var(--bg-deep-black);
+}
+
+/* ====== MAIN DESKTOP CONTENT (HIDDEN UNTIL LOGIN) ====== */
+#main-desktop {
+  display: none; /* Desktop content is locked out until authenticated */
+}
+
+/* ====== HEADER ====== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-dark-purple);
+  padding: 20px;
+  border-bottom: var(--thick-border-pink);
+  position: relative;
+}
+
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  color: var(--stark-white);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--accent-hot-pink);
+  padding: 6px 16px;
+  border: 2px solid var(--stark-white);
+  transform: rotate(-1deg);
+  box-shadow: 0 0 12px var(--accent-hot-pink);
+}
+
+.top-right {
+  text-align: right;
+  font-size: 13px;
+  font-weight: bold;
+  background: var(--accent-fuchsia);
+  color: var(--stark-white);
+  padding: 8px 14px;
+  border: 2px solid var(--stark-white);
+  box-shadow: 0 0 10px var(--accent-fuchsia);
+}
+
+/* ====== USER LOGIN BANNER ====== */
+#login-banner {
+  background: var(--accent-fuchsia);
+  color: var(--stark-white);
+  padding: 12px 20px;
+  border-bottom: var(--thick-border-pink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+/* ====== NAVIGATION ====== */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px 20px;
+  background: var(--bg-deep-black);
+  border-bottom: var(--thick-border-pink);
+}
+
+.menu-item {
+  padding: 10px 16px;
+  background: var(--bg-dark-purple);
+  color: var(--text-main);
+  border: 2px solid var(--accent-fuchsia);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.1s ease;
+}
+
+.menu-item:hover {
+  background: var(--accent-hot-pink);
+  color: var(--stark-white);
+  transform: translate(-3px, -3px);
+  box-shadow: 4px 4px 0px var(--accent-fuchsia);
+}
+
+/* ====== MAIN DASHBOARD GRID ====== */
+.container {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* ====== BRUTALIST PANELS ====== */
+.panel {
+  background: var(--panel-bg);
+  padding: 20px;
+  border: var(--thick-border-fuchsia);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 6px 6px 0px rgba(217,0,255,0.3);
+}
+
+.panel h3 {
+  font-family: 'Cinzel', serif;
+  color: var(--stark-white);
+  font-size: 16px;
+  text-transform: uppercase;
+  background: var(--accent-hot-pink);
+  padding: 8px 12px;
+  margin: -20px -20px 20px -20px;
+  border-bottom: var(--thick-border-fuchsia);
+  letter-spacing: 1px;
+}
+
+.panel p {
+  font-family: var(--hand-font);
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* ====== VISION GALLERY ====== */
+.vision-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.vision-card {
+  position: relative;
+  border: 3px solid var(--accent-fuchsia);
+  background: var(--bg-dark-purple);
+  height: 180px;
+  overflow: hidden;
+}
+
+.vision-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.vision-card:hover img {
+  transform: scale(1.05);
+}
+
+.card-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(13, 6, 20, 0.95);
+  border-top: 2px solid var(--accent-hot-pink);
+  padding: 6px;
+  font-size: 11px;
+}
+
+.card-caption strong {
+  color: var(--accent-hot-pink);
+  display: block;
+  font-family: 'Cinzel', serif;
+}
+
+.card-caption span {
+  font-family: var(--hand-font);
+  color: var(--text-muted);
+}
+
+/* ====== BUTTONS & INPUTS ====== */
+button {
+  background: var(--bg-dark-purple);
+  color: var(--text-main);
+  border: 2px solid var(--accent-hot-pink);
+  padding: 10px 14px;
+  font-family: 'Space Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-hot-pink);
+  color: var(--stark-white);
+  box-shadow: 3px 3px 0px var(--accent-fuchsia);
+}
+
+textarea {
+  width: 100%;
+  background: var(--bg-dark-purple);
+  border: 2px solid var(--accent-violet);
+  color: var(--text-main);
+  padding: 10px;
+  font-family: var(--hand-font);
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading-screen">
+  <div class="spider-web-loader">
+    <svg class="web-svg" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="45" />
+      <circle cx="50" cy="50" r="30" />
+      <circle cx="50" cy="50" r="15" />
+      <line x1="50" y1="5" x2="50" y2="95" />
+      <line x1="5" y1="50" x2="95" y2="50" />
+      <line x1="18" y1="18" x2="82" y2="82" />
+      <line x1="18" y1="82" x2="82" y2="18" />
+    </svg>
+    <div class="spider-spinner">
+      <svg class="spider-icon-loader" viewBox="0 0 24 24">
+        <path d="M12,12 C11,10 9,9 8,9 C7,9 6,10 6,12 C6,14 8,15 8,17 C8,19 7,20 6,21 M12,12 C13,10 15,9 16,9 C17,9 18,10 18,12 C18,14 16,15 16,17 C16,19 17,20 18,21 M12,10 C10,8 8,7 5,8 C3,9 2,11 1,13 M12,10 C14,8 16,7 19,8 C21,9 22,11 23,13 M12,14 C9,15 6,16 4,19 C3,20 2,22 1,23 M12,14 C15,15 18,16 20,19 C21,20 22,22 23,23 M12,8 A3,3 0 1,0 12,14 A3,3 0 1,0 12,8 Z M12,13 A2,2 0 1,0 12,17 A2,2 0 1,0 12,13 Z"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="loader-title">WEAVING SYSTEM DESKTOP</div>
+  <div class="loader-bar-box">
+    <div class="loader-bar-fill"></div>
+  </div>
+  <div class="loader-percent" id="loader-counter">0%</div>
+</div>
+
+<div id="login-gate">
+  <div class="login-card">
+    <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M0,0 L100,100 M0,0 L100,50 M0,0 L50,100" stroke="#ff007f" stroke-width="0.5"/>
+    </svg>
+    <h2>RESTRICTED ACCESS</h2>
+    <p style="font-size: 12px; color: var(--text-muted);">ENTER YOUR USERNAME TO ACCESS THE DESKTOP</p>
+    <input type="text" id="username-gate-input" placeholder="USERNAME..." onkeydown="if(event.key==='Enter') handleGateLogin()">
+    <button onclick="handleGateLogin()">LOG IN TO DESKTOP</button>
+  </div>
+</div>
+
+<div id="main-desktop">
+  <header>
+    <div class="logo">VIOLET VISION 2026 // NEON GOTH</div>
+    <div class="top-right">
+      <span id="date"></span> | <span id="clock"></span>
+    </div>
+  </header>
+
+  <div id="login-banner">
+    <div id="greeting-display">WELCOME BACK</div>
+    <button onclick="handleLogout()" style="padding: 4px 10px; font-size: 11px;">LOG OUT</button>
+  </div>
+
+  <nav>
+    <div class="menu-item" onclick="location.reload()">[ HOME ]</div>
+    <div class="menu-item" onclick="showVisionBoardContent()">[ VISION CODEX ]</div>
+    <div class="menu-item" onclick="showInspirationContent()">[ ART VAULT ]</div>
+    <div class="menu-item" onclick="showZenHubContent()">[ ZENHUB PORTAL ]</div>
+    <div class="menu-item" onclick="showJournalContent()">[ JOURNAL LOGS ]</div>
+  </nav>
+
+  <div class="container">
+    <div class="panel">
+      <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M0,0 L100,100 M0,0 L100,50 M0,0 L50,100 M0,0 L100,20 M0,0 L20,100" stroke="#ff007f" stroke-width="0.5"/>
+      </svg>
+      <h3>DAILY FOCUS</h3>
+      <p>✦ CREATE</p>
+      <p>✦ LEARN</p>
+      <p>✦ BUILD</p>
+      <p>✦ SHARE</p>
+      <hr style="border: 0; height: 1px; background: var(--accent-fuchsia); margin: 20px 0;">
+      <h3>CHECKLIST</h3>
+      <div style="font-family: var(--hand-font); font-size: 15px; line-height: 2; color: var(--text-muted);">
+        <div><input type="checkbox"> Check LLC status</div>
+        <div><input type="checkbox"> Track expenses</div>
+        <div><input type="checkbox"> Update affiliate links</div>
+        <div><input type="checkbox"> Upload fashion content</div>
+        <div><input type="checkbox"> Write digital guide</div>
+        <div><input type="checkbox"> Post Pinterest inspiration</div>
+      </div>
+    </div>
+
+    <div class="panel" id="center-panel">
+      <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M50,0 L0,100 M50,0 L100,100 M50,0 L0,50 M50,0 L100,50" stroke="#d900ff" stroke-width="0.5"/>
+      </svg>
+      <h3>VISION GALLERY</h3>
+      <div class="vision-board">
+        <div class="vision-card">
+          <img src="StarEmotie.jpeg" alt="Star">
+          <div class="card-caption"><strong>STAR</strong><span>Café Barista</span></div>
+        </div>
+        <div class="vision-card">
+          <img src="chariwhitrat.png" alt="Chari">
+          <div class="card-caption"><strong>CHARI</strong><span>Sis & Apprentice</span></div>
+        </div>
+        <div class="vision-card">
+          <img src="PEARL-OFFICIAL.png" alt="Pearl">
+          <div class="card-caption"><strong>PEARL</strong><span>Model & Zine Editor</span></div>
+        </div>
+        <div class="vision-card">
+          <img src="Miki.Headshot1.jpeg" alt="Miki">
+          <div class="card-caption"><strong>MIKI</strong><span>Cyborg-Neko</span></div>
+        </div>
+        <div class="vision-card">
+          <img src="milowithtea.png" alt="Milo">
+          <div class="card-caption"><strong>MILO</strong><span>Sanctuary & Tea</span></div>
+        </div>
+        <div class="vision-card">
+          <img src="HanselShortOfficial.png" alt="Hansel">
+          <div class="card-caption"><strong>HANSEL</strong><span>Café Lore</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M100,0 L0,100 M100,0 L0,50 M100,0 L50,100" stroke="#8a2be2" stroke-width="0.5"/>
+      </svg>
+      <h3>GUEST HOST TRANSMISSION</h3>
+      <video style="width:100%; border:2px solid var(--accent-fuchsia);" playsinline controls>
+        <source src="https://x3nb.github.io/chezxen/talking-girch/greet.mp4" type="video/mp4">
+      </video>
+      <hr style="border: 0; height: 1px; background: var(--accent-fuchsia); margin: 20px 0;">
+      <h3>MAILBOX</h3>
+      <div style="font-family: var(--hand-font); font-size: 14px; line-height: 1.8; color: var(--text-muted);">
+        ✦ Write thank you note to client<br>
+        ✦ Check LLC paperwork<br>
+        ✦ Research avatar fashion tools
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== 4-SECOND LOADER COUNTER ===== */
+let progress = 0;
+const counterElem = document.getElementById('loader-counter');
+const loaderInterval = setInterval(() => {
+  progress += 2;
+  if (progress <= 100) {
+    counterElem.innerText = progress + '%';
+  }
+}, 80);
+
+setTimeout(() => {
+  clearInterval(loaderInterval);
+  document.getElementById('loading-screen').style.display = 'none';
+}, 4000);
+
+/* ===== USER AUTHENTICATION & DESKTOP LOCK ===== */
+function checkUserState() {
+  const savedUser = localStorage.getItem('vampireGothUser');
+  const gate = document.getElementById('login-gate');
+  const desktop = document.getElementById('main-desktop');
+  const greetingDisplay = document.getElementById('greeting-display');
+
+  if (savedUser) {
+    gate.style.display = 'none';
+    desktop.style.display = 'block';
+    greetingDisplay.innerHTML = `WELCOME BACK, <span style="color:#fff; text-decoration:underline;">${savedUser.toUpperCase()}</span>. THE NIGHT IS STILL YOUNG.`;
+  } else {
+    gate.style.display = 'flex';
+    desktop.style.display = 'none';
+  }
+}
+
+function handleGateLogin() {
+  const username = document.getElementById('username-gate-input').value.trim();
+  if (username) {
+    localStorage.setItem('vampireGothUser', username);
+    checkUserState();
+  }
+}
+
+function handleLogout() {
+  localStorage.removeItem('vampireGothUser');
+  location.reload();
+}
+
+// Check login status on launch
+checkUserState();
+
+/* ===== CLOCK ===== */
+function updateClock(){
+  const now = new Date();
+  document.getElementById("clock").innerHTML = now.toLocaleTimeString();
+  document.getElementById("date").innerHTML = now.toDateString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ===== NAVIGATION CONTENT SWITCHERS ===== */
+function showVisionBoardContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>VISION & LORE CODEX</h3>
+    <p>Welcome to the heart of Xen-la-Boheme-Vision 2026. Here, couture tailoring meets cybernetic gothic lore under the glowing canopy of the neon sanctuary.</p>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+
+function showInspirationContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>ART VAULT</h3>
+    <p style="font-family: var(--hand-font); font-size: 16px;">"Give me time and I'll give you a revolution." — Alexander McQueen</p>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+
+function showZenHubContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>ZENHUB PORTAL</h3>
+    <p style="font-family: var(--hand-font);">Access generator updates, community releases, and hub announcements directly.</p>
+    <button onclick="window.open('https://perchance.org/zenhub', '_blank')">LAUNCH ZENHUB FEED ↗</button>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+
+function showJournalContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>JOURNAL LOGS</h3>
+    <p style="font-family: var(--hand-font);">Daily Sanctuary Record:</p>
+    <textarea rows="4" placeholder="Write log entry..."></textarea><br><br>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+</script>
+
+</body>
+</html>
+
+```
