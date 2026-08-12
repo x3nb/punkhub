@@ -1,0 +1,554 @@
+Here is the adjusted layout! The raw, heavy **Brutalism structure** and interactive features (the 4-second loading screen, persistent login system, and spiderweb ray accents) are fully intact, but the colors have been restored to your original **Neon Hot-Pink, Fuchsia, and Deep Violet** palette.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Violet Vision 2026 - Neon Gothic Brutalism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Klee+One:wght@400;600&family=Space+Mono:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
+<style>
+/* ====== BRUTALIST PUNK-VAMPIRE GOTH (ORIGINAL NEON PALETTE) ====== */
+:root {
+  /* Original Neon Colors Restored */
+  --bg-deep-black: #0d0614;
+  --bg-dark-purple: #1a0b2e;
+  --panel-bg: rgba(26, 11, 46, 0.9);
+  
+  --accent-hot-pink: #ff007f;
+  --accent-fuchsia: #d900ff;
+  --accent-violet: #8a2be2;
+  
+  --stark-white: #ffffff;
+  --text-main: #e6d5f7;
+  --text-muted: #c4a9e8;
+  
+  /* Brutalist Wireframes */
+  --thick-border-pink: 4px solid var(--accent-hot-pink);
+  --thick-border-fuchsia: 4px solid var(--accent-fuchsia);
+  --thick-border-white: 4px solid var(--stark-white);
+  
+  --hand-font: 'Klee One', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Space Mono', monospace;
+  color: var(--text-main);
+  background-color: var(--bg-deep-black);
+  /* Glittery background from original code */
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(217, 0, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 127, 0.12) 0%, transparent 35%),
+    linear-gradient(to right, rgba(217, 0, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 0, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-deep-black); }
+::-webkit-scrollbar-thumb { background: var(--accent-hot-pink); border: 2px solid var(--bg-deep-black); }
+
+/* ====== 4-SECOND CINEMATIC LOADING SCREEN ====== */
+#loading-screen {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: var(--bg-deep-black);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 10px solid var(--accent-hot-pink);
+}
+
+.loader-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  color: var(--accent-hot-pink);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px var(--accent-fuchsia);
+  animation: flicker 0.2s infinite alternate;
+}
+
+.loader-bar-box {
+  width: 320px;
+  height: 30px;
+  border: 4px solid var(--accent-fuchsia);
+  background: var(--bg-dark-purple);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 15px var(--accent-fuchsia);
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-hot-pink);
+  animation: fillProgress 4s linear forwards;
+}
+
+.loader-percent {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--stark-white);
+}
+
+@keyframes fillProgress {
+  0% { width: 0%; }
+  50% { width: 65%; }
+  100% { width: 100%; }
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  100% { opacity: 0.85; }
+}
+
+/* ====== SPIDERWEB RAY SVG ACCENTS ====== */
+.web-ray-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+/* ====== HEADER ====== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-dark-purple);
+  padding: 20px;
+  border-bottom: var(--thick-border-pink);
+  position: relative;
+}
+
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  color: var(--stark-white);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--accent-hot-pink);
+  padding: 6px 16px;
+  border: 2px solid var(--stark-white);
+  transform: rotate(-1deg);
+  box-shadow: 0 0 12px var(--accent-hot-pink);
+}
+
+.top-right {
+  text-align: right;
+  font-size: 13px;
+  font-weight: bold;
+  background: var(--accent-fuchsia);
+  color: var(--stark-white);
+  padding: 8px 14px;
+  border: 2px solid var(--stark-white);
+  box-shadow: 0 0 10px var(--accent-fuchsia);
+}
+
+/* ====== USER LOGIN BANNER ====== */
+#login-banner {
+  background: var(--accent-fuchsia);
+  color: var(--stark-white);
+  padding: 12px 20px;
+  border-bottom: var(--thick-border-pink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.login-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.login-input-group input {
+  background: var(--bg-deep-black);
+  border: 2px solid var(--stark-white);
+  color: var(--stark-white);
+  padding: 6px 12px;
+  font-family: 'Space Mono', monospace;
+}
+
+.login-input-group button {
+  background: var(--accent-hot-pink);
+  color: var(--stark-white);
+  border: 2px solid var(--stark-white);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 6px 15px;
+  text-transform: uppercase;
+}
+
+.login-input-group button:hover {
+  background: var(--stark-white);
+  color: var(--bg-deep-black);
+}
+
+/* ====== NAVIGATION ====== */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px 20px;
+  background: var(--bg-deep-black);
+  border-bottom: var(--thick-border-pink);
+}
+
+.menu-item {
+  padding: 10px 16px;
+  background: var(--bg-dark-purple);
+  color: var(--text-main);
+  border: 2px solid var(--accent-fuchsia);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.1s ease;
+}
+
+.menu-item:hover {
+  background: var(--accent-hot-pink);
+  color: var(--stark-white);
+  transform: translate(-3px, -3px);
+  box-shadow: 4px 4px 0px var(--accent-fuchsia);
+}
+
+/* ====== MAIN DASHBOARD GRID ====== */
+.container {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* ====== BRUTALIST PANELS ====== */
+.panel {
+  background: var(--panel-bg);
+  padding: 20px;
+  border: var(--thick-border-fuchsia);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 6px 6px 0px rgba(217,0,255,0.3);
+}
+
+.panel h3 {
+  font-family: 'Cinzel', serif;
+  color: var(--stark-white);
+  font-size: 16px;
+  text-transform: uppercase;
+  background: var(--accent-hot-pink);
+  padding: 8px 12px;
+  margin: -20px -20px 20px -20px;
+  border-bottom: var(--thick-border-fuchsia);
+  letter-spacing: 1px;
+}
+
+.panel p {
+  font-family: var(--hand-font);
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* ====== VISION GALLERY ====== */
+.vision-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.vision-card {
+  position: relative;
+  border: 3px solid var(--accent-fuchsia);
+  background: var(--bg-dark-purple);
+  height: 180px;
+  overflow: hidden;
+}
+
+.vision-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.vision-card:hover img {
+  transform: scale(1.05);
+}
+
+.card-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(13, 6, 20, 0.95);
+  border-top: 2px solid var(--accent-hot-pink);
+  padding: 6px;
+  font-size: 11px;
+}
+
+.card-caption strong {
+  color: var(--accent-hot-pink);
+  display: block;
+  font-family: 'Cinzel', serif;
+}
+
+.card-caption span {
+  font-family: var(--hand-font);
+  color: var(--text-muted);
+}
+
+/* ====== BUTTONS & INPUTS ====== */
+button {
+  background: var(--bg-dark-purple);
+  color: var(--text-main);
+  border: 2px solid var(--accent-hot-pink);
+  padding: 10px 14px;
+  font-family: 'Space Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-hot-pink);
+  color: var(--stark-white);
+  box-shadow: 3px 3px 0px var(--accent-fuchsia);
+}
+
+textarea, input[type="text"] {
+  width: 100%;
+  background: var(--bg-dark-purple);
+  border: 2px solid var(--accent-violet);
+  color: var(--text-main);
+  padding: 10px;
+  font-family: var(--hand-font);
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading-screen">
+  <div class="loader-title">INITIATING VAMPIRE-GOTH DESKTOP</div>
+  <div class="loader-bar-box">
+    <div class="loader-bar-fill"></div>
+  </div>
+  <div class="loader-percent" id="loader-counter">0%</div>
+</div>
+
+<header>
+  <div class="logo">VIOLET VISION 2026 // NEON GOTH</div>
+  <div class="top-right">
+    <span id="date"></span> | <span id="clock"></span>
+  </div>
+</header>
+
+<div id="login-banner">
+  <div id="greeting-display">IDENTIFY YOURSELF // ENTER SYSTEM ACCESS NAME</div>
+  <div class="login-input-group" id="login-form">
+    <input type="text" id="username-input" placeholder="User Name...">
+    <button onclick="handleLogin()">LOG IN</button>
+  </div>
+</div>
+
+<nav>
+  <div class="menu-item" onclick="location.reload()">[ HOME ]</div>
+  <div class="menu-item" onclick="showVisionBoardContent()">[ VISION CODEX ]</div>
+  <div class="menu-item" onclick="showInspirationContent()">[ ART VAULT ]</div>
+  <div class="menu-item" onclick="showZenHubContent()">[ ZENHUB PORTAL ]</div>
+  <div class="menu-item" onclick="showJournalContent()">[ JOURNAL LOGS ]</div>
+</nav>
+
+<div class="container">
+
+  <div class="panel">
+    <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M0,0 L100,100 M0,0 L100,50 M0,0 L50,100 M0,0 L100,20 M0,0 L20,100" stroke="#ff007f" stroke-width="0.5"/>
+    </svg>
+    
+    <h3>DAILY FOCUS</h3>
+    <p>✦ CREATE</p>
+    <p>✦ LEARN</p>
+    <p>✦ BUILD</p>
+    <p>✦ SHARE</p>
+    
+    <hr style="border: 0; height: 1px; background: var(--accent-fuchsia); margin: 20px 0;">
+    
+    <h3>CHECKLIST</h3>
+    <div style="font-family: var(--hand-font); font-size: 15px; line-height: 2; color: var(--text-muted);">
+      <div><input type="checkbox"> Check LLC status</div>
+      <div><input type="checkbox"> Track expenses</div>
+      <div><input type="checkbox"> Update affiliate links</div>
+      <div><input type="checkbox"> Upload fashion content</div>
+      <div><input type="checkbox"> Write digital guide</div>
+      <div><input type="checkbox"> Post Pinterest inspiration</div>
+    </div>
+  </div>
+
+  <div class="panel" id="center-panel">
+    <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M50,0 L0,100 M50,0 L100,100 M50,0 L0,50 M50,0 L100,50" stroke="#d900ff" stroke-width="0.5"/>
+    </svg>
+
+    <h3>VISION GALLERY</h3>
+    <div class="vision-board">
+      <div class="vision-card">
+        <img src="StarEmotie.jpeg" alt="Star">
+        <div class="card-caption"><strong>STAR</strong><span>Café Barista</span></div>
+      </div>
+      <div class="vision-card">
+        <img src="chariwhitrat.png" alt="Chari">
+        <div class="card-caption"><strong>CHARI</strong><span>Sis & Apprentice</span></div>
+      </div>
+      <div class="vision-card">
+        <img src="PEARL-OFFICIAL.png" alt="Pearl">
+        <div class="card-caption"><strong>PEARL</strong><span>Model & Zine Editor</span></div>
+      </div>
+      <div class="vision-card">
+        <img src="Mikimiki.png" alt="Miki">
+        <div class="card-caption"><strong>MIKI</strong><span>Cyborg-Neko</span></div>
+      </div>
+      <div class="vision-card">
+        <img src="milowithtea.png" alt="Milo">
+        <div class="card-caption"><strong>MILO</strong><span>Sanctuary & Tea</span></div>
+      </div>
+      <div class="vision-card">
+        <img src="HanselShortOfficial.png" alt="Hansel">
+        <div class="card-caption"><strong>HANSEL</strong><span>Café Lore</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M100,0 L0,100 M100,0 L0,50 M100,0 L50,100" stroke="#8a2be2" stroke-width="0.5"/>
+    </svg>
+
+    <h3>GUEST HOST TRANSMISSION</h3>
+    <video style="width:100%; border:2px solid var(--accent-fuchsia);" playsinline controls>
+      <source src="https://x3nb.github.io/chezxen/talking-girch/greet.mp4" type="video/mp4">
+    </video>
+
+    <hr style="border: 0; height: 1px; background: var(--accent-fuchsia); margin: 20px 0;">
+
+    <h3>MAILBOX</h3>
+    <div style="font-family: var(--hand-font); font-size: 14px; line-height: 1.8; color: var(--text-muted);">
+      ✦ Write thank you note to client<br>
+      ✦ Check LLC paperwork<br>
+      ✦ Research avatar fashion tools
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===== 4-SECOND LOADER COUNTER ===== */
+let progress = 0;
+const counterElem = document.getElementById('loader-counter');
+const loaderInterval = setInterval(() => {
+  progress += 2;
+  if (progress <= 100) {
+    counterElem.innerText = progress + '%';
+  }
+}, 80);
+
+setTimeout(() => {
+  clearInterval(loaderInterval);
+  document.getElementById('loading-screen').style.display = 'none';
+}, 4000);
+
+/* ===== USER LOGIN & LOCAL STORAGE ===== */
+function checkUserLogin() {
+  const savedUser = localStorage.getItem('vampireGothUser');
+  const greetingDisplay = document.getElementById('greeting-display');
+  const loginForm = document.getElementById('login-form');
+
+  if (savedUser) {
+    greetingDisplay.innerHTML = `WELCOME BACK, <span style="color:#fff; text-decoration:underline;">${savedUser.toUpperCase()}</span>. THE NIGHT IS STILL YOUNG.`;
+    loginForm.innerHTML = `<button onclick="handleLogout()">LOG OUT</button>`;
+  }
+}
+
+function handleLogin() {
+  const username = document.getElementById('username-input').value.trim();
+  if (username) {
+    localStorage.setItem('vampireGothUser', username);
+    checkUserLogin();
+  }
+}
+
+function handleLogout() {
+  localStorage.removeItem('vampireGothUser');
+  location.reload();
+}
+
+// Check status on initial render
+checkUserLogin();
+
+/* ===== CLOCK ===== */
+function updateClock(){
+  const now = new Date();
+  document.getElementById("clock").innerHTML = now.toLocaleTimeString();
+  document.getElementById("date").innerHTML = now.toDateString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ===== DYNAMIC CONTENT SWITCHERS ===== */
+function showVisionBoardContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>VISION & LORE CODEX</h3>
+    <p>Welcome to the heart of Xen-la-Boheme-Vision 2026. Here, couture tailoring meets cybernetic gothic lore under the glowing canopy of the neon sanctuary.</p>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+
+function showInspirationContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>ART VAULT</h3>
+    <p style="font-family: var(--hand-font); font-size: 16px;">"Give me time and I'll give you a revolution." — Alexander McQueen</p>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+
+function showZenHubContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>ZENHUB PORTAL</h3>
+    <p style="font-family: var(--hand-font);">Access generator updates, community releases, and hub announcements directly.</p>
+    <button onclick="window.open('https://perchance.org/zenhub', '_blank')">LAUNCH ZENHUB FEED ↗</button>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+
+function showJournalContent() {
+  document.getElementById('center-panel').innerHTML = `
+    <h3>JOURNAL LOGS</h3>
+    <p style="font-family: var(--hand-font);">Daily Sanctuary Record:</p>
+    <textarea rows="4" placeholder="Write log entry..."></textarea><br><br>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+</script>
+
+</body>
+</html>
+
+```
