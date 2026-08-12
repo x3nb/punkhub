@@ -66,7 +66,6 @@ body {
   border: 10px solid var(--accent-hot-pink);
 }
 
-/* 360 Degree Spinning Web & Spider Assembly */
 .spider-web-loader {
   position: relative;
   width: 160px;
@@ -190,7 +189,6 @@ body {
   font-family: 'Space Mono', monospace;
   font-size: 14px;
   margin: 20px 0;
-  box-sizing: border-box;
 }
 
 .login-card input:focus {
@@ -217,9 +215,9 @@ body {
   color: var(--bg-deep-black);
 }
 
-/* ====== MAIN DESKTOP CONTENT (HIDDEN UNTIL LOGIN) ====== */
+/* ====== MAIN DESKTOP CONTENT (RESTRICTED UNTIL LOGIN) ====== */
 #main-desktop {
-  display: none; /* Desktop content is locked out until authenticated */
+  display: none;
 }
 
 /* ====== HEADER ====== */
@@ -401,17 +399,19 @@ button:hover {
 
 textarea {
   width: 100%;
-  background: var(--bg-dark-purple);
-  border: 2px solid var(--accent-violet);
+  background: var(--bg-deep-black);
+  border: 2px solid var(--accent-fuchsia);
   color: var(--text-main);
   padding: 10px;
   font-family: var(--hand-font);
+  font-size: 15px;
 }
-  /* ====== Dynamic Web Spawning Corner ====== */
+
+/* ====== DYNAMIC WEB SPAWNING CORNER ====== */
 #web-spawn-corner {
   position: fixed;
   bottom: 15px;
-  right: 15px; /* Brutalist layout requires strict spacing */
+  right: 15px;
   width: 150px;
   height: 150px;
   background: rgba(13, 6, 20, 0.95);
@@ -420,10 +420,9 @@ textarea {
   z-index: 1000;
   overflow: hidden;
   padding: 10px;
-  pointer-events: none; /* Keeps it from blocking layout interaction */
+  pointer-events: none;
 }
 
-/* Label for the panel */
 #web-spawn-corner::after {
   content: "ACTIVE // WEAVING";
   position: absolute;
@@ -434,32 +433,26 @@ textarea {
   letter-spacing: 1px;
 }
 
-/* The lines of the web */
 #web-spawn-corner svg line {
   stroke: var(--accent-fuchsia);
   stroke-width: 1.5;
-  stroke-dasharray: 200; /* Standard length for draw animation */
-  stroke-dashoffset: 200; /* Hidden by default */
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
   filter: drop-shadow(0 0 5px var(--accent-fuchsia));
   animation: drawWeb 20s ease-in-out infinite;
 }
 
-/* Specific Line Timing - delays draw out the 20s cycle */
 #web-spawn-corner line.radial-1 { animation-delay: 0s; }
 #web-spawn-corner line.radial-2 { animation-delay: 1.5s; }
 #web-spawn-corner line.radial-3 { animation-delay: 3s; }
-#web-spawn-corner line.spiral-1 { animation-delay: 5s; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation-duration: 10s !important; }
-#web-spawn-corner line.spiral-2 { animation-delay: 10s; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation-duration: 8s !important;}
 
-/* Drawing Animation */
 @keyframes drawWeb {
   0% { stroke-dashoffset: 200; opacity: 0; }
   5% { opacity: 1; stroke-dashoffset: 0; }
-  90% { opacity: 1; stroke-dashoffset: 0; } /* Hold full web structure */
-  100% { opacity: 0; stroke-dashoffset: 200; } /* Reset */
+  90% { opacity: 1; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: 200; }
 }
 
-/* The Spider (re-using your original SVG path shape) */
 .web-spawn-spider {
   position: absolute;
   top: 60px; left: 60px;
@@ -469,7 +462,6 @@ textarea {
   animation: spiderWiggle 20s infinite;
 }
 
-/* Moves the spider around the web as it spins */
 @keyframes spiderWiggle {
   0%   { transform: translate(0, 0) rotate(0deg); }
   10%  { transform: translate(10px, -20px) rotate(45deg); }
@@ -477,7 +469,7 @@ textarea {
   50%  { transform: translate(0px, 40px) rotate(-90deg); }
   75%  { transform: translate(-30px, 10px) rotate(180deg); }
   90%  { transform: translate(0, 0) rotate(0deg); opacity: 1;}
-  100% { opacity: 0; } /* Resets with the web */
+  100% { opacity: 0; }
 }
 </style>
 </head>
@@ -583,7 +575,7 @@ textarea {
           <div class="card-caption"><strong>PEARL</strong><span>Model & Zine Editor</span></div>
         </div>
         <div class="vision-card">
-          <img src="Miki.Headshot1.jpeg" alt="Miki">
+          <img src="Mikimiki.png" alt="Miki">
           <div class="card-caption"><strong>MIKI</strong><span>Cyborg-Neko</span></div>
         </div>
         <div class="vision-card">
@@ -615,61 +607,24 @@ textarea {
     </div>
   </div>
 </div>
-let journalEntries = [];
 
-function showJournalContent() {
-  let entriesHTML = journalEntries.map(e => `
-    <div style="background: rgba(13, 6, 20, 0.6); border-left: 3px solid var(--accent-fuchsia); padding: 10px; margin-bottom: 8px; font-family: var(--hand-font);">
-      <time style="font-family: 'Cinzel', serif; font-size: 10px; color: var(--accent-hot-pink); font-weight: bold; display: block; margin-bottom: 4px;">${e.date}</time>
-      <div style="color: var(--text-main); font-size: 14px;">${e.text}</div>
-    </div>
-  `).join('');
-
-  document.getElementById('center-panel').innerHTML = `
-    <h3>JOURNAL LOGS</h3>
-    <p style="font-family: var(--hand-font);">Daily Sanctuary Record:</p>
-    <textarea id="journal-input-field" rows="4" placeholder="Write log entry..."></textarea>
-    
-    <div style="display: flex; align-items: center; gap: 12px; margin: 15px 0;">
-      <button onclick="saveJournalEntry()" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--accent-hot-pink); filter: drop-shadow(0 0 5px var(--accent-fuchsia));">
-          <path d="M20,10 H18 V7 C18,4.24 15.76,2 13,2 H7 C4.24,2 2,4.24 2,7 V10 C2,13.31 4.69,16 8,16 H12 C14.31,16 16.33,14.63 17.3,12.63 C18.33,12.23 19.12,11.39 19.64,10.36 C19.87,10.25 20,10.14 20,10 M16,10 H4 V7 C4,5.34 5.34,4 7,4 H13 C14.66,4 16,5.34 16,7 V10 M8,18 H12 C15.31,18 18,15.31 18,12 H19 A4,4 0 0,1 23,8 A4,4 0 0,1 19,4 H18.92 C19.5,4.78 19.87,5.7 19.96,6.67 H21 A2,2 0 0,0 23,8 A2,2 0 0,0 21,9.33 H19.92 C19.79,10.29 19.33,11.16 18.67,11.83 C17.89,12.56 16.92,13.06 15.86,13.3 C14.93,13.73 13.92,14 12.83,14 H8.17 C7.08,14 6.07,13.73 5.14,13.3 A8.05,8.05 0 0,1 1,8 C1,5.33 3.33,3 6,3 H14 C16.67,3 19,5.33 19,8 V10 C19,10.55 18.55,11 18,11 H16 V10 M21,18 H2 A1,1 0 0,1 1,17 V16 H22 V17 A1,1 0 0,1 21,18 Z"/>
-        </svg>
-        BREW ENTRY
-      </button>
-      <span style="font-family: var(--hand-font); font-size: 13px; color: var(--text-muted);">Click the teacup to log entry</span>
-    </div>
-
-    <hr style="border: 0; height: 1px; background: var(--accent-fuchsia); margin: 20px 0;">
-    
-    <h3>PAST ENTRIES</h3>
-    <div style="max-height: 200px; overflow-y: auto;">
-      ${entriesHTML || '<p style="font-family: var(--hand-font); color: var(--text-muted);">No entries brewed yet today.</p>'}
-    </div>
-
-    <br>
-    <button onclick="location.reload()">RETURN TO GALLERY</button>
-  `;
-}
-  <div id="web-spawn-corner">
+<div id="web-spawn-corner">
   <svg viewBox="0 0 100 100" width="100%" height="100%">
     <line x1="50" y1="50" x2="50" y2="5" class="radial-1" />
     <line x1="50" y1="50" x2="95" y2="50" class="radial-2" />
     <line x1="50" y1="50" x2="5" y2="50" class="radial-3" />
-    
     <path d="M 50,20 C 65,20 80,35 80,50 C 80,65 65,80 50,80 C 35,80 20,65 20,50 C 20,40 30,20 50,20" 
-          stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none" class="spiral-1" 
+          stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none" 
           style="stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawWeb 20s ease-in-out infinite 5s; filter: drop-shadow(0 0 5px var(--accent-fuchsia));"/>
-          
     <path d="M 50,35 C 58,35 65,42 65,50 C 65,58 58,65 50,65 C 42,65 35,58 35,50 C 35,42 42,35 50,35" 
-          stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none" class="spiral-2"
+          stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none"
           style="stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawWeb 20s ease-in-out infinite 10s; filter: drop-shadow(0 0 5px var(--accent-fuchsia));"/>
   </svg>
-  
   <svg class="web-spawn-spider" viewBox="0 0 24 24">
     <path d="M12,12 C11,10 9,9 8,9 C7,9 6,10 6,12 C6,14 8,15 8,17 C8,19 7,20 6,21 M12,12 C13,10 15,9 16,9 C17,9 18,10 18,12 C18,14 16,15 16,17 C16,19 17,20 18,21 M12,10 C10,8 8,7 5,8 C3,9 2,11 1,13 M12,10 C14,8 16,7 19,8 C21,9 22,11 23,13 M12,14 C9,15 6,16 4,19 C3,20 2,22 1,23 M12,14 C15,15 18,16 20,19 C21,20 22,22 23,23 M12,8 A3,3 0 1,0 12,14 A3,3 0 1,0 12,8 Z M12,13 A2,2 0 1,0 12,17 A2,2 0 1,0 12,13 Z"/>
   </svg>
 </div>
+
 <script>
 /* ===== 4-SECOND LOADER COUNTER ===== */
 let progress = 0;
@@ -716,7 +671,6 @@ function handleLogout() {
   location.reload();
 }
 
-// Check login status on launch
 checkUserState();
 
 /* ===== CLOCK ===== */
@@ -727,6 +681,58 @@ function updateClock(){
 }
 setInterval(updateClock, 1000);
 updateClock();
+
+/* ===== JOURNAL SYSTEM & TEACUP BUTTON ===== */
+let journalEntries = [];
+
+function showJournalContent() {
+  let entriesHTML = journalEntries.map(e => `
+    <div style="background: rgba(13, 6, 20, 0.6); border-left: 3px solid var(--accent-fuchsia); padding: 10px; margin-bottom: 8px; font-family: var(--hand-font);">
+      <time style="font-family: 'Cinzel', serif; font-size: 10px; color: var(--accent-hot-pink); font-weight: bold; display: block; margin-bottom: 4px;">${e.date}</time>
+      <div style="color: var(--text-main); font-size: 14px;">${e.text}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('center-panel').innerHTML = `
+    <h3>JOURNAL LOGS</h3>
+    <p style="font-family: var(--hand-font);">Daily Sanctuary Record:</p>
+    <textarea id="journal-input-field" rows="4" placeholder="Write log entry..."></textarea>
+    
+    <div style="display: flex; align-items: center; gap: 12px; margin: 15px 0;">
+      <button onclick="saveJournalEntry()" style="display: flex; align-items: center; gap: 8px;">
+        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--accent-hot-pink); filter: drop-shadow(0 0 5px var(--accent-fuchsia));">
+          <path d="M20,10 H18 V7 C18,4.24 15.76,2 13,2 H7 C4.24,2 2,4.24 2,7 V10 C2,13.31 4.69,16 8,16 H12 C14.31,16 16.33,14.63 17.3,12.63 C18.33,12.23 19.12,11.39 19.64,10.36 C19.87,10.25 20,10.14 20,10 M16,10 H4 V7 C4,5.34 5.34,4 7,4 H13 C14.66,4 16,5.34 16,7 V10 M8,18 H12 C15.31,18 18,15.31 18,12 H19 A4,4 0 0,1 23,8 A4,4 0 0,1 19,4 H18.92 C19.5,4.78 19.87,5.7 19.96,6.67 H21 A2,2 0 0,0 23,8 A2,2 0 0,0 21,9.33 H19.92 C19.79,10.29 19.33,11.16 18.67,11.83 C17.89,12.56 16.92,13.06 15.86,13.3 C14.93,13.73 13.92,14 12.83,14 H8.17 C7.08,14 6.07,13.73 5.14,13.3 A8.05,8.05 0 0,1 1,8 C1,5.33 3.33,3 6,3 H14 C16.67,3 19,5.33 19,8 V10 C19,10.55 18.55,11 18,11 H16 V10 M21,18 H2 A1,1 0 0,1 1,17 V16 H22 V17 A1,1 0 0,1 21,18 Z"/>
+        </svg>
+        BREW ENTRY
+      </button>
+      <span style="font-family: var(--hand-font); font-size: 13px; color: var(--text-muted);">Click the teacup to log entry</span>
+    </div>
+
+    <hr style="border: 0; height: 1px; background: var(--accent-fuchsia); margin: 20px 0;">
+    
+    <h3>PAST ENTRIES</h3>
+    <div style="max-height: 200px; overflow-y: auto;">
+      ${entriesHTML || '<p style="font-family: var(--hand-font); color: var(--text-muted);">No entries brewed yet today.</p>'}
+    </div>
+
+    <br>
+    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  `;
+}
+
+function saveJournalEntry() {
+  const field = document.getElementById('journal-input-field');
+  const text = field.value.trim();
+  if (!text) return;
+
+  const newEntry = { 
+    date: new Date().toLocaleString(), 
+    text: text 
+  };
+  
+  journalEntries.unshift(newEntry);
+  showJournalContent();
+}
 
 /* ===== NAVIGATION CONTENT SWITCHERS ===== */
 function showVisionBoardContent() {
@@ -753,22 +759,7 @@ function showZenHubContent() {
     <button onclick="location.reload()">RETURN TO GALLERY</button>
   `;
 }
- 
-function saveJournalEntry() {
-  const field = document.getElementById('journal-input-field');
-  const text = field.value.trim();
-  
-  if (!text) return;
-
-  // Add entry with current time
-  const newEntry = { 
-    date: new Date().toLocaleString(), 
-    text: text 
-  };
-  
-  journalEntries.unshift(newEntry); // Add new entry to top
-  showJournalContent(); // Refresh the panel to show the new entry
-}   
 </script>
+
 </body>
 </html>
