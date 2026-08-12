@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/.nekoweb-api/static/site.js" defer></script>
+<meta charset="UTF-8">
+<title>Violet Vision 2026 - Neon Gothic Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Klee+One:wght@400;600&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+
+<style>
+/* ====== GLOBAL STYLE & NEON AMBIENT BACKDROP ====== */
+:root {
+  /* Dark Ambient Backgrounds */
+  --bg-deep-black: #0d0614;
+  --bg-dark-purple: #1a0b2e;
+  --panel-bg: rgba(26, 11, 46, 0.75);
+
+  /* Vibrant Neon Accents */
+  --accent-hot-pink: #ff007f;
+  --accent-fuchsia: #d900ff;
+  --accent-violet: #8a2be2;
+
+  /* Typography */
+  --text-main: #e6d5f7;
+  --text-muted: #c4a9e8;
+
+  /* Borders & Shadows */
+  --border-glow: rgba(217, 0, 255, 0.3);
+  --neon-glow-pink: rgba(255, 0, 127, 0.4);
+
+  /* Glassmorphism Frame Update */
+  --lavender-glass: rgba(26, 11, 46, 0.85);
+  --lavender-glass-alt: rgba(13, 6, 20, 0.85);
+
+  --hand-font: 'Klee One', cursive;
+}
+
+body {
+  margin: 0;
+  font-family: 'Cinzel', serif;
+  color: var(--text-main);
+  background-color: var(--bg-deep-black);
+  /* Glittery subtle radial backdrop with neon tones */
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(217, 0, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 127, 0.12) 0%, transparent 35%),
+    radial-gradient(1px 1px at 10% 10%, #fff 100%, transparent),
+    radial-gradient(2px 2px at 40% 70%, var(--accent-fuchsia) 100%, transparent),
+    radial-gradient(1px 1px at 60% 20%, #fff 100%, transparent),
+    radial-gradient(2px 2px at 80% 50%, var(--accent-hot-pink) 100%, transparent);
+  background-size: 100% 100%, 100% 100%, 550px 550px, 400px 400px, 250px 250px, 450px 450px;
+  background-attachment: fixed;
+}
+
+/* Cinematic Vignette Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.9);
+  z-index: 999;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-deep-black); }
+::-webkit-scrollbar-thumb { background: var(--accent-fuchsia); border-radius: 4px; }
+
+/* ====== HEADER ====== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, #150528 0%, var(--bg-deep-black) 100%);
+  padding: 20px 30px;
+  border-bottom: 2px solid var(--accent-fuchsia);
+  box-shadow: 0 4px 20px var(--neon-glow-pink);
+}
+
+.logo {
+  font-size: 26px;
+  color: var(--text-main);
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px var(--accent-hot-pink), 0 0 20px var(--accent-fuchsia);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-right {
+  text-align: right;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-family: var(--hand-font);
+}
+
+/* ====== SPIDER SVG STYLING ====== */
+.spider-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--accent-hot-pink);
+  filter: drop-shadow(0px 0px 5px var(--accent-fuchsia));
+  transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+/* ====== MENU ====== */
+nav {
+  background: rgba(13, 6, 20, 0.9);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--border-glow);
+}
+
+.menu-item {
+  margin: 6px;
+  padding: 8px 18px;
+  border-radius: 2px;
+  background: var(--bg-dark-purple);
+  color: var(--text-main);
+  border: 1px solid var(--border-glow);
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.menu-item:hover {
+  background: var(--accent-hot-pink);
+  color: #fff;
+  border-color: var(--accent-hot-pink);
+  box-shadow: 0 0 15px var(--accent-hot-pink);
+  transform: translateY(-2px);
+}
+
+.menu-item:hover .spider-icon {
+  fill: #fff;
+  transform: rotate(180deg);
+}
+
+/* ====== DASHBOARD LAYOUT ====== */
+.container {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 25px;
+  padding: 25px;
+}
+
+/* ====== PANELS ====== */
+.panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  padding: 20px;
+  border: 1px solid var(--accent-violet);
+  box-shadow: 0 0 15px rgba(0,0,0,0.8), inset 0 0 15px var(--border-glow);
+  position: relative;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: -3px; left: -3px; width: 8px; height: 8px;
+  border-top: 2px solid var(--accent-hot-pink);
+  border-left: 2px solid var(--accent-hot-pink);
+}
+
+.panel h3 {
+  color: var(--text-main);
+  font-size: 16px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--accent-fuchsia);
+  padding-bottom: 8px;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-shadow: 0 0 8px var(--neon-glow-pink);
+}
+
+.panel p {
+  font-family: var(--hand-font);
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-fuchsia), transparent);
+  margin: 20px 0;
+}
+
+/* ====== WELCOME GREETING VIDEO ====== */
+.greet-container {
+  position: relative;
+  margin-top: 10px;
+}
+
+.greet-video {
+  width: 100%;
+  border: 2px solid var(--accent-violet);
+  outline: 1px solid var(--accent-fuchsia);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+  display: block;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.greet-video:hover {
+  border-color: var(--accent-hot-pink);
+  box-shadow: 0 0 15px var(--accent-hot-pink);
+}
+
+.greet-btn {
+  width: 100%;
+  margin-top: 10px;
+  background: var(--bg-dark-purple);
+  border: 1px solid var(--accent-fuchsia);
+  color: var(--text-main);
+  padding: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.greet-btn:hover {
+  background: var(--accent-hot-pink);
+  color: #fff;
+  box-shadow: 0 0 12px var(--accent-hot-pink);
+}
+
+/* ====== CHECKLIST ====== */
+.checklist label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--hand-font);
+  font-size: 15px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.checklist label:hover {
+  color: var(--accent-hot-pink);
+}
+
+.checklist input[type="checkbox"] {
+  accent-color: var(--accent-hot-pink);
+  margin-right: 10px;
+}
+
+/* ====== VISION BOARD GALLERY ====== */
+.vision-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.vision-card {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--accent-violet);
+  outline: 1px solid var(--border-glow);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+  transition: all 0.4s ease;
+  height: 200px;
+}
+
+.vision-card:nth-child(1) { transform: rotate(-3deg); }
+.vision-card:nth-child(2) { transform: rotate(2deg); }
+.vision-card:nth-child(3) { transform: rotate(-1deg); }
+.vision-card:nth-child(4) { transform: rotate(4deg); }
+.vision-card:nth-child(5) { transform: rotate(-2deg); }
+.vision-card:nth-child(6) { transform: rotate(3deg); }
+
+.vision-card:hover {
+  transform: scale(1.05) rotate(0deg) !important;
+  border-color: var(--accent-hot-pink);
+  box-shadow: 0 0 20px var(--accent-hot-pink);
+  z-index: 10;
+}
+
+.art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.vision-card:hover .art {
+  transform: scale(1.1);
+}
+
+.card-caption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 6, 20, 0.92);
+  backdrop-filter: blur(3px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.vision-card:hover .card-caption {
+  opacity: 1;
+}
+
+.card-caption strong {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--accent-hot-pink);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  text-shadow: 0 0 8px var(--neon-glow-pink);
+}
+
+.card-caption span {
+  font-family: var(--hand-font);
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+/* ====== REUSABLE GLASSMORPHISM CONTAINER ====== */
+.glass-panel-reveal {
+  margin-top: 15px;
+  padding: 20px;
+  background: var(--lavender-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-fuchsia);
+  border-radius: 4px;
+  box-shadow: 0 0 20px var(--border-glow);
+  color: var(--text-main);
+  font-family: var(--hand-font);
+}
+
+.glass-panel-reveal.alt-shade {
+  background: var(--lavender-glass-alt);
+}
+
+.glass-panel-reveal h4 {
+  font-family: 'Cinzel', serif;
+  margin-top: 0;
+  color: var(--accent-hot-pink);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-glow);
+  padding-bottom: 6px;
+  text-shadow: 0 0 10px var(--neon-glow-pink);
+}
+
+.glass-panel-reveal p, .glass-panel-reveal li {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* ====== BULLETIN BOARD BADGE & LINK ====== */
+.bulletin-badge {
+  display: inline-block;
+  background: var(--accent-hot-pink);
+  color: #fff;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  box-shadow: 0 0 8px var(--accent-hot-pink);
+}
+
+.bulletin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-fuchsia);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.bulletin-link:hover {
+  color: var(--accent-hot-pink);
+  text-shadow: 0 0 8px var(--neon-glow-pink);
+}
+
+/* ====== ZOHE CHATBOT STYLING ====== */
+.chat-container {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  background: var(--lavender-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-fuchsia);
+  border-radius: 4px;
+  box-shadow: 0 0 25px var(--border-glow);
+  overflow: hidden;
+}
+
+.chat-header {
+  padding: 10px;
+  background: rgba(13, 6, 20, 0.8);
+  color: var(--accent-hot-pink);
+  border-bottom: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-header h4 {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--accent-hot-pink);
+  text-shadow: 0 0 8px var(--neon-glow-pink);
+}
+
+.chat-log {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  font-family: var(--hand-font);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 85%;
+}
+
+.message.zohe { align-self: flex-start; }
+.message.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.chat-icon {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+}
+
+.zohe-avatar {
+  border-radius: 50%;
+  border: 2px solid var(--accent-hot-pink);
+  object-fit: cover;
+  box-shadow: 0 0 6px var(--accent-hot-pink);
+}
+
+.user-avatar-svg {
+  width: 25px; height: 25px;
+  fill: var(--accent-fuchsia);
+  filter: drop-shadow(0 0 3px var(--accent-fuchsia));
+}
+
+.bubble {
+  padding: 8px 12px;
+  border-radius: 4px;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.bubble.zohe {
+  background: var(--bg-dark-purple);
+  color: var(--text-main);
+  border: 1px solid var(--accent-violet);
+}
+
+.bubble.user {
+  background: var(--accent-hot-pink);
+  color: #fff;
+  box-shadow: 0 0 8px var(--neon-glow-pink);
+}
+
+.chat-input-area {
+  padding: 10px;
+  background: rgba(13, 6, 20, 0.8);
+  border-top: 1px solid var(--border-glow);
+  display: flex;
+  gap: 10px;
+}
+
+input#user-chat-msg {
+  flex: 1;
+  background: var(--bg-dark-purple);
+  border: 1px solid var(--accent-violet);
+  color: var(--text-main);
+  padding: 8px;
+  font-family: var(--hand-font);
+  font-size: 14px;
+}
+
+input#user-chat-msg:focus { outline: none; border-color: var(--accent-hot-pink); box-shadow: 0 0 8px var(--neon-glow-pink); }
+
+/* ====== VISION & LORE STYLES ====== */
+.palette-container {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.color-swatch {
+  flex: 1;
+  height: 45px;
+  border-radius: 2px;
+  border: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 4px #000;
+}
+
+.sonnet-box {
+  background: rgba(13, 6, 20, 0.6);
+  border-left: 3px solid var(--accent-hot-pink);
+  padding: 15px;
+  margin-top: 15px;
+  font-family: var(--hand-font);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.sonnet-box cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-style: normal;
+  font-family: 'Cinzel', serif;
+  color: var(--accent-fuchsia);
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+/* ====== JOURNAL STYLES ====== */
+textarea.journal-input {
+  width: 100%;
+  height: 90px;
+  background: var(--bg-dark-purple);
+  border: 1px solid var(--accent-violet);
+  color: var(--text-main);
+  font-family: var(--hand-font);
+  font-size: 15px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+textarea.journal-input:focus {
+  outline: none;
+  border-color: var(--accent-hot-pink);
+  box-shadow: 0 0 8px var(--neon-glow-pink);
+}
+
+.journal-log {
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 15px;
+}
+
+.journal-entry {
+  background: rgba(13, 6, 20, 0.6);
+  border-left: 3px solid var(--accent-fuchsia);
+  padding: 10px;
+  margin-bottom: 8px;
+  font-family: var(--hand-font);
+  font-size: 15px;
+  color: var(--text-main);
+}
+
+.journal-entry time {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  color: var(--accent-hot-pink);
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+/* ====== NOTIFICATION & MAILBOX ====== */
+.notification {
+  background: rgba(255, 0, 127, 0.15);
+  border-left: 3px solid var(--accent-hot-pink);
+  color: var(--text-main);
+  padding: 10px;
+  margin-bottom: 10px;
+  font-family: var(--hand-font);
+  font-size: 14px;
+}
+
+.mail-item {
+  background: rgba(13, 6, 20, 0.6);
+  padding: 10px;
+  margin-bottom: 8px;
+  border-left: 2px solid var(--accent-violet);
+  font-family: var(--hand-font);
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: border-color 0.3s;
+}
+
+.mail-item:hover {
+  border-left-color: var(--accent-hot-pink);
+  color: var(--text-main);
+}
+
+/* ====== BUTTONS ====== */
+button {
+  background: var(--bg-dark-purple);
+  color: var(--text-main);
+  border: 1px solid var(--accent-hot-pink);
+  padding: 10px 18px;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px var(--border-glow);
+}
+
+button:hover {
+  background: var(--accent-hot-pink);
+  color: #fff;
+  box-shadow: 0 0 18px var(--accent-hot-pink);
+}
+</style>
+</head>
+<body onclick="siteActivityCheck()">
+
+<svg style="display: none;">
+  <g id="spider-shape">
+    <path d="M12,12 C11,10 9,9 8,9 C7,9 6,10 6,12 C6,14 8,15 8,17 C8,19 7,20 6,21 M12,12 C13,10 15,9 16,9 C17,9 18,10 18,12 C18,14 16,15 16,17 C16,19 17,20 18,21 M12,10 C10,8 8,7 5,8 C3,9 2,11 1,13 M12,10 C14,8 16,7 19,8 C21,9 22,11 23,13 M12,14 C9,15 6,16 4,19 C3,20 2,22 1,23 M12,14 C15,15 18,16 20,19 C21,20 22,22 23,23 M12,8 A3,3 0 1,0 12,14 A3,3 0 1,0 12,8 Z M12,13 A2,2 0 1,0 12,17 A2,2 0 1,0 12,13 Z"/>
+  </g>
+  <g id="teacup-icon">
+    <path d="M20,10 H18 V7 C18,4.24 15.76,2 13,2 H7 C4.24,2 2,4.24 2,7 V10 C2,13.31 4.69,16 8,16 H12 C14.31,16 16.33,14.63 17.3,12.63 C18.33,12.23 19.12,11.39 19.64,10.36 C19.87,10.25 20,10.14 20,10 M16,10 H4 V7 C4,5.34 5.34,4 7,4 H13 C14.66,4 16,5.34 16,7 V10 M8,18 H12 C15.31,18 18,15.31 18,12 H19 A4,4 0 0,1 23,8 A4,4 0 0,1 19,4 H18.92 C19.5,4.78 19.87,5.7 19.96,6.67 H21 A2,2 0 0,0 23,8 A2,2 0 0,0 21,9.33 H19.92 C19.79,10.29 19.33,11.16 18.67,11.83 C17.89,12.56 16.92,13.06 15.86,13.3 C14.93,13.73 13.92,14 12.83,14 H8.17 C7.08,14 6.07,13.73 5.14,13.3 A8.05,8.05 0 0,1 1,8 C1,5.33 3.33,3 6,3 H14 C16.67,3 19,5.33 19,8 V10 C19,10.55 18.55,11 18,11 H16 V10 M21,18 H2 A1,1 0 0,1 1,17 V16 H22 V17 A1,1 0 0,1 21,18 Z"/>
+  </g>
+</svg>
+
+<header>
+  <div class="logo">
+    <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg>
+    Violet Vision 2026
+  </div>
+  <div class="top-right">
+    <div id="date"></div>
+    <div id="clock"></div>
+  </div>
+</header>
+
+<nav>
+  <div class="menu-item" onclick="location.reload()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Home</div>
+  <div class="menu-item" id="vision-board-btn" onclick="showVisionBoardContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Vision Board</div>
+  <div class="menu-item" onclick="showVisionBoardContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Color Philosophy</div>
+  <div class="menu-item" onclick="showInspirationContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Art Studio</div>
+  <div class="menu-item" onclick="showInspirationContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Game Lab</div>
+  <div class="menu-item" onclick="showInspirationContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Avatar Fashion</div>
+  <div class="menu-item" onclick="showVisionBoardContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Wealth System</div>
+  <div class="menu-item" onclick="showZenHubContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> ZenHub</div>
+  <div class="menu-item" onclick="showJournalContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Tools</div>
+  <div class="menu-item" onclick="showInspirationContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Inspiration</div>
+  <div class="menu-item" onclick="showJournalContent()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> Journal</div>
+  <div class="menu-item" id="host-btn" onclick="openZoheHostChat()"><svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg> HOST</div>
+</nav>
+
+<div class="container">
+  <div class="panel">
+    <h3>Daily Focus <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <p>✦ Create</p>
+    <p>✦ Learn</p>
+    <p>✦ Build</p>
+    <p>✦ Share</p>
+    <hr>
+    <h3>Checklist <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="checklist">
+      <label><input type="checkbox"> Check LLC status</label>
+      <label><input type="checkbox"> Track expenses</label>
+      <label><input type="checkbox"> Update affiliate links</label>
+      <label><input type="checkbox"> Upload fashion content</label>
+      <label><input type="checkbox"> Write digital guide</label>
+      <label><input type="checkbox"> Post Pinterest inspiration</label>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Vision Gallery <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="vision-board">
+      
+      <div class="vision-card">
+        <img src="Star-Blacl-Official.png" alt="Star" class="art">
+        <div class="card-caption">
+          <strong>Star</strong>
+          <span>Café Barista</span>
+        </div>
+      </div>
+
+      <div class="vision-card">
+        <img src="chariwhitrat.png" alt="Chari" class="art">
+        <div class="card-caption">
+          <strong>Chari</strong>
+          <span>Sis & Apprentice</span>
+        </div>
+      </div>
+
+      <div class="vision-card">
+        <img src="PEARL-OFFICIAL.png" alt="Pearl" class="art">
+        <div class="card-caption">
+          <strong>Pearl</strong>
+          <span>Model & Miki's Zine Editor</span>
+        </div>
+      </div>
+
+      <div class="vision-card">
+        <img src="Mikimiki.png" alt="Miki" class="art">
+        <div class="card-caption">
+          <strong>Miki</strong>
+          <span>Cyborg-Neko Extraordinaire. Keeps tabs on all siblings in the café lore.</span>
+        </div>
+      </div>
+
+      <div class="vision-card">
+        <img src="rainscrolllore.png" alt="Milo's Sanctuary" class="art">
+        <div class="card-caption">
+          <strong>Milo</strong>
+          <span>Not here yet, but tends the lavender & mint sanctuary & crafts tea infusions.</span>
+        </div>
+      </div>
+
+      <div class="vision-card">
+        <img src="HanselShortOfficial.png" alt="Hansel" class="art">
+        <div class="card-caption">
+          <strong>Hansel</strong>
+          <span>Café Lore & Details</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="glass-panel-reveal alt-shade" style="margin-top: 25px;">
+      <span class="bulletin-badge">Community Feed</span>
+      <h4>ZenHub Bulletin Portal</h4>
+      <div class="bulletin-container">
+        <p>Stay updated with live generator releases and announcements via Perchance ZenHub.</p>
+        <a href="javascript:void(0)" onclick="showZenHubContent()" class="bulletin-link">
+          <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg>
+          Open ZenHub Portal ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Guest Host <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="greet-container">
+      <video id="host-video" class="greet-video" playsinline controls>
+        <source src="https://x3nb.github.io/chezxen/talking-girch/greet.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <button class="greet-btn" onclick="playGreetingWithAudio()">✦ Play Greeting with Audio ✦</button>
+    </div>
+    <p style="text-align: center; margin-top: 8px; font-size: 13px;">✦ Welcoming guests to the sanctuary ✦</p>
+    <hr>
+    <h3>Notifications <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div id="notifications"></div>
+    <hr>
+    <h3>Mailbox <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="mail-item">Write thank you note to client</div>
+    <div class="mail-item">Check LLC paperwork</div>
+    <div class="mail-item">Research avatar fashion tools</div>
+  </div>
+</div>
+
+<script>
+/* ===== GREETING AUDIO CONTROLLER ===== */
+function playGreetingWithAudio() {
+  const video = document.getElementById("host-video");
+  video.currentTime = 0;
+  video.muted = false;
+  video.play();
+}
+
+/* ===== CLOCK ===== */
+function updateClock(){
+  const now = new Date();
+  document.getElementById("clock").innerHTML = now.toLocaleTimeString();
+  document.getElementById("date").innerHTML = now.toDateString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ===== TIME BASED REMINDERS ===== */
+function checkReminders(){
+  const now = new Date();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  let message = "";
+  if(hour==7 && minute==0){message="☀️ Wake up and review your goals.";}
+  if(hour==10 && minute==0){message="🧹 Household chores time.";}
+  if(hour==12 && minute==0){message="💼 Wealth Hour: Work on projects and budgeting.";}
+  if(hour==15 && minute==0){message="🐾 Feed your pets.";}
+  if(hour==17 && minute==0){message="📨 Check emails and client messages.";}
+  if(message!=""){addNotification(message);}
+}
+setInterval(checkReminders, 60000);
+
+/* ===== ADD NOTIFICATION ===== */
+function addNotification(msg){
+  const container = document.getElementById("notifications");
+  const div = document.createElement("div");
+  div.className = "notification";
+  div.innerText = msg;
+  container.prepend(div);
+}
+
+/* ===== DYNAMIC CONTENT FUNCTIONS ====== */
+const shakespeareSonnets = [
+  { lines: "Shall I compare thee to a summer's day?<br>Thou art more lovely and more temperate...", title: "Sonnet 18" },
+  { lines: "Like as the waves make towards the pebbled shore...", title: "Sonnet 60" },
+  { lines: "Let me not to the marriage of true minds...", title: "Sonnet 116" }
+];
+
+const fashionQuotes = [
+  "\"It's a new era in fashion—there are no rules.\" — Alexander McQueen",
+  "\"Give me time and I'll give you a revolution.\" — Alexander McQueen"
+];
+
+function showVisionBoardContent() {
+  const randomSonnet = shakespeareSonnets[Math.floor(Math.random() * shakespeareSonnets.length)];
+  const centerPanel = document.querySelectorAll('.panel')[1];
+  centerPanel.innerHTML = `
+    <h3>Vision & Lore Codex <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="glass-panel-reveal">
+      <h4>Sanctuary Lore & Aesthetics</h4>
+      <p style="line-height: 1.5;">
+        Welcome to the heart of <strong>Violet Vision 2026</strong>. Here, couture tailoring meets cybernetic gothic lore under the glowing canopy of the neon sanctuary.
+      </p>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <h4>Neon Gothic Color Palette</h4>
+      <div class="palette-container">
+        <div class="color-swatch" style="background: var(--bg-deep-black);">Deep Black</div>
+        <div class="color-swatch" style="background: var(--accent-violet);">Violet</div>
+        <div class="color-swatch" style="background: var(--accent-fuchsia);">Fuchsia</div>
+        <div class="color-swatch" style="background: var(--accent-hot-pink);">Hot Pink</div>
+      </div>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <h4>Café Lore Fragment</h4>
+      <p>✦ Milo brews mint & lavender infusions while Miki keeps tabs on all siblings from the central cyber terminal.</p>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <h4>Poetic Inspiration</h4>
+      <div class="sonnet-box">
+        "${randomSonnet.lines}"
+        <cite>— William Shakespeare, ${randomSonnet.title}</cite>
+      </div>
+
+      <br>
+      <button onclick="location.reload()">Return to Vision Gallery</button>
+    </div>
+  `;
+}
+
+function showInspirationContent() {
+  const centerPanel = document.querySelectorAll('.panel')[1];
+  const randomQuote = fashionQuotes[Math.floor(Math.random() * fashionQuotes.length)];
+  centerPanel.innerHTML = `
+    <h3>Inspiration Vault <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="glass-panel-reveal alt-shade">
+      <h4>Runway & Creative Moods</h4>
+      <div class="sonnet-box">
+        <p style="margin:0;">${randomQuote}</p>
+      </div>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <h4>Aesthetic Pillars</h4>
+      <ul>
+        <li><strong>Cyber-Gothic Tailoring:</strong> Sharp silhouettes layered with neon accents.</li>
+        <li><strong>Botanical Sanctuary:</strong> Mint infusions, dried lavender, and dark velvet textures.</li>
+        <li><strong>Synth Noir:</strong> Hot pink halos, deep violet shadows, and cyber accents.</li>
+      </ul>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <button onclick="showInspirationContent()">Cycle Quote</button>
+      <button onclick="location.reload()">Return to Vision Gallery</button>
+    </div>
+  `;
+}
+
+function showZenHubContent() {
+  const centerPanel = document.querySelectorAll('.panel')[1];
+  centerPanel.innerHTML = `
+    <h3>ZenHub Portal <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="glass-panel-reveal alt-shade">
+      <span class="bulletin-badge">Community Feed</span>
+      <h4>Perchance ZenHub Portal</h4>
+      
+      <p style="line-height: 1.6;">
+        Welcome to the central ZenHub bulletin interface. Access generator updates, community releases, and hub announcements directly.
+      </p>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <div style="background: rgba(13, 6, 20, 0.7); padding: 15px; border-left: 3px solid var(--accent-hot-pink); margin: 15px 0;">
+        <strong style="font-family: 'Cinzel', serif; letter-spacing: 1px; color: var(--accent-hot-pink);">✦ QUICK LAUNCH</strong>
+        <p style="margin: 5px 0 10px 0; font-size: 14px;">
+          Launch the official feed directly into a dedicated target window.
+        </p>
+        <button onclick="window.open('https://perchance.org/zenhub', '_blank')">
+          Launch ZenHub Feed ↗
+        </button>
+      </div>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <button onclick="location.reload()">Return to Vision Gallery</button>
+    </div>
+  `;
+}
+
+let journalEntries = [];
+function showJournalContent() {
+  const centerPanel = document.querySelectorAll('.panel')[1];
+  let entriesHTML = journalEntries.map(e => `
+    <div class="journal-entry">
+      <time>${e.date}</time>
+      <div>${e.text}</div>
+    </div>
+  `).join('');
+
+  centerPanel.innerHTML = `
+    <h3>Café Journal & Logs <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="glass-panel-reveal">
+      <h4>Daily Sanctuary Record</h4>
+      <p>Log thoughts, lore fragments, or daily goals for the sanctuary:</p>
+      
+      <textarea id="journal-input-field" class="journal-input" placeholder="Write log entry..."></textarea>
+      <button onclick="saveJournalEntry()">Save Entry</button>
+
+      <hr style="border-color: var(--border-glow);">
+
+      <h4>Recent Entries</h4>
+      <div class="journal-log">
+        ${entriesHTML || '<p style="color: var(--text-muted);">No entries logged yet today.</p>'}
+      </div>
+
+      <br>
+      <button onclick="location.reload()">Return to Vision Gallery</button>
+    </div>
+  `;
+}
+
+function saveJournalEntry() { 
+  const field = document.getElementById('journal-input-field'); 
+  const text = field.value.trim(); 
+  if (!text) return; 
+  const newEntry = { date: new Date().toLocaleString(), text: text }; 
+  journalEntries.unshift(newEntry); 
+  showJournalContent(); 
+}
+
+/* ====== ZOHE CHATBOT INTEGRATION ====== */
+
+const zoheChatLore = {
+  greetings: {
+    inputs: ["hello", "hi", "hey", "g'day", "morning", "evening", "welcome"],
+    responses: [
+      "Aren't you a bold one. G’day mate, what brings a user like you into my sanctuary?",
+      "Hi there. Or should I say... hello properly? Take a seat, don't just stand there.",
+      "G'day. Reckon you've seen the coffee sibling? Milo's infusions are bonza, but Miki's terminal needs a check.",
+      "Ooh, a new face. Bonza! Just don't break anything, yeah? This lore is delicate.",
+      "Hello. I'm Zohe. Try not to bore me, I have actual creative tailoring to attend to.",
+      "Hey. Just keep it polite, mate. This cybernetic gothic vibe doesn't appreciate riff-raff.",
+      "Welcome. I suppose I'm the designated greeter... *sniffs*... try to look inspired, yeah?"
+    ]
+  },
+  keywords: {
+    "colors": "Bonza color philosophy, yeah? This neon palette... deep black structure, fuchsia and hot pink accents. Stunning blend.",
+    "lore": "The lore, mate? Milo’s sanctuary... Miki’s terminals... it’s all connected. If you look at Miki EXTRAREORDINARE, you'll see Miki's notes on lore and sibling tabs... quite complex for a cyborg-neko, but someone's gotta keep tabs.",
+    "siblings": "Milo's probably brewing lavender infusions, Miki's cyber-terminal is always buzzing... and Pearl... Pearl's modeling or editing again. Chari is Milo's assistant in sanctuary. Star works café.",
+    "characters": "You want snippets, mate? Check Star and Chari hold café counter, or Pearl editing underground zines. Milo makes sanctuary infusions.",
+    "art": "Art studio's buzzing, yeah? Creative tailor moods. We blend McQueen's sharp silhouettes with this sanctuary's vibes. Snobby, yes, but exquisite.",
+    "goals": "Goals, eh? *looks you over* Are we actually *build*ing or *learn*ing, or just share-ing again? Make Milo proud and post Pinterest inspiration.",
+    "llc": "Researching LLC status or affiliate links is bonza, mate. Wealth system needs maintenance too, not just Ava fashion.",
+    "milo": "Reckon Milo’s not quite here yet, tending lavender... making safe sanctuary. Bonza infusions, that Milo.",
+    "miki": "That cyborg-neko extraordinary is keeps tabs on EVERYONE, mate. Miki has data tabs on all café lore and sibling lore... handy, if snobby about system efficiency.",
+    "zenhub": "Ah, the ZenHub bulletin, mate? Keep track of generator updates over at perchance.org/zenhub. Bonza resource."
+  },
+  defaultResponses: [
+    "Right. Snobby statement or snarky reply... you choose, mate. Are we discussing art studio tailoring or wealthy hour builds?",
+    "Keep it real, yeah? This cybernetic sanctuary runs on focus, not waffle.",
+    "Bonza question... *if* it leads to goals build. Wealth system research, mate?",
+    "Reckon I've got important *create* daily focus, not just chat daily builds.",
+    "Couture tailoring moods require concentration. Snobby, yes... effective? Absolutely.",
+    "I'm keeping a friendly cyber-eye on your goals build. Don't slacking off, mate.",
+    "Snobby tailored view on fashion? Check. Snarky Australian dialect? Check. What's next for goal building daily build?"
+  ]
+};
+
+let zoheChatTimer = null;
+let lastUserActivity = Date.now();
+const ZOHE_CHECK_TIME = 7 * 60 * 1000; // 7 Minutes
+
+function openZoheHostChat() {
+  const centerPanel = document.querySelectorAll('.panel')[1];
+  centerPanel.innerHTML = `
+    <h3>ZOHE Sanctuary Host <svg class="spider-icon" viewBox="0 0 24 24"><use href="#spider-shape"/></svg></h3>
+    <div class="chat-container">
+      <div class="chat-header"><h4>HOST: ZOHE</h4><span style="font-size: 10px; opacity: 0.8; color: var(--text-main);">Cyber-Neko Host</span></div>
+      <div class="chat-log" id="zohe-chat-log"></div>
+      <div class="chat-input-area">
+        <input type="text" id="user-chat-msg" placeholder="Ask me about lore, color philosophy, or art daily builds..." onkeypress="handleZoheChatInput(event)">
+        <button onclick="sendUserChatMessage()">Send</button>
+      </div>
+    </div>
+    <br>
+    <button onclick="location.reload()">Return to Vision Gallery</button>
+  `;
+  addZoheMessage(zoheChatLore.greetings.responses[Math.floor(Math.random() * zoheChatLore.greetings.responses.length)]);
+  resetZoheTimers();
+}
+
+function handleZoheChatInput(e) { if (e.key === 'Enter') sendUserChatMessage(); }
+
+function sendUserChatMessage() {
+  const input = document.getElementById('user-chat-msg');
+  const text = input.value.trim();
+  if (!text) return;
+  addUserMessage(text);
+  input.value = '';
+  siteActivityCheck();
+  setTimeout(() => { processZoheResponse(text.toLowerCase()); }, 800);
+}
+
+function addUserMessage(msg) {
+  const log = document.getElementById('zohe-chat-log');
+  log.innerHTML += `
+    <div class="message user">
+      <svg class="chat-icon user-avatar-svg" viewBox="0 0 24 24"><use href="#teacup-icon"/></svg>
+      <div class="bubble user">${msg}</div>
+    </div>
+  `;
+  log.scrollTop = log.scrollHeight;
+}
+
+function addZoheMessage(msg) {
+  const log = document.getElementById('zohe-chat-log');
+  log.innerHTML += `
+    <div class="message zohe">
+      <img src="HanselShortOfficial.png" alt="ZOHE" class="chat-icon zohe-avatar">
+      <div class="bubble zohe">${msg}</div>
+    </div>
+  `;
+  log.scrollTop = log.scrollHeight;
+}
+
+function processZoheResponse(userMsg) {
+  siteActivityCheck();
+  let found = false;
+  
+  if (zoheChatLore.greetings.inputs.some(greet => userMsg.includes(greet))) {
+    addZoheMessage(zoheChatLore.greetings.responses[Math.floor(Math.random() * zoheChatLore.greetings.responses.length)]);
+    found = true;
+  }
+  
+  if (!found) {
+    for (const key in zoheChatLore.keywords) {
+      if (userMsg.includes(key)) {
+        addZoheMessage(zoheChatLore.keywords[key]);
+        found = true;
+        break;
+      }
+    }
+  }
+
+  if (!found) {
+    addZoheMessage(zoheChatLore.defaultResponses[Math.floor(Math.random() * zoheChatLore.defaultResponses.length)]);
+  }
+}
+
+/* ====== ACTIVITY & 7-MINUTE STATUS CHECK ====== */
+function siteActivityCheck() { lastUserActivity = Date.now(); }
+
+function resetZoheTimers() {
+  clearTimeout(zoheChatTimer);
+  zoheChatTimer = setTimeout(zoheStatusCheckOnUser, ZOHE_CHECK_TIME);
+}
+
+function zoheStatusCheckOnUser() {
+  const timeSinceActivity = Date.now() - lastUserActivity;
+  if (timeSinceActivity >= ZOHE_CHECK_TIME) {
+    const log = document.getElementById('zohe-chat-log');
+    if (log) {
+      addZoheMessage(`*sniffs* Reckon you've been slacking off goals build for a wealthy seven minutes, mate. Check that LLC paperwork daily focus and upload fashion content. Milo or Miki EXTRAREORDINARE is keeps tabs, but I check build too. Keep daily focus build daily goals, yeah?`);
+    }
+  }
+  resetZoheTimers();
+}
+
+</script>
+</body>
+</html>
