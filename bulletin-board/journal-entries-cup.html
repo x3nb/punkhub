@@ -783,34 +783,9 @@ function showJournalContent() {
   `).join('');
 
   document.getElementById('center-panel').innerHTML = `
-    <h3>JOURNAL LOGS</h3>
-    <p style="font-family: var(--hand-font);">Daily Sanctuary Record:</p>
-    <textarea id="journal-input-field" rows="4" placeholder="Write log entry..."></textarea>
-    
-    <div style="display: flex; align-items: center; gap: 12px; margin: 15px 0;">
-      <button onclick="saveJournalEntry()" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--accent-hot-pink); filter: drop-shadow(0 0 5px var(--accent-fuchsia));">
-          <path d="M20,10 H18 V7 C18,4.24 15.76,2 13,2 H7 C4.24,2 2,4.24 2,7 V10 C2,13.31 4.69,16 8,16 H12 C14.31,16 16.33,14.63 17.3,12.63 C18.33,12.23 19.12,11.39 19.64,10.36 C19.87,10.25 20,10.14 20,10 M16,10 H4 V7 C4,5.34 5.34,4 7,4 H13 C14.66,4 16,5.34 16,7 V10 M8,18 H12 C15.31,18 18,15.31 18,12 H19 A4,4 0 0,1 23,8 A4,4 0 0,1 19,4 H18.92 C19.5,4.78 19.87,5.7 19.96,6.67 H21 A2,2 0 0,0 23,8 A2,2 0 0,0 21,9.33 H19.92 C19.79,10.29 19.33,11.16 18.67,11.83 C17.89,12.56 16.92,13.06 15.86,13.3 C14.93,13.73 13.92,14 12.83,14 H8.17 C7.08,14 6.07,13.73 5.14,13.3 A8.05,8.05 0 0,1 1,8 C1,5.33 3.33,3 6,3 H14 C16.67,3 19,5.33 19,8 V10 C19,10.55 18.55,11 18,11 H16 V10 M21,18 H2 A1,1 0 0,1 1,17 V16 H22 V17 A1,1 0 0,1 21,18 Z"/>
-        </svg>
-        BREW ENTRY
-      </button>
-      <span style="font-family: var(--hand-font); font-size: 13px; color: var(--text-muted);">Click the teacup to log entry</span>
-    </div>
-
-    <hr style="border: 0; height: 1px; background: var(--accent-fuchsia); margin: 20px 0;">
-    
-    <h3>PAST ENTRIES</h3>
-    <div style="max-height: 200px; overflow-y: auto;">
-      ${entriesHTML || '<p style="font-family: var(--hand-font); color: var(--text-muted);">No entries brewed yet today.</p>'}
-    </div>
-
-    <br>
-    <button onclick="location.reload()">RETURN TO GALLERY</button>
+  
   `;
 }
 </script>
-
 </body>
 </html>
-
-```
