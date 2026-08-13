@@ -964,6 +964,28 @@ function showZenHubContent() {
     <button onclick="location.reload()">RETURN TO GALLERY</button>
   `;
 }
+  // Generates a soft, retro cyberpunk chime sound
+function playCyberChime() {
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  // Create Oscillator and Gain (Volume) nodes
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  
+  osc.type = 'sine'; // Smooth tone
+  osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 note
+  osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3); // Ramp up to A5 note
+  
+  // Volume decay curve (fade out gently)
+  gain.gain.setValueAtTime(0.15, audioCtx.currentTime); // Keep volume subtle
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+  
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.5);
+}
 </script>
  
 </body>
