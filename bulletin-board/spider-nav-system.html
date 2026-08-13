@@ -439,70 +439,49 @@ textarea {
   font-family: var(--hand-font);
   font-size: 15px;
 }
-
-/* ====== DYNAMIC WEB SPAWNING CORNER ====== */
+/* ====== INTEGRATED HEADER SPIDER PANEL ====== */
 #web-spawn-corner {
-  position: fixed;
-  bottom: 15px;
-  right: 15px;
-  width: 150px;
-  height: 150px;
+  position: relative; /* Removes it from bottom-right fixed positioning */
+  bottom: auto;
+  right: auto;
+  width: 100px;
+  height: 60px;
   background: rgba(13, 6, 20, 0.95);
-  border: 3px solid var(--accent-hot-pink);
-  box-shadow: 6px 6px 0px rgba(217, 0, 255, 0.3);
-  z-index: 1000;
+  border: 2px solid var(--accent-hot-pink);
+  box-shadow: 3px 3px 0px rgba(217, 0, 255, 0.3);
+  z-index: 10;
   overflow: hidden;
-  padding: 10px;
-  pointer-events: none;
+  padding: 4px;
+  pointer-events: auto;
+  flex-shrink: 0;
 }
 
 #web-spawn-corner::after {
-  content: "ACTIVE // WEAVING";
+  content: "WEAVING";
   position: absolute;
-  top: 5px; left: 5px;
+  top: 2px; left: 4px;
   font-family: 'Space Mono', monospace;
-  font-size: 8px;
+  font-size: 7px;
   color: var(--accent-hot-pink);
   letter-spacing: 1px;
 }
 
-#web-spawn-corner svg line {
-  stroke: var(--accent-fuchsia);
-  stroke-width: 1.5;
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  filter: drop-shadow(0 0 5px var(--accent-fuchsia));
-  animation: drawWeb 20s ease-in-out infinite;
-}
-
-#web-spawn-corner line.radial-1 { animation-delay: 0s; }
-#web-spawn-corner line.radial-2 { animation-delay: 1.5s; }
-#web-spawn-corner line.radial-3 { animation-delay: 3s; }
-
-@keyframes drawWeb {
-  0% { stroke-dashoffset: 200; opacity: 0; }
-  5% { opacity: 1; stroke-dashoffset: 0; }
-  90% { opacity: 1; stroke-dashoffset: 0; }
-  100% { opacity: 0; stroke-dashoffset: 200; }
-}
-
+/* Scaled down spider animation for header fitting */
 .web-spawn-spider {
   position: absolute;
-  top: 60px; left: 60px;
-  width: 20px; height: 20px;
+  top: 20px; left: 40px;
+  width: 14px; height: 14px;
   fill: var(--accent-hot-pink);
-  filter: drop-shadow(0 0 10px var(--accent-hot-pink));
-  animation: spiderWiggle 20s infinite;
+  filter: drop-shadow(0 0 6px var(--accent-hot-pink));
+  animation: spiderWiggleHeader 20s infinite;
 }
 
-@keyframes spiderWiggle {
+@keyframes spiderWiggleHeader {
   0%   { transform: translate(0, 0) rotate(0deg); }
-  10%  { transform: translate(10px, -20px) rotate(45deg); }
-  25%  { transform: translate(40px, 10px) rotate(90deg); }
-  50%  { transform: translate(0px, 40px) rotate(-90deg); }
-  75%  { transform: translate(-30px, 10px) rotate(180deg); }
-  90%  { transform: translate(0, 0) rotate(0deg); opacity: 1;}
-  100% { opacity: 0; }
+  25%  { transform: translate(15px, -10px) rotate(90deg); }
+  50%  { transform: translate(-10px, 15px) rotate(-90deg); }
+  75%  { transform: translate(-20px, -5px) rotate(180deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
 }
 </style>
 </head>
