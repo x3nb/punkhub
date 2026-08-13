@@ -878,6 +878,43 @@ function showZenHubContent() {
     <button onclick="location.reload()">RETURN TO GALLERY</button>
   `;
 }
+  // Function to scroll smoothly to mailbox and clear the badge
+function scrollToMailbox() {
+  const mailbox = document.getElementById('mailbox-header');
+  if (mailbox) {
+    mailbox.scrollIntoView({ behavior: 'smooth' });
+  }
+  clearMailNotifications();
+}
+
+// Function to clear notifications when viewed
+function clearMailNotifications() {
+  const navDot = document.getElementById('nav-mail-dot');
+  const panelDot = document.getElementById('mail-dot');
+  
+  if (navDot) navDot.style.display = 'none';
+  if (panelDot) panelDot.style.display = 'none';
+}
+
+// Updated function to trigger notifications across both nav and panel
+function addMailboxMessage(timeLabel, textContent) {
+  const mailboxList = document.getElementById('mailbox-list');
+  const navDot = document.getElementById('nav-mail-dot');
+  const panelDot = document.getElementById('mail-dot');
+
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'mailbox-entry';
+  msgDiv.innerHTML = `<strong style="color: var(--accent-hot-pink); font-family: 'Cinzel', serif; font-size: 10px;">${timeLabel}</strong><br>${textContent}`;
+
+  if (mailboxList) mailboxList.insertBefore(msgDiv, mailboxList.firstChild);
+  
+  // Turn on glowing indicators in BOTH the Navbar and the Panel
+  if (navDot) navDot.style.display = 'inline-block';
+  if (panelDot) panelDot.style.display = 'inline-block';
+}
+
+// Clear badge if user clicks directly on the mailbox container
+document.getElementById('mailbox-list')?.addEventListener('click', clearMailNotifications);
 </script>
 
 </body>
