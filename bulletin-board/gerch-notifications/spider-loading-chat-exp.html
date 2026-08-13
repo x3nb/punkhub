@@ -859,11 +859,17 @@ function addMailboxMessage(timeLabel, textContent) {
   if (navDot) navDot.style.display = 'inline-block';
   if (panelDot) panelDot.style.display = 'inline-block';
 }
-
 function handleGoalToggle(checkbox, goalDetails) {
   if (checkbox.checked) {
     const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    // Add transmission to mailbox immediately
     addMailboxMessage(`${now} // GOAL ACHIEVED`, `✦ ${goalDetails}`);
+    
+    // Play the notification chime 2 seconds later
+    setTimeout(() => {
+      playCyberChime();
+    }, 2000); // 2000ms = 2 seconds
   }
 }
 
