@@ -590,15 +590,17 @@ textarea {
       <span id="date"></span> | <span id="clock"></span>
     </div>
   </header>
-
-  <nav>
-    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-      <div class="menu-item" onclick="location.reload()">[ HOME ]</div>
-      <div class="menu-item" onclick="showVisionBoardContent()">[ VISION CODEX ]</div>
-      <div class="menu-item" onclick="showInspirationContent()">[ ART VAULT ]</div>
-      <div class="menu-item" onclick="showZenHubContent()">[ ZENHUB PORTAL ]</div>
-      <div class="menu-item" onclick="showJournalContent()">[ JOURNAL LOGS ]</div>
+<nav>
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+    <div class="menu-item" onclick="location.reload()">[ HOME ]</div>
+    <div class="menu-item nav-mailbox-link" onclick="scrollToMailbox()">
+      [ MAILBOX ] <span id="nav-mail-dot" class="nav-notification-badge" style="display: none;"></span>
     </div>
+    <div class="menu-item" onclick="showVisionBoardContent()">[ VISION CODEX ]</div>
+    <div class="menu-item" onclick="showInspirationContent()">[ ART VAULT ]</div>
+    <div class="menu-item" onclick="showZenHubContent()">[ ZENHUB PORTAL ]</div>
+    <div class="menu-item" onclick="showJournalContent()">[ JOURNAL LOGS ]</div>
+  </div>
 
     <div id="web-spawn-corner">
       <svg viewBox="0 0 100 100" width="100%" height="100%">
