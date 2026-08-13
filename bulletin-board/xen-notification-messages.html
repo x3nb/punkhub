@@ -321,7 +321,35 @@ nav {
   font-size: 15px;
   color: var(--text-muted);
 }
+#greeting-display {
+  animation: slideGlitch 0.8s ease-out forwards;
+  white-space: nowrap;
+}
 
+@keyframes slideGlitch {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+    color: #00ff66; /* Bright Neon Green */
+    text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66;
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(5px);
+    color: var(--accent-hot-pink);
+    text-shadow: -2px 0 var(--accent-fuchsia), 2px 0 #00ff66;
+  }
+  60% {
+    transform: translateX(-2px);
+    color: #00ff66;
+    text-shadow: 2px 0 var(--accent-hot-pink);
+  }
+  100% {
+    transform: translateX(0);
+    color: var(--stark-white);
+    text-shadow: 0 0 8px var(--accent-hot-pink);
+  }
+}
 /* ====== GLOWING NOTIFICATION BADGE & MAILBOX ====== */
 .notification-badge {
   display: inline-block;
@@ -519,35 +547,7 @@ textarea {
     text-shadow: 0 0 8px var(--accent-hot-pink);
   }
 }
-  #greeting-display {
-  animation: neonFade 4s ease-in-out infinite alternate, slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes neonFade {
-  0% {
-    color: #00ff66; /* Neon Green */
-    text-shadow: 0 0 8px #00ff66, 0 0 15px #00ff66;
-  }
-  50% {
-    color: var(--accent-hot-pink); /* Hot Pink */
-    text-shadow: 0 0 8px var(--accent-hot-pink), 0 0 15px var(--accent-hot-pink);
-  }
-  100% {
-    color: var(--accent-fuchsia); /* Hot Violet / Fuchsia */
-    text-shadow: 0 0 8px var(--accent-fuchsia), 0 0 20px var(--accent-violet);
-  }
-}
+ 
 </style>
 </head>
 
