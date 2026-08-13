@@ -256,24 +256,13 @@ header {
   box-shadow: 0 0 10px var(--accent-fuchsia);
 }
 
-/* ====== USER LOGIN BANNER ====== */
-#login-banner {
-  background: var(--accent-fuchsia);
-  color: var(--stark-white);
-  padding: 12px 20px;
-  border-bottom: var(--thick-border-pink);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-}
-
 /* ====== NAVIGATION ====== */
 nav {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 15px 20px;
+  padding: 10px 20px;
   background: var(--bg-deep-black);
   border-bottom: var(--thick-border-pink);
 }
@@ -318,7 +307,7 @@ nav {
 .panel h3 {
   font-family: 'Cinzel', serif;
   color: var(--stark-white);
-  font-size: 16px;
+  font-size: 15px;
   text-transform: uppercase;
   background: var(--accent-hot-pink);
   padding: 8px 12px;
@@ -439,11 +428,11 @@ textarea {
   font-family: var(--hand-font);
   font-size: 15px;
 }
+
 /* ====== INTEGRATED HEADER SPIDER PANEL ====== */
 #web-spawn-corner {
-  position: relative; /* Removes it from bottom-right fixed positioning */
-  bottom: auto;
-  right: auto;
+  display: none; /* HIDDEN BY DEFAULT UNTIL LOGIN */
+  position: relative;
   width: 100px;
   height: 60px;
   background: rgba(13, 6, 20, 0.95);
@@ -452,7 +441,6 @@ textarea {
   z-index: 10;
   overflow: hidden;
   padding: 4px;
-  pointer-events: auto;
   flex-shrink: 0;
 }
 
@@ -466,7 +454,26 @@ textarea {
   letter-spacing: 1px;
 }
 
-/* Scaled down spider animation for header fitting */
+#web-spawn-corner svg line {
+  stroke: var(--accent-fuchsia);
+  stroke-width: 1.5;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  filter: drop-shadow(0 0 5px var(--accent-fuchsia));
+  animation: drawWeb 20s ease-in-out infinite;
+}
+
+#web-spawn-corner line.radial-1 { animation-delay: 0s; }
+#web-spawn-corner line.radial-2 { animation-delay: 1.5s; }
+#web-spawn-corner line.radial-3 { animation-delay: 3s; }
+
+@keyframes drawWeb {
+  0% { stroke-dashoffset: 200; opacity: 0; }
+  5% { opacity: 1; stroke-dashoffset: 0; }
+  90% { opacity: 1; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: 200; }
+}
+
 .web-spawn-spider {
   position: absolute;
   top: 20px; left: 40px;
@@ -533,35 +540,30 @@ textarea {
     </div>
   </header>
 
-  <div id="login-banner">
-    <div id="greeting-display">WELCOME BACK</div>
-    <button onclick="handleLogout()" style="padding: 4px 10px; font-size: 11px;">LOG OUT</button>
-  </div>
-<nav style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 20px; background: var(--bg-deep-black); border-bottom: var(--thick-border-pink);">
-  
-  <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <div class="menu-item" onclick="location.reload()">[ HOME ]</div>
-    <div class="menu-item" onclick="showVisionBoardContent()">[ VISION CODEX ]</div>
-    <div class="menu-item" onclick="showInspirationContent()">[ ART VAULT ]</div>
-    <div class="menu-item" onclick="showZenHubContent()">[ ZENHUB PORTAL ]</div>
-    <div class="menu-item" onclick="showJournalContent()">[ JOURNAL LOGS ]</div>
-  </div>
+  <nav>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+      <div class="menu-item" onclick="location.reload()">[ HOME ]</div>
+      <div class="menu-item" onclick="showVisionBoardContent()">[ VISION CODEX ]</div>
+      <div class="menu-item" onclick="showInspirationContent()">[ ART VAULT ]</div>
+      <div class="menu-item" onclick="showZenHubContent()">[ ZENHUB PORTAL ]</div>
+      <div class="menu-item" onclick="showJournalContent()">[ JOURNAL LOGS ]</div>
+    </div>
 
-  <div id="web-spawn-corner">
-    <svg viewBox="0 0 100 100" width="100%" height="100%">
-      <line x1="50" y1="50" x2="50" y2="5" class="radial-1" />
-      <line x1="50" y1="50" x2="95" y2="50" class="radial-2" />
-      <line x1="50" y1="50" x2="5" y2="50" class="radial-3" />
-      <path d="M 50,20 C 65,20 80,35 80,50 C 80,65 65,80 50,80 C 35,80 20,65 20,50 C 20,40 30,20 50,20" 
-            stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none" 
-            style="stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawWeb 20s ease-in-out infinite 5s; filter: drop-shadow(0 0 5px var(--accent-fuchsia));"/>
-    </svg>
-    <svg class="web-spawn-spider" viewBox="0 0 24 24">
-      <path d="M12,12 C11,10 9,9 8,9 C7,9 6,10 6,12 C6,14 8,15 8,17 C8,19 7,20 6,21 M12,12 C13,10 15,9 16,9 C17,9 18,10 18,12 C18,14 16,15 16,17 C16,19 17,20 18,21 M12,10 C10,8 8,7 5,8 C3,9 2,11 1,13 M12,10 C14,8 16,7 19,8 C21,9 22,11 23,13 M12,14 C9,15 6,16 4,19 C3,20 2,22 1,23 M12,14 C15,15 18,16 20,19 C21,20 22,22 23,23 M12,8 A3,3 0 1,0 12,14 A3,3 0 1,0 12,8 Z M12,13 A2,2 0 1,0 12,17 A2,2 0 1,0 12,13 Z"/>
-    </svg>
-  </div>
+    <div id="web-spawn-corner">
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <line x1="50" y1="50" x2="50" y2="5" class="radial-1" />
+        <line x1="50" y1="50" x2="95" y2="50" class="radial-2" />
+        <line x1="50" y1="50" x2="5" y2="50" class="radial-3" />
+        <path d="M 50,20 C 65,20 80,35 80,50 C 80,65 65,80 50,80 C 35,80 20,65 20,50 C 20,40 30,20 50,20" 
+              stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none" 
+              style="stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawWeb 20s ease-in-out infinite 5s; filter: drop-shadow(0 0 5px var(--accent-fuchsia));"/>
+      </svg>
+      <svg class="web-spawn-spider" viewBox="0 0 24 24">
+        <path d="M12,12 C11,10 9,9 8,9 C7,9 6,10 6,12 C6,14 8,15 8,17 C8,19 7,20 6,21 M12,12 C13,10 15,9 16,9 C17,9 18,10 18,12 C18,14 16,15 16,17 C16,19 17,20 18,21 M12,10 C10,8 8,7 5,8 C3,9 2,11 1,13 M12,10 C14,8 16,7 19,8 C21,9 22,11 23,13 M12,14 C9,15 6,16 4,19 C3,20 2,22 1,23 M12,14 C15,15 18,16 20,19 C21,20 22,22 23,23 M12,8 A3,3 0 1,0 12,14 A3,3 0 1,0 12,8 Z M12,13 A2,2 0 1,0 12,17 A2,2 0 1,0 12,13 Z"/>
+      </svg>
+    </div>
+  </nav>
 
-</nav>
   <div class="container">
     <div class="panel">
       <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -621,7 +623,12 @@ textarea {
       <svg class="web-ray-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <path d="M100,0 L0,100 M100,0 L0,50 M100,0 L50,100" stroke="#8a2be2" stroke-width="0.5"/>
       </svg>
-      <h3>GUEST HOST TRANSMISSION</h3>
+      
+      <h3 id="greeting-display">WELCOME BACK</h3>
+      <div style="display: flex; justify-content: flex-end; margin-top: -12px; margin-bottom: 12px;">
+        <button onclick="handleLogout()" style="padding: 2px 8px; font-size: 10px;">LOG OUT</button>
+      </div>
+
       <video style="width:100%; border:2px solid var(--accent-fuchsia);" playsinline controls>
         <source src="https://x3nb.github.io/chezxen/talking-girch/greet.mp4" type="video/mp4">
       </video>
@@ -638,23 +645,6 @@ textarea {
       </div>
     </div>
   </div>
-</div>
-
-<div id="web-spawn-corner">
-  <svg viewBox="0 0 100 100" width="100%" height="100%">
-    <line x1="50" y1="50" x2="50" y2="5" class="radial-1" />
-    <line x1="50" y1="50" x2="95" y2="50" class="radial-2" />
-    <line x1="50" y1="50" x2="5" y2="50" class="radial-3" />
-    <path d="M 50,20 C 65,20 80,35 80,50 C 80,65 65,80 50,80 C 35,80 20,65 20,50 C 20,40 30,20 50,20" 
-          stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none" 
-          style="stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawWeb 20s ease-in-out infinite 5s; filter: drop-shadow(0 0 5px var(--accent-fuchsia));"/>
-    <path d="M 50,35 C 58,35 65,42 65,50 C 65,58 58,65 50,65 C 42,65 35,58 35,50 C 35,42 42,35 50,35" 
-          stroke="var(--accent-fuchsia)" stroke-width="1.5" fill="none"
-          style="stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawWeb 20s ease-in-out infinite 10s; filter: drop-shadow(0 0 5px var(--accent-fuchsia));"/>
-  </svg>
-  <svg class="web-spawn-spider" viewBox="0 0 24 24">
-    <path d="M12,12 C11,10 9,9 8,9 C7,9 6,10 6,12 C6,14 8,15 8,17 C8,19 7,20 6,21 M12,12 C13,10 15,9 16,9 C17,9 18,10 18,12 C18,14 16,15 16,17 C16,19 17,20 18,21 M12,10 C10,8 8,7 5,8 C3,9 2,11 1,13 M12,10 C14,8 16,7 19,8 C21,9 22,11 23,13 M12,14 C9,15 6,16 4,19 C3,20 2,22 1,23 M12,14 C15,15 18,16 20,19 C21,20 22,22 23,23 M12,8 A3,3 0 1,0 12,14 A3,3 0 1,0 12,8 Z M12,13 A2,2 0 1,0 12,17 A2,2 0 1,0 12,13 Z"/>
-  </svg>
 </div>
 
 <script>
@@ -679,14 +669,17 @@ function checkUserState() {
   const gate = document.getElementById('login-gate');
   const desktop = document.getElementById('main-desktop');
   const greetingDisplay = document.getElementById('greeting-display');
+  const spiderBox = document.getElementById('web-spawn-corner');
 
   if (savedUser) {
     gate.style.display = 'none';
     desktop.style.display = 'block';
-    greetingDisplay.innerHTML = `WELCOME BACK, <span style="color:#fff; text-decoration:underline;">${savedUser.toUpperCase()}</span>. THE NIGHT IS STILL YOUNG.`;
+    if (spiderBox) spiderBox.style.display = 'block'; // SHOW SPIDER ONLY WHEN LOGGED IN
+    greetingDisplay.innerHTML = `WELCOME BACK, <span style="color:#fff; text-decoration:underline;">${savedUser.toUpperCase()}</span>`;
   } else {
     gate.style.display = 'flex';
     desktop.style.display = 'none';
+    if (spiderBox) spiderBox.style.display = 'none';
   }
 }
 
