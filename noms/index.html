@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZENHUB — personal desk</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2213%22%20fill%3D%22%231a0b2e%22%2F%3E%3Cg%20stroke%3D%22%23ff007f%22%20stroke-width%3D%222.4%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M32%2032L56%2032M32%2032L32%208M32%2032L8%2032M32%2032L32%2056M32%2032L48.97%2015.03M32%2032L48.97%2048.97M32%2032L15.03%2048.97M32%2032L15.03%2015.03%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%227%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2213%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2219%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%222.6%22%20fill%3D%22%23ff007f%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deeppurple: #8a2be2;
+    --lavender: #ff007f;
+    --grey: #c4a9e8;
+    --dark: #1a0b2e;
+    --ink: #e6d5f7;
+    --wall: #0d0614;
+    --fuchsia: #d900ff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--wall);
+    color: var(--ink);
+    font-family: 'Special Elite', 'Courier New', monospace;
+    text-align: left;
+  }
+  ::selection { background: var(--lavender); color: var(--wall); }
+  [hidden] { display: none !important; }
+
+  .page { position: relative; z-index: 1; min-height: 100vh; padding-bottom: 40px; }
+
+  /* ---------- masthead ---------- */
+  .masthead { text-align: center; padding: 52px 16px 10px; }
+  .title {
+    font-family: 'Archivo Black', 'Arial Black', sans-serif;
+    font-size: clamp(3rem, 12vw, 7.6rem);
+    line-height: 1.05; letter-spacing: .04em; margin: 0;
+    background-image:
+      radial-gradient(3.5px 3.5px at 12% 28%, rgba(255,255,255,.95), transparent 70%),
+      radial-gradient(3px 3px at 68% 62%, rgba(255,255,255,.85), transparent 70%),
+      radial-gradient(3px 3px at 38% 78%, rgba(255,0,127,.9), transparent 70%),
+      radial-gradient(3px 3px at 84% 22%, rgba(196,169,232,.95), transparent 70%),
+      radial-gradient(3px 3px at 52% 18%, rgba(255,255,255,.75), transparent 70%),
+      radial-gradient(3px 3px at 26% 55%, rgba(255,255,255,.7), transparent 70%),
+      linear-gradient(105deg, #2a1753 0%, #4a2a8f 20%, #8a2be2 38%, #c4a9e8 50%, #8a2be2 62%, #4a2a8f 80%, #2a1753 100%);
+    background-size: 260% 100%, 260% 100%, 260% 100%, 260% 100%, 260% 100%, 260% 100%, 260% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 12px rgba(138,43,226,.5)) drop-shadow(0 0 30px rgba(217,0,255,.2));
+    animation: titleGlitter 8s ease-in-out infinite;
+    user-select: none;
+  }
+  @keyframes titleGlitter {
+    0%, 100% { background-position: 0% 0, 0% 0, 0% 0, 0% 0, 0% 0, 0% 0, 0% 0; }
+    50% { background-position: 26% 0, -14% 0, 30% 0, -22% 0, 18% 0, -10% 0, 24% 0; }
+  }
+  .subtitle { margin-top: 12px; font-size: .9rem; letter-spacing: .22em; color: var(--grey); }
+  .aphorism { margin: 8px auto 0; max-width: 640px; font-size: .95rem; color: var(--lavender); min-height: 1.5em; transition: opacity .3s; }
+
+  /* ---------- tape ---------- */
+  .tape {
+    position: absolute; width: 92px; height: 26px; z-index: 5;
+    background: linear-gradient(180deg, rgba(255,0,127,.42), rgba(217,0,255,.24) 55%, rgba(138,43,226,.16));
+    border-left: 1px dashed rgba(217,0,255,.55); border-right: 1px dashed rgba(217,0,255,.55);
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+    clip-path: polygon(2% 0, 98% 0, 100% 40%, 97% 100%, 3% 100%, 0 40%);
+    opacity: .9;
+  }
+
+  /* ---------- panels ---------- */
+  .panel {
+    position: relative; max-width: 920px; margin: 40px auto 10px;
+    background: var(--dark); color: var(--ink);
+    padding: 30px 22px 24px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.45);
+  }
+  .panel > .tape { top: -13px; left: 50%; margin-left: -46px; transform: rotate(-4deg); }
+  .panel h2 {
+    font-family: 'Archivo Black', 'Arial Black', sans-serif;
+    color: var(--lavender); letter-spacing: .1em;
+    margin: 0 0 4px; font-size: 1.15rem;
+  }
+  .panel .hint { color: var(--grey); font-size: .78rem; margin: 0 0 18px; letter-spacing: .06em; }
+
+  /* ---------- music ---------- */
+  .song {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-bottom: 1px dashed rgba(217,0,255,.22);
+  }
+  .song.playing { background: rgba(255,0,127,.1); border-left: 3px solid var(--lavender); }
+  .song-num { color: var(--grey); font-size: .78rem; min-width: 22px; }
+  .song-title { flex: 1; font-size: .95rem; }
+  .song-btn {
+    font-family: 'Archivo Black', 'Arial Black', sans-serif; font-size: .7rem; letter-spacing: .05em;
+    background: var(--dark); color: var(--lavender); border: 1.5px solid var(--lavender);
+    padding: 6px 12px; cursor: pointer; transition: .15s; min-width: 44px;
+  }
+  .song-btn:hover { background: var(--lavender); color: var(--wall); }
+  .now-playing { margin-top: 16px; font-size: .85rem; color: var(--fuchsia); min-height: 1.2em; letter-spacing: .05em; }
+
+  .music-trigger { text-align: center; }
+  .music-trigger .hint { margin-bottom: 14px; }
+  #musicOpenBtn {
+    font-family: 'Archivo Black', 'Arial Black', sans-serif; font-size: 1rem; letter-spacing: .07em;
+    background: var(--dark); color: var(--lavender); border: 2px solid var(--lavender);
+    padding: 16px 28px; cursor: pointer; transition: .15s;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  #musicOpenBtn:hover { background: var(--lavender); color: var(--wall); transform: rotate(-1deg); }
+  .music-drawer { position: relative; max-height: 0; overflow: hidden; padding: 0 22px; transition: max-height .55s ease, padding .4s ease; }
+  .music-drawer.open { max-height: 1200px; padding: 30px 22px 24px; }
+  .music-drawer > .tape { opacity: 0; transition: opacity .3s; }
+  .music-drawer.open > .tape { opacity: .9; }
+  .drawer-close {
+    position: absolute; top: 16px; right: 18px; width: 30px; height: 30px; border-radius: 50%;
+    background: none; border: 1.5px solid rgba(217,0,255,.5); color: var(--grey);
+    font-size: .85rem; line-height: 1; cursor: pointer; transition: .15s; z-index: 2;
+  }
+  .drawer-close:hover { color: var(--lavender); border-color: var(--lavender); transform: rotate(90deg); }
+  .music-drawer h2 { padding-right: 44px; }
+  .greet { color: var(--fuchsia); font-family: 'Archivo Black', 'Arial Black', sans-serif; font-size: 1rem; letter-spacing: .04em; margin: 14px 0 4px; min-height: 1.3em; }
+  .name-form { display: flex; gap: 10px; margin: 10px 0 16px; }
+  .name-form input {
+    flex: 1; min-width: 0; background: rgba(13,6,20,.5); border: 1.5px dashed rgba(217,0,255,.5);
+    color: var(--ink); font-family: 'Special Elite', 'Courier New', monospace; font-size: .9rem; padding: 10px 12px; outline: none;
+  }
+  .name-form input::placeholder { color: rgba(230,213,247,.45); }
+  .name-form button {
+    font-family: 'Archivo Black', 'Arial Black', sans-serif; font-size: .78rem; letter-spacing: .05em;
+    background: var(--dark); color: var(--lavender); border: 2px solid var(--fuchsia); padding: 10px 18px; cursor: pointer;
+  }
+  .name-form button:hover { background: var(--fuchsia); color: var(--wall); }
+
+  /* ---------- mystery teacup + board drawer ---------- */
+  .teacup-panel { text-align: center; }
+  .teacup-btn {
+    display: inline-flex; flex-direction: column; align-items: center; gap: 14px;
+    background: none; border: none; cursor: pointer; padding: 12px 30px 6px;
+  }
+  .teacup {
+    width: 120px; height: 130px;
+    transition: transform .25s, filter .25s;
+  }
+  .teacup-btn:hover .teacup,
+  .teacup-btn.warm .teacup { transform: rotate(-5deg) scale(1.05); filter: drop-shadow(0 0 16px rgba(255,0,127,.55)); }
+  .teacup-label {
+    font-family: 'Archivo Black', 'Arial Black', sans-serif;
+    font-size: .8rem; letter-spacing: .1em; color: var(--lavender);
+  }
+  .teacup-btn.warm .teacup-label { color: var(--fuchsia); }
+  .steam path { opacity: 0; animation: steamRise 2.6s ease-in-out infinite; }
+  .steam .s1 { animation-delay: 0s; }
+  .steam .s2 { animation-delay: 1.3s; }
+  @keyframes steamRise {
+    0% { opacity: 0; transform: translateY(6px); }
+    30% { opacity: .7; }
+    100% { opacity: 0; transform: translateY(-10px); }
+  }
+  .board-drawer { max-height: 0; overflow: hidden; padding: 0 4px; transition: max-height .55s ease, padding .4s ease; }
+  .board-drawer.open { max-height: 82vh; overflow-y: auto; padding: 26px 4px 4px; }
+  .board-drawer h3 { font-family: 'Archivo Black', 'Arial Black', sans-serif; color: var(--fuchsia); font-size: .95rem; letter-spacing: .06em; margin: 0 0 14px; }
+  /* ---------- native ZENHUB board ---------- */
+  .board-count { text-align: center; margin: 4px 0 12px; }
+  .board-count span { display: inline-block; padding: 4px 14px; border: 2px solid var(--fuchsia); color: var(--fuchsia); background: rgba(26,11,46,.75); font-size: .8rem; letter-spacing: .1em; }
+  .board-hint { text-align: center; color: var(--grey); font-size: .72rem; letter-spacing: .06em; margin: 10px 0 4px; }
+  .board-hint a { color: var(--lavender); }
+  .board-hint a:hover { color: var(--deeppurple); }
+  .sticker {
+    position: absolute; top: 10px; left: 10px; z-index: 4;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #fff; border: 1.5px solid var(--deeppurple);
+    display: grid; place-items: center;
+    transform: rotate(-8deg); box-shadow: 0 1px 2px rgba(0,0,0,.25);
+  }
+  .note {
+    position: relative; background: var(--c, var(--dark));
+    padding: 30px 18px 36px; color: var(--ink);
+  }
+  .note::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(217,0,255,.07), transparent 45%);
+  }
+  .note-top { display: flex; justify-content: flex-end; align-items: baseline; gap: 8px; }
+  .note-date { font-size: .68rem; color: var(--grey); letter-spacing: .08em; }
+  .note-txt {
+    margin: 12px 2px 14px; font-size: .98rem; line-height: 1.5;
+    white-space: pre-wrap; word-break: break-word; position: relative; color: var(--ink);
+  }
+  .note-txt del { color: var(--grey); }
+  .note-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; position: relative; }
+  .note-btns { display: inline-flex; gap: 6px; align-items: center; }
+  .author { font-size: .8rem; color: var(--lavender); letter-spacing: .05em; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .note-btn {
+    font-family: 'Archivo Black', sans-serif; font-size: .62rem; letter-spacing: .06em;
+    background: transparent; padding: 3px 8px 4px; cursor: pointer; transition: .15s;
+  }
+  .reply-btn { color: var(--lavender); border: 1.5px dashed var(--lavender); }
+  .reply-btn:hover { background: var(--lavender); color: var(--wall); border-style: solid; transform: rotate(-2deg); }
+  .fix-btn { color: var(--lavender); border: 1.5px dashed var(--lavender); opacity: .8; }
+  .fix-btn:hover { background: var(--lavender); color: var(--wall); border-style: solid; transform: rotate(-2deg); opacity: 1; }
+  .peel-btn { color: var(--grey); border: 1px dashed var(--grey); }
+  .peel-btn:hover { background: var(--deeppurple); color: #fff; border-color: var(--deeppurple); transform: rotate(2deg); }
+  .pin { break-inside: avoid; margin-bottom: 38px; }
+  .pin-shadow {
+    position: relative;
+    transform: rotate(var(--rot));
+    filter: drop-shadow(0 2px 3px rgba(15,10,30,.16)) drop-shadow(0 12px 18px rgba(30,20,60,.12));
+    animation: settle 8.5s steps(1,end) infinite;
+    will-change: transform;
+  }
+  .pin-shadow > .tape { top: -13px; left: 50%; margin-left: -46px; transform: rotate(-4deg); }
+  @keyframes settle {
+    0%, 96.5% { transform: rotate(var(--rot)) translate(0,0); }
+    97.1% { transform: rotate(var(--rot)) translate(-1.5px,.8px); }
+    97.4% { transform: rotate(var(--rot)) translate(1.5px,-.8px); }
+    97.7% { transform: rotate(var(--rot)) translate(0,0); }
+    98% { transform: rotate(var(--rot)) translate(.8px,.6px); }
+    98.3%, 100% { transform: rotate(var(--rot)) translate(0,0); }
+  }
+  .pin:hover .pin-shadow { animation: wig .2s steps(2,end) infinite; }
+  @keyframes wig {
+    0% { transform: rotate(var(--rot)) translate(0,0); }
+    33% { transform: rotate(var(--rot)) translate(-1.5px,1px); }
+    66% { transform: rotate(var(--rot)) translate(1.5px,-1px); }
+    100% { transform: rotate(var(--rot)) translate(0,0); }
+  }
+  .pin.flash .pin-shadow { animation: flashGlow 1.6s ease-out; }
+  @keyframes flashGlow {
+    0% { filter: drop-shadow(0 2px 3px rgba(15,10,30,.16)) drop-shadow(0 12px 18px rgba(30,20,60,.12)) drop-shadow(0 0 22px rgba(255,0,127,.85)); }
+    100% { filter: drop-shadow(0 2px 3px rgba(15,10,30,.16)) drop-shadow(0 12px 18px rgba(30,20,60,.12)); }
+  }
+  .replies { margin-top: 10px; display: flex; flex-direction: column; gap: 9px; align-items: flex-start; padding-left: 22px; }
+  .tape-strip {
+    position: relative; max-width: 90%;
+    background: var(--dark); color: var(--ink);
+    border-left: 3px solid var(--lavender);
+    padding: 7px 12px 8px 13px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.25), 0 5px 9px rgba(30,20,60,.12);
+    transform: rotate(var(--rrot));
+    clip-path: polygon(0% 4%, 4% 0%, 9% 5%, 14% 0%, 19% 5%, 25% 0%, 30% 5%, 36% 0%, 42% 5%, 48% 0%, 54% 5%, 60% 0%, 66% 5%, 72% 0%, 78% 5%, 84% 0%, 90% 5%, 96% 0%, 100% 4%, 100% 96%, 96% 100%, 91% 95%, 86% 100%, 81% 95%, 75% 100%, 69% 95%, 63% 100%, 57% 95%, 51% 100%, 45% 95%, 39% 100%, 33% 95%, 27% 100%, 21% 95%, 15% 100%, 9% 95%, 4% 100%, 0% 96%);
+  }
+  .tape-strip .reply-txt { display: block; font-size: .82rem; line-height: 1.4; white-space: pre-wrap; word-break: break-word; color: var(--ink); }
+  .reply-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: .7rem; color: var(--grey); }
+  .composer {
+    position: relative; width: min(560px, calc(100% - 24px)); margin: 18px auto 26px;
+    filter: drop-shadow(0 5px 7px rgba(30,20,60,.16)) drop-shadow(0 14px 22px rgba(30,20,60,.12));
+  }
+  .composer > .tape { top: -13px; left: 50%; margin-left: -46px; transform: rotate(-4deg); }
+  .composer .note { padding: 26px 20px 20px; }
+  .composer .sticker { top: 12px; left: 14px; }
+  .note-head { display: flex; justify-content: flex-end; align-items: center; gap: 8px; min-height: 1.6em; }
+  .note-kicker {
+    font-family: 'Archivo Black', sans-serif; font-size: .78rem; letter-spacing: .1em;
+    color: #fff; margin-right: auto;
+  }
+  .reply-tag { font-size: .78rem; color: var(--ink); border: 1.5px dashed var(--lavender); padding: 4px 9px; background: rgba(255,0,127,.14); font-family: 'Archivo Black', sans-serif; letter-spacing: .03em; }
+  .reply-tag.fixmode { border-color: var(--fuchsia); background: rgba(138,43,226,.32); color: #fff; }
+  .reply-tag button {
+    background: none; border: none; cursor: pointer; color: var(--lavender);
+    font-family: 'Archivo Black', sans-serif; font-size: .68rem; margin-left: 6px;
+  }
+  .reply-tag button:hover { color: #fff; }
+  #ideaInputEl {
+    width: 100%; background: transparent; border: none; outline: none; resize: vertical;
+    font-family: 'Special Elite', monospace; font-size: 1rem; line-height: 1.5;
+    color: var(--ink); margin-top: 8px; padding: 4px 2px;
+  }
+  #ideaInputEl::placeholder { color: rgba(230,213,247,.45); }
+  .composer-foot { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+  #nicknameInputEl {
+    flex: 1; min-width: 0; background: transparent; border: none; outline: none;
+    border-bottom: 2px dashed rgba(230,213,247,.4); font-family: 'Special Elite', monospace;
+    font-size: .85rem; color: var(--ink); padding: 4px 2px;
+  }
+  #nicknameInputEl::placeholder { color: rgba(230,213,247,.38); }
+  #stickBtn {
+    font-family: 'Archivo Black', sans-serif; font-size: .78rem; letter-spacing: .05em;
+    background: var(--dark); color: var(--lavender); border: 2px solid var(--lavender);
+    padding: 10px 18px; cursor: pointer; white-space: nowrap; transition: .15s;
+  }
+  #stickBtn:hover { background: var(--lavender); border-color: var(--fuchsia); color: var(--wall); transform: rotate(-1.5deg); }
+  #stickBtn:disabled { opacity: .6; cursor: wait; }
+  #stickBtn.mode-reply { background: var(--fuchsia); border-color: var(--fuchsia); color: #fff; }
+  #stickBtn.mode-fix { background: var(--lavender); border-color: var(--lavender); color: var(--wall); }
+  .board { columns: 2; column-gap: 30px; max-width: 1180px; margin: 0 auto; padding: 0 4px; }
+  @media (min-width: 820px) { .board { columns: 3; } }
+  @media (min-width: 1120px) { .board { columns: 4; } }
+  .board-loading { text-align: center; color: var(--grey); font-size: .95rem; padding: 40px 0; }
+  #loadMoreBtnEl {
+    display: block; margin: 8px auto 30px; font-family: 'Archivo Black', sans-serif;
+    font-size: .8rem; letter-spacing: .06em; background: rgba(26,11,46,.75); color: var(--fuchsia);
+    border: 2px solid var(--fuchsia); padding: 12px 22px; cursor: pointer; transition: .15s;
+  }
+  #loadMoreBtnEl:hover { background: var(--fuchsia); color: var(--wall); transform: rotate(-1deg); }
+  .board-webzone { position: relative; width: min(560px, calc(100% - 24px)); margin: 14px auto 0; display: flex; justify-content: center; }
+  .web-wrap { position: relative; width: 160px; height: 160px; cursor: pointer; }
+  .board-web-svg { position: absolute; inset: 0; width: 100%; height: 100%;
+    filter: drop-shadow(0 0 5px rgba(217,0,255,.55));
+    animation: webPulse 3.6s ease-in-out infinite;
+    transition: opacity .3s;
+  }
+  .web-wrap.open .board-web-svg { opacity: .16; animation: none; }
+  .board-spider {
+    position: absolute; left: calc(50% - 20px); top: calc(50% - 20px);
+    width: 40px; height: 40px; z-index: 2;
+    transition: transform .55s cubic-bezier(.2,.8,.3,1.2);
+    transform-origin: 50% 50%;
+  }
+  .web-wrap:hover .board-spider { transform: translateY(26px); }
+  .web-hint {
+    position: absolute; bottom: 6px; right: 6px; z-index: 3;
+    font-size: .66rem; letter-spacing: .08em; color: var(--lavender);
+    background: rgba(13,6,20,.85); border: 1.5px dashed var(--fuchsia);
+    padding: 2px 7px; opacity: .9; transition: opacity .3s;
+  }
+  .web-wrap:hover .web-hint, .web-wrap.open .web-hint { opacity: 1; }
+  .rules-wrap {
+    position: absolute; top: calc(100% + 8px); left: 50%; z-index: 80;
+    width: min(370px, calc(100% - 24px));
+    filter: drop-shadow(0 8px 16px rgba(25,10,60,.2));
+    opacity: 0; pointer-events: none;
+    transform: translateX(-50%) translateY(12px) scale(.96); transition: .28s ease;
+  }
+  .rules-wrap.open { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0) scale(1); }
+  .rules { position: relative; background: var(--dark); border: 2.5px solid var(--fuchsia); padding: 24px 18px 16px; }
+  .rules-tape { top: -13px; left: 50%; margin-left: -46px; transform: rotate(-4deg); }
+  .rules h3 { font-family: 'Archivo Black', sans-serif; margin: 0 0 12px; font-size: 1rem; letter-spacing: .06em; color: var(--lavender); }
+  .rules p { margin: 0 0 10px; font-size: .84rem; line-height: 1.5; color: var(--grey); }
+  .rules p b { color: var(--ink); }
+  .rules .close-btn {
+    font-family: 'Archivo Black', sans-serif; font-size: .7rem; letter-spacing: .08em;
+    background: var(--lavender); color: var(--wall); border: none; padding: 7px 14px; cursor: pointer; margin-top: 4px;
+  }
+  .rules .close-btn:hover { background: var(--fuchsia); color: var(--wall); }
+  #modBackdrop { position: fixed; inset: 0; background: rgba(13,6,20,.72); z-index: 9988; opacity: 0; pointer-events: none; transition: opacity .25s; }
+  #modBackdrop.open { opacity: 1; pointer-events: auto; }
+  #modHost {
+    position: fixed; top: 0; left: 0; width: 1px; height: 1px; z-index: 9989;
+    opacity: .01; pointer-events: none;
+  }
+  #pluginHostEl { position: absolute; top: 0; left: 0; width: 1px; height: 240px; overflow: hidden; opacity: .01; }
+  #modHost.mod {
+    width: min(720px, 94vw); height: min(72vh, 600px); opacity: 1; pointer-events: auto;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: var(--wall); border: 3px solid var(--fuchsia);
+    box-shadow: 0 24px 60px rgba(0,0,0,.45);
+  }
+  #modHost.mod #pluginHostEl { width: 100%; height: 100%; opacity: 1; overflow: visible; }
+  #modHost.mod .comments-plugin-ctn { height: 100% !important; width: 100% !important; }
+  #modBar {
+    position: absolute; top: -34px; left: 0; right: 0; height: 34px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    font-family: 'Archivo Black', sans-serif; font-size: .68rem; letter-spacing: .06em;
+    color: #fff; background: var(--deeppurple); padding: 0 12px;
+  }
+  #modBar button {
+    font-family: 'Archivo Black', sans-serif; font-size: .68rem; letter-spacing: .05em;
+    background: #0d0614; color: var(--fuchsia); border: none; padding: 4px 10px; cursor: pointer;
+  }
+  #modBar button:hover { background: var(--lavender); color: var(--wall); }
+  #modLinkEl { color: var(--grey); }
+  #modLinkEl:hover { color: var(--deeppurple); }
+
+  /* ---------- characters ---------- */
+  .npc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 14px; }
+  .npc { background: rgba(13,6,20,.5); border: 1.5px dashed rgba(217,0,255,.4); padding: 12px; }
+  .npc-img {
+    width: 100%; aspect-ratio: 1 / 1; overflow: hidden;
+    background: rgba(26,11,46,.6); display: grid; place-items: center;
+    font-size: 2.2rem;
+  }
+  .npc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .npc-name { font-family: 'Archivo Black', 'Arial Black', sans-serif; color: var(--ink); font-size: .82rem; letter-spacing: .05em; margin: 10px 0 4px; }
+  .npc-desc { color: var(--grey); font-size: .8rem; line-height: 1.45; margin: 0; }
+
+  /* ---------- links ---------- */
+  .link-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .link-btn {
+    font-family: 'Archivo Black', 'Arial Black', sans-serif; font-size: .8rem; letter-spacing: .05em;
+    background: var(--dark); color: var(--lavender); border: 2px solid var(--fuchsia);
+    padding: 12px 20px; text-decoration: none; transition: .15s;
+  }
+  .link-btn:hover { background: var(--fuchsia); color: var(--wall); transform: rotate(-1.5deg); }
+
+  /* ---------- foot ---------- */
+  .foot {
+    text-align: center; margin: 34px auto 20px; max-width: 800px; padding: 18px 16px 6px;
+    border-top: 2px dashed rgba(217,0,255,.3);
+    color: var(--grey); font-size: .78rem; letter-spacing: .05em;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+
+  /* ---------- corner spider ---------- */
+  .webzone { position: fixed; top: 8px; right: 8px; width: 150px; height: 150px; z-index: 60; cursor: pointer; transition: filter .2s; }
+  .webzone:hover { filter: brightness(1.18) drop-shadow(0 0 8px rgba(255,0,127,.35)); }
+  .web-svg { position: absolute; inset: 0; width: 100%; height: 100%;
+    filter: drop-shadow(0 0 5px rgba(217,0,255,.55));
+    animation: webPulse 3.6s ease-in-out infinite; }
+  @keyframes webPulse {
+    0%, 100% { filter: drop-shadow(0 0 3px rgba(217,0,255,.45)); opacity: .92; }
+    50% { filter: drop-shadow(0 0 9px rgba(255,0,127,.9)); opacity: 1; }
+  }
+  .spider {
+    position: absolute; left: calc(50% - 20px); top: calc(50% - 20px);
+    width: 40px; height: 40px; z-index: 2;
+    animation: spiderDrop 1.6s ease-in-out infinite;
+  }
+  @keyframes spiderDrop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(12px); } }
+  .spider.chomping { animation: spiderChomp .3s linear 3; }
+  @keyframes spiderChomp {
+    0% { transform: translateY(0) rotate(0); }
+    25% { transform: translateY(2px) rotate(-9deg); }
+    50% { transform: translateY(-1px) rotate(9deg); }
+    75% { transform: translateY(3px) rotate(-6deg); }
+    100% { transform: translateY(0) rotate(0); }
+  }
+  .nom-bubble {
+    position: fixed; right: 160px; top: 122px; z-index: 62;
+    font-family: 'Archivo Black', 'Arial Black', sans-serif;
+    font-size: .82rem; letter-spacing: .06em; color: var(--lavender);
+    background: var(--dark); border: 2px solid var(--fuchsia);
+    padding: 9px 13px; opacity: 0; transform: translateY(4px);
+    pointer-events: none; transition: opacity .18s, transform .18s;
+  }
+  .nom-bubble.show { opacity: 1; transform: translateY(0); }
+  .nom-bubble::before, .nom-bubble::after {
+    content: ""; position: absolute; left: 100%; top: 50%;
+    border: 7px solid transparent; margin-top: -7px;
+  }
+  .nom-bubble::before { border-left-color: var(--fuchsia); left: 100%; }
+  .nom-bubble::after { border-left-color: var(--dark); left: calc(100% - 4px); }
+
+  /* ---------- cursor spider + web sparks ---------- */
+  #fxCanvas { position: fixed; inset: 0; z-index: 5000; pointer-events: none; }
+  #cursorSpider {
+    position: fixed; left: 0; top: 0; width: 34px; height: 34px;
+    z-index: 5001; pointer-events: none; margin: -17px 0 0 -17px;
+    opacity: 0; transition: opacity .35s; will-change: transform;
+  }
+  #cursorSpider.show { opacity: 1; }
+  #cursorSpider svg { width: 100%; height: 100%; display: block; }
+
+  @media (max-width: 720px) {
+    .webzone { width: 120px; height: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <h1 class="title">ZENHUB</h1>
+    <div class="subtitle">PERSONAL DESK · MY THINGS</div>
+    <div class="aphorism" id="aphorismEl"></div>
+  </header>
+
+  <section class="panel music-trigger">
+    <i class="tape"></i>
+    <p class="hint">THE MUSIC — 7 SONGS ON THE DECK</p>
+    <button id="musicOpenBtn" type="button">&#127911; OPEN THE MUSIC</button>
+  </section>
+
+  <section class="panel music-drawer" id="musicDrawerEl">
+    <i class="tape"></i>
+    <button id="musicCloseBtn" type="button" class="drawer-close" aria-label="close the music" title="close the music">&#10005;</button>
+    <h2>&#127911; MUSIC</h2>
+    <div class="greet" id="greetEl"></div>
+    <div class="name-form" id="nameFormEl" hidden>
+      <input id="nameInputEl" placeholder="what's your name, friend?">
+      <button id="nameSubmitBtn" type="button">come in</button>
+    </div>
+    <div id="songListEl" hidden></div>
+    <div class="now-playing" id="nowPlayingEl"></div>
+  </section>
+
+  <section class="panel teacup-panel" id="teacupPanelEl">
+    <i class="tape"></i>
+    <h2>&#9749; THE MYSTERY TEACUP</h2>
+    <p class="hint">A CUP THAT REMEMBERS THE BOARD</p>
+    <button type="button" class="teacup-btn" id="teacupBtn" aria-expanded="false">
+      <svg class="teacup" viewBox="0 0 120 130" aria-hidden="true">
+        <defs>
+          <linearGradient id="cupGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#4a2a8f"/>
+            <stop offset="1" stop-color="#2a1753"/>
+          </linearGradient>
+        </defs>
+        <g class="steam" stroke="#c4a9e8" stroke-width="3" fill="none" stroke-linecap="round">
+          <path class="s1" d="M46 40 C42 32 50 30 46 22"/>
+          <path class="s2" d="M64 40 C60 30 68 28 64 18"/>
+        </g>
+        <path d="M92 66 C108 64 108 92 90 92" fill="none" stroke="#d900ff" stroke-width="7" stroke-linecap="round"/>
+        <path d="M28 56 L32 96 Q60 102 88 96 L92 56 Q60 50 28 56 Z" fill="url(#cupGrad)" stroke="#d900ff" stroke-width="2.5"/>
+        <ellipse cx="60" cy="58" rx="31" ry="7" fill="#ff007f" opacity=".85"/>
+        <path d="M28 56 Q60 50 92 56" fill="none" stroke="#ff007f" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="60" cy="102" rx="50" ry="10" fill="#1a0b2e" stroke="#d900ff" stroke-width="2.5"/>
+        <g>
+          <line x1="99" y1="52" x2="99" y2="57" stroke="#ff007f" stroke-width="1.2"/>
+          <circle cx="99" cy="59.5" r="3.2" fill="#e6d5f7"/>
+          <circle cx="99" cy="55.8" r="1.6" fill="#e6d5f7"/>
+        </g>
+      </svg>
+      <span class="teacup-label" id="teacupLabelEl">steep the tea</span>
+    </button>
+    <div class="board-drawer" id="boardDrawerEl">
+      <h3>ZENHUB &#8212; THE COMMUNITY BOARD</h3>
+      <p class="board-hint">this is the real community wall, live &#8212; <a href="https://perchance.org/xenhub-violet" target="_blank" rel="noopener">open it full-screen &#8599;</a> &#183; <a href="#" id="modLinkEl">mod tools</a></p>
+      <div class="board-count"><span id="countEl">warming up the wall...</span></div>
+
+      <div class="board-webzone">
+        <div class="rules-wrap" id="rulesWrap">
+          <div class="rules">
+            <i class="tape rules-tape"></i>
+            <h3>THE HOUSE RULES</h3>
+            <p><b>1 · STICK AN IDEA</b> — type it on the black note up top, sign it or stay anonymous, then hit <b>✂ STICK IT UP</b>.</p>
+            <p><b>2 · REPLY</b> — hit the <b>⟶ reply</b> arrow on any note and it becomes a black tape strip pinned underneath that note.</p>
+            <p><b>3 · BE KIND</b> — the one and only rule. No hate, no spam, no stealing people's ideas.</p>
+            <p><b>4 · FIX IT</b> — you can <b>✎ fix</b> your own note: the old text gets a line through it and the corrected text takes its place, so the wall keeps its history.</p>
+            <p><b>5 · PEEL IT</b> — <b>✕ peel</b> any of your own notes or replies when they've had their moment. They come off the wall for everyone. Moderators peel anything that breaks rule 3.</p>
+            <button class="close-btn" id="rulesCloseBtn" type="button">got it ✕</button>
+          </div>
+        </div>
+        <div class="web-wrap" id="webWrap" title="the spider knows things">
+          <svg class="board-web-svg" id="boardWebSvgEl" viewBox="0 0 220 220" aria-hidden="true"></svg>
+          <svg class="board-spider" viewBox="0 0 40 40" aria-hidden="true">
+        <line x1="20" y1="-40" x2="20" y2="-9" stroke="#ff007f" stroke-width="1.2" opacity=".6"/>
+        <g stroke="#e6d5f7" stroke-width="1.5" fill="none" stroke-linecap="round">
+          <path d="M20 18 C 12 14, 8 10, 4 12"/>
+          <path d="M20 18 C 12 16, 8 18, 5 22"/>
+          <path d="M20 18 C 16 12, 18 8, 20 5"/>
+          <path d="M20 18 C 16 14, 14 12, 12 9"/>
+          <path d="M20 20 C 28 16, 32 12, 36 14"/>
+          <path d="M20 20 C 28 18, 32 20, 35 24"/>
+          <path d="M20 20 C 24 14, 22 10, 20 7"/>
+          <path d="M20 20 C 24 16, 26 14, 28 11"/>
+        </g>
+        <ellipse cx="20" cy="20" rx="4.3" ry="5" fill="#e6d5f7"/>
+        <circle cx="20" cy="15.2" r="2.3" fill="#e6d5f7"/>
+        <path d="M17.6 14.2 l2.4 -2.8 l2.4 2.8 z" fill="#ff007f"/>
+        <circle cx="19" cy="15" r=".75" fill="#0d0614"/>
+      </svg>
+          <span class="web-hint">psst — click the web</span>
+        </div>
+      </div>
+
+      <div class="composer" id="composerCtn">
+        <i class="tape"></i>
+        <div class="note">
+          <div class="note-head">
+            <span class="note-kicker">WHAT'S ON YOUR MIND?</span>
+            <span class="reply-tag" id="replyTagEl" hidden><span id="replyTagLabelEl">&#10230; replying to</span> <b id="replyTagNameEl"></b><button id="cancelReplyBtn" type="button" title="cancel">&#10005;</button></span>
+          </div>
+          <textarea id="ideaInputEl" rows="4" placeholder="write your idea here..."></textarea>
+          <div class="composer-foot">
+            <input id="nicknameInputEl" placeholder="sign it (optional)">
+            <button id="stickBtn" type="button">&#9986; STICK IT UP</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="board" id="boardEl"><p class="board-loading">warming up the wall...</p></div>
+      <button id="loadMoreBtnEl" type="button">&#11014; pull up older notes</button>
+    </div>
+
+    <div id="modBackdrop"></div>
+    <div id="modHost">
+      <div id="modBar" hidden>
+        <span>MOD TOOLS &#8212; every note now has a &#10005; peel button &middot; press Ctrl+L inside to log in for hard-deletes &amp; bans</span>
+        <button id="modCloseBtn" type="button">close &#10005;</button>
+      </div>
+      <div id="pluginHostEl"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <i class="tape"></i>
+    <h2>&#128375; CHARACTERS</h2>
+    <p class="hint">5 NPC PROFILES</p>
+    <div class="npc-grid" id="npcGridEl"></div>
+  </section>
+
+  <section class="panel">
+    <i class="tape"></i>
+    <h2>&#128279; LINKS</h2>
+    <p class="hint">OUT TO THE WORLD</p>
+    <div class="link-row" id="linkRowEl"></div>
+  </section>
+
+  <footer class="foot">
+    <span>ZENHUB · a personal desk, made in a coffee-soaked basement</span>
+    <span>be kind to your own ideas</span>
+  </footer>
+</div>
+
+<div class="webzone" id="webzoneEl" role="button" title="feed the spider a bug" aria-label="feed the spider a bug">
+  <svg class="web-svg" id="webSvgEl" viewBox="0 0 220 220" aria-hidden="true"></svg>
+  <svg class="spider" viewBox="0 0 40 40" aria-hidden="true">
+    <line x1="20" y1="-40" x2="20" y2="-9" stroke="#ff007f" stroke-width="1.2" opacity=".6"/>
+    <g stroke="#e6d5f7" stroke-width="1.5" fill="none" stroke-linecap="round">
+      <path d="M20 18 C 12 14, 8 10, 4 12"/>
+      <path d="M20 18 C 12 16, 8 18, 5 22"/>
+      <path d="M20 18 C 16 12, 18 8, 20 5"/>
+      <path d="M20 18 C 16 14, 14 12, 12 9"/>
+      <path d="M20 20 C 28 16, 32 12, 36 14"/>
+      <path d="M20 20 C 28 18, 32 20, 35 24"/>
+      <path d="M20 20 C 24 14, 22 10, 20 7"/>
+      <path d="M20 20 C 24 16, 26 14, 28 11"/>
+    </g>
+    <ellipse cx="20" cy="20" rx="4.3" ry="5" fill="#e6d5f7"/>
+    <circle cx="20" cy="15.2" r="2.3" fill="#e6d5f7"/>
+    <path d="M17.6 14.2 l2.4 -2.8 l2.4 2.8 z" fill="#ff007f"/>
+    <circle cx="19" cy="15" r=".75" fill="#0d0614"/>
+  </svg>
+</div>
+
+<div id="nomEl" class="nom-bubble" aria-hidden="true">nom nom nom</div>
+
+<canvas id="fxCanvas" aria-hidden="true"></canvas>
+<div id="cursorSpider" aria-hidden="true">
+  <svg viewBox="0 0 40 40">
+    <line x1="20" y1="0" x2="20" y2="5" stroke="#ff007f" stroke-width="1.2"/>
+    <g fill="#e6d5f7">
+      <circle cx="20" cy="23.5" r="5.2"/>
+      <circle cx="20" cy="15.5" r="2.5"/>
+    </g>
+    <g stroke="#e6d5f7" stroke-width="1.7" fill="none" stroke-linecap="round">
+      <path d="M18 17 C14.5 14.5 12.5 13 10.5 10.5"/>
+      <path d="M18 17 C14.5 18.5 12.5 19 10.5 19.5"/>
+      <path d="M18 17 C15 20.3 13.3 21.8 11.4 22.9"/>
+      <path d="M18 17 C15 20.5 13.5 22.5 12 25"/>
+      <path d="M22 17 C25.5 14.5 27.5 13 29.5 10.5"/>
+      <path d="M22 17 C25.5 18.5 27.5 19 29.5 19.5"/>
+      <path d="M22 17 C25 20.3 26.7 21.8 28.6 22.9"/>
+      <path d="M22 17 C25 20.5 26.5 22.5 28 25"/>
+    </g>
+    <path d="M17.3 13.3 l2.7 -3 l2.7 3 z" fill="#ff007f"/>
+    <circle cx="19" cy="14.2" r=".7" fill="#0d0614"/>
+  </svg>
+</div>
+
+<audio id="audioEl"></audio>
+
+<script>
+/* =====================================================================
+   ZENHUB · PERSONAL DESK
+   HOW TO USE:
+   1. Keep this file in its own folder.
+   2. Create a "music" folder next to it, drop in your 7 .mp3 files.
+      (or just change the "file" paths below to wherever your mp3s live)
+   3. Create an "img" folder, drop in your 5 character pictures.
+   4. Edit the LINKS list with your own buttons and URLs.
+   5. Double-click this file to open it. No server or internet needed
+      (fonts fall back to a typewriter style if offline).
+   ===================================================================== */
+
+  /* ---------- EDIT YOUR STUFF HERE ---------- */
+  var SONGS = [
+    { title: "Track 1",        file: "music/track1.mp3" },
+    { title: "Track 2",        file: "music/track2.mp3" },
+    { title: "Track 3",        file: "music/track3.mp3" },
+    { title: "Track 4",        file: "music/track4.mp3" },
+    { title: "Track 5",        file: "music/track5.mp3" },
+    { title: "Track 6",        file: "music/track6.mp3" },
+    { title: "Track 7",        file: "music/track7.mp3" }
+  ];
+
+  var NPCS = [
+    { name: "Vex",    img: "https://user.uploads.dev/file/cdd2ad38b052be0f64b15b421d149395.jpg", desc: "the spider whisperer \u2014 keeps the house web and always knows whose thread just snapped" },
+    { name: "Nyx",    img: "https://user.uploads.dev/file/07ea11060b8db19aedb8872362dbaeda.jpg", desc: "the music keeper \u2014 seven songs on the deck, and every one of them loops at exactly the right moment" },
+    { name: "Zinnia", img: "https://user.uploads.dev/file/3591176df7ebfb93d4277e44257432bd.jpg", desc: "the tea mystic \u2014 tends the mystery teacup and swears the board brews best before sunrise" },
+    { name: "Kira",   img: "https://user.uploads.dev/file/7b4402fa78d10d94363b2b6af80c20dd.jpg", desc: "the neon painter \u2014 draws circuits on her own cheeks and sticky-note doodles on everyone else's walls" },
+    { name: "Moth",   img: "https://user.uploads.dev/file/dbd1b22c21814881a3ef401a156a9ea1.jpg", desc: "the ghost in the machine \u2014 never posts, but somehow the board always knows she was here" }
+  ];
+
+  var LINKS = [
+    { label: "Portfolio",  url: "https://example.com",       icon: "&#128187;" },
+    { label: "YouTube",    url: "https://youtube.com",        icon: "&#127911;" },
+    { label: "Email Me",   url: "mailto:you@example.com",     icon: "&#9993;" },
+    { label: "Github",     url: "https://github.com",         icon: "&#128193;" },
+    { label: "Link Five",  url: "https://example.com",        icon: "&#128279;" }
+  ];
+
+  /* The ZENHUB community board — open it in the drawer behind the teacup.
+     Points at the clean "raw" page of the board (the same one the perchance
+     editor embeds). If it ever stops loading, open https://perchance.org/xenhub-violet
+     in your browser, copy its address and paste it here, or just use that
+     full URL instead (adds the platform header). */
+  var ZENHUB_URL = "https://558279570f58d15fea60670399fc738f.perchance.org/xenhub-violet";
+  /* ---------------------------------------- */
+  /* ---------- ZENHUB board globals (standalone page, no perchance engine) ---------- */
+  window.generatorName = "xenhub-violet";
+  window.generatorPublicId = "558279570f58d15fea60670399fc738f";
+  if (!("evaluateItem" in String.prototype)) {
+    Object.defineProperty(String.prototype, "evaluateItem", {
+      get: function () { return String(this); },
+      configurable: true
+    });
+  }
+
+
+  function el(tag, cls, attrs) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (attrs) { for (var k in attrs) { if (k === "text") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); } }
+    return n;
+  }
+
+  /* ---------- music ---------- */
+  var audio = document.getElementById("audioEl");
+  var currentIndex = -1;
+
+  function buildSongs() {
+    var list = document.getElementById("songListEl");
+    SONGS.forEach(function (s, i) {
+      var row = el("div", "song");
+      var num = el("span", "song-num", { text: String(i + 1).padStart(2, "0") });
+      var title = el("span", "song-title", { text: s.title });
+      var btn = el("button", "song-btn", { type: "button", text: "\u25b6" });
+      btn.onclick = function () { toggle(i); };
+      row.appendChild(num); row.appendChild(title); row.appendChild(btn);
+      list.appendChild(row);
+    });
+  }
+
+  function toggle(i) {
+    if (currentIndex === i) {
+      if (audio.paused) audio.play(); else audio.pause();
+    } else {
+      currentIndex = i;
+      audio.src = SONGS[i].file;
+      var p = audio.play();
+      if (p && p.catch) p.catch(function () {
+        nowPlayingEl.textContent = "\u26a0 can't find " + SONGS[i].file + " \u2014 check the file paths";
+      });
+    }
+    updateButtons();
+  }
+
+  function updateButtons() {
+    var rows = document.querySelectorAll(".song");
+    rows.forEach(function (row, i) {
+      var playing = i === currentIndex && !audio.paused;
+      row.classList.toggle("playing", playing);
+      row.querySelector(".song-btn").textContent = playing ? "\u275a\u275a" : "\u25b6";
+    });
+    nowPlayingEl.textContent = (currentIndex >= 0 && !audio.paused) ? "now playing: " + SONGS[currentIndex].title : "";
+  }
+  audio.addEventListener("play", updateButtons);
+  audio.addEventListener("pause", updateButtons);
+  audio.addEventListener("ended", function () {
+    if (currentIndex >= 0) toggle((currentIndex + 1) % SONGS.length);
+  });
+
+  /* ---------- music drawer + greeting ---------- */
+  var savedName = "";
+  try { savedName = localStorage.getItem("zenhubDeskName") || ""; } catch (e) {}
+
+  var nameInputEl = document.getElementById("nameInputEl");
+  var nameSubmitBtn = document.getElementById("nameSubmitBtn");
+  var nameFormEl = document.getElementById("nameFormEl");
+  var greetEl = document.getElementById("greetEl");
+
+  function openMusic() {
+    var drawer = document.getElementById("musicDrawerEl");
+    drawer.classList.add("open");
+    musicOpenBtn.innerHTML = "&#9834; CLOSE THE MUSIC";
+    musicOpenBtn.setAttribute("aria-expanded", "true");
+    if (savedName) {
+      greetEl.textContent = "welcome back, " + savedName + " \u2014 the deck is yours";
+      nameFormEl.hidden = true;
+      songListEl.hidden = false;
+      playZipper();
+    } else {
+      greetEl.textContent = "";
+      nameFormEl.hidden = false;
+      songListEl.hidden = true;
+      setTimeout(function () { nameInputEl.focus(); }, 400);
+    }
+    drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  function closeMusic() {
+    document.getElementById("musicDrawerEl").classList.remove("open");
+    musicOpenBtn.innerHTML = "&#127911; OPEN THE MUSIC";
+    musicOpenBtn.setAttribute("aria-expanded", "false");
+  }
+  function toggleMusic() {
+    if (document.getElementById("musicDrawerEl").classList.contains("open")) {
+      closeMusic();
+    } else {
+      openMusic();
+    }
+  }
+  musicOpenBtn.onclick = toggleMusic;
+  document.getElementById("musicCloseBtn").onclick = closeMusic;
+
+  function submitName() {
+    var n = nameInputEl.value.trim();
+    if (!n) { nameInputEl.focus(); return; }
+    savedName = n;
+    try { localStorage.setItem("zenhubDeskName", n); } catch (e) {}
+    nameFormEl.hidden = true;
+    songListEl.hidden = false;
+    greetEl.textContent = "welcome, " + n + " \u2014 the deck is yours";
+    playZipper();
+  }
+  nameSubmitBtn.onclick = submitName;
+  nameInputEl.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); submitName(); }
+  });
+
+  /* ---------- fairydust-zipper opening sound ---------- */
+  var fxCtx = null;
+  function playZipper() {
+    try {
+      if (!fxCtx) fxCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (fxCtx.state === "suspended") fxCtx.resume();
+      var now = fxCtx.currentTime;
+
+      var zipperClick = function (t, f, vol) {
+        var o = fxCtx.createOscillator();
+        var g = fxCtx.createGain();
+        o.type = "triangle";
+        o.frequency.setValueAtTime(f, t);
+        g.gain.setValueAtTime(vol, t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045);
+        o.connect(g).connect(fxCtx.destination);
+        o.start(t); o.stop(t + 0.06);
+      };
+
+      for (var i = 0; i < 15; i++) zipperClick(now + i * i * 0.004, 420 + i * 95, 0.055);
+
+      var sweep = fxCtx.createOscillator();
+      var sg = fxCtx.createGain();
+      sweep.type = "sine";
+      sweep.frequency.setValueAtTime(170, now);
+      sweep.frequency.exponentialRampToValueAtTime(1500, now + 0.5);
+      sg.gain.setValueAtTime(0.0001, now);
+      sg.gain.exponentialRampToValueAtTime(0.16, now + 0.02);
+      sg.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+      sweep.connect(sg).connect(fxCtx.destination);
+      sweep.start(now); sweep.stop(now + 0.6);
+
+      var notes = [784, 1046, 1318, 1568, 2093, 2637];
+      notes.forEach(function (f, k) {
+        var t = now + 0.2 + k * 0.08;
+        var o = fxCtx.createOscillator();
+        var g = fxCtx.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(f, t);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.085, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+        o.connect(g).connect(fxCtx.destination);
+        o.start(t); o.stop(t + 0.6);
+      });
+    } catch (e) {}
+  }
+
+  function playNom() {
+    try {
+      if (!fxCtx) fxCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (fxCtx.state === "suspended") fxCtx.resume();
+      var now = fxCtx.currentTime;
+      [160, 120, 85].forEach(function (f, k) {
+        var t = now + k * 0.24;
+        var o = fxCtx.createOscillator();
+        var g = fxCtx.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(f, t);
+        o.frequency.exponentialRampToValueAtTime(f * 0.55, t + 0.09);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.22, t + 0.014);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.13);
+        o.connect(g).connect(fxCtx.destination);
+        o.start(t); o.stop(t + 0.15);
+      });
+    } catch (e) {}
+  }
+
+  /* ---------- characters ---------- */
+  function buildNpcs() {
+    var grid = document.getElementById("npcGridEl");
+    NPCS.forEach(function (n) {
+      var card = el("div", "npc");
+      var imgWrap = el("div", "npc-img");
+      var img = el("img", null, { src: n.img, alt: n.name, loading: "lazy" });
+      img.onerror = function () { imgWrap.textContent = "\ud83d\udd77"; };
+      imgWrap.appendChild(img);
+      var name = el("div", "npc-name", { text: n.name });
+      var desc = el("p", "npc-desc", { text: n.desc });
+      card.appendChild(imgWrap); card.appendChild(name); card.appendChild(desc);
+      grid.appendChild(card);
+    });
+  }
+
+  /* ---------- links ---------- */
+  function buildLinks() {
+    var row = document.getElementById("linkRowEl");
+    LINKS.forEach(function (l) {
+      var a = el("a", "link-btn", { href: l.url, target: "_blank", rel: "noopener" });
+      a.innerHTML = l.icon + " " + l.label;
+      row.appendChild(a);
+    });
+  }
+
+  /* ---------- mystery teacup + native ZENHUB board drawer ---------- */
+  var teacupBtn = document.getElementById("teacupBtn");
+  var teacupLabelEl = document.getElementById("teacupLabelEl");
+  var boardDrawerEl = document.getElementById("boardDrawerEl");
+  var boardOpen = false;
+  teacupBtn.addEventListener("click", function () {
+    boardOpen = !boardOpen;
+    boardDrawerEl.classList.toggle("open", boardOpen);
+    teacupBtn.classList.toggle("warm", boardOpen);
+    teacupBtn.setAttribute("aria-expanded", boardOpen ? "true" : "false");
+    teacupLabelEl.textContent = boardOpen ? "put the kettle down" : "steep the tea";
+    boardDrawerEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  /* ---------- corner web ---------- */
+  function buildWeb() {
+    var cx = 110, cy = 110, R = 98, spokes = 9, rings = 6, d = [];
+    for (var i = 0; i < spokes; i++) {
+      var a = i * 2 * Math.PI / spokes;
+      d.push("M" + cx + " " + cy + "L" + (cx + R * Math.cos(a)).toFixed(1) + " " + (cy + R * Math.sin(a)).toFixed(1));
+    }
+    for (var r = 1; r <= rings; r++) {
+      var rad = R * r / rings;
+      for (var s = 0; s < spokes; s++) {
+        var a0 = s * 2 * Math.PI / spokes;
+        var a1 = ((s + 1) % spokes) * 2 * Math.PI / spokes;
+        var x0 = cx + rad * Math.cos(a0), y0 = cy + rad * Math.sin(a0);
+        var x1 = cx + rad * Math.cos(a1), y1 = cy + rad * Math.sin(a1);
+        d.push("M" + x0.toFixed(1) + " " + y0.toFixed(1) + "A" + rad.toFixed(1) + " " + rad.toFixed(1) + " 0 0 1 " + x1.toFixed(1) + " " + y1.toFixed(1));
+      }
+    }
+    var paths = d.map(function (p) { return '<path d="' + p + '"/>'; }).join("");
+    webSvgEl.innerHTML = '<g stroke="#d900ff" stroke-width="1.7" fill="none" opacity=".85">' + paths + "</g>";
+  }
+
+  /* ---------- aphorisms ---------- */
+  var APHORISMS = [
+    "what's on your mind? the desk is listening.",
+    "my music. my people. my corner of the web.",
+    "clean desk, messy thoughts — that's the point.",
+    "be kind to your own ideas.",
+    "the spider has seen this desktop. be kind to it."
+  ];
+  var aIdx = 0;
+  aphorismEl.textContent = APHORISMS[0];
+  setInterval(function () {
+    aIdx = (aIdx + 1) % APHORISMS.length;
+    aphorismEl.style.opacity = 0;
+    setTimeout(function () {
+      aphorismEl.textContent = APHORISMS[aIdx];
+      aphorismEl.style.opacity = 1;
+    }, 280);
+  }, 7000);
+
+  /* ---------- corner spider eats the cursor spider ---------- */
+  function showNom(texts) {
+    var nomEl = document.getElementById("nomEl");
+    var i = 0;
+    (function step() {
+      if (i >= texts.length) return;
+      nomEl.textContent = texts[i++];
+      nomEl.classList.add("show");
+      setTimeout(function () {
+        nomEl.classList.remove("show");
+        setTimeout(step, 380);
+      }, 1150);
+    })();
+  }
+  function cornerChomp() {
+    var cs = document.querySelector(".webzone .spider");
+    cs.classList.add("chomping");
+    setTimeout(function () { cs.classList.remove("chomping"); }, 950);
+  }
+
+  /* ---------- cursor spider + web sparks ---------- */
+  function initCursorFx() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var canvas = document.getElementById("fxCanvas");
+    var spider = document.getElementById("cursorSpider");
+    var ctx = canvas.getContext("2d");
+    var W = 0, H = 0;
+    function resize() {
+      W = window.innerWidth; H = window.innerHeight;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.style.width = W + "px"; canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    var mx = W / 2, my = H / 2, sx = W / 2, sy = H / 2;
+    var visible = false;
+    var sparks = [];
+    var lastT = performance.now();
+
+    window.addEventListener("pointermove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      if (!visible && !eaten) { visible = true; spider.classList.add("show"); }
+    }, { passive: true });
+    document.addEventListener("mouseleave", function () {
+      visible = false; spider.classList.remove("show");
+    });
+
+    function burst(x, y) {
+      var n = 12;
+      for (var i = 0; i < n; i++) {
+        var a = (i / n) * Math.PI * 2 + Math.random() * 0.6;
+        var sp = 1.6 + Math.random() * 3.4;
+        sparks.push({
+          x: x, y: y,
+          vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+          life: 1, decay: 0.022 + Math.random() * 0.02,
+          r: 1.2 + Math.random() * 1.8,
+          rot: Math.random() * Math.PI,
+          web: Math.random() < 0.35,
+          color: ["#ff007f", "#d900ff", "#c4a9e8", "#ffffff"][(Math.random() * 4) | 0]
+        });
+      }
+    }
+    window.addEventListener("pointerdown", function (e) { burst(e.clientX, e.clientY); }, { passive: true });
+
+    var webzone = document.getElementById("webzoneEl");
+    var released = false, eaten = false;
+    var relTimer = null, relStep = 0, relX = 0, relY = 0, relTx = 0, relTy = 0, relVy = 0;
+
+    webzone.addEventListener("click", function () {
+      if (released || eaten || !visible) return;
+      var wr = webzone.getBoundingClientRect();
+      relX = sx; relY = sy;
+      relTx = wr.left + wr.width / 2;
+      relTy = wr.top + wr.height / 2;
+      relVy = 0; relStep = 0;
+      released = true;
+      if (relTimer) clearInterval(relTimer);
+      relTimer = setInterval(relTick, 34);
+    });
+
+    function relTick() {
+      relStep++;
+      var d = 34 / 16.7;
+      if (relStep < 9) {
+        relVy += 0.5 * d;
+        relX += 0.3 * d;
+        relY += relVy;
+        spider.style.transform = "translate(" + relX.toFixed(1) + "px, " + relY.toFixed(1) + "px) rotate(140deg)";
+      } else {
+        var p = Math.min((relStep - 9) / 21, 1);
+        var e2 = p * p;
+        var cx = relX + (relTx - relX) * e2;
+        var cy = relY + (relTy - relY) * e2;
+        var sc = Math.max(1 - 0.68 * p, 0.32);
+        var ang = 140 + 280 * p;
+        spider.style.transform = "translate(" + cx.toFixed(1) + "px, " + cy.toFixed(1) + "px) rotate(" + ang.toFixed(1) + "deg) scale(" + sc.toFixed(2) + ")";
+        if (p >= 1) {
+          clearInterval(relTimer); relTimer = null;
+          released = false; eaten = true;
+          spider.classList.remove("show");
+          burst(relTx, relTy);
+          burst(relTx + 8, relTy - 10);
+          cornerChomp();
+          showNom(["nom nom nom", "yum."]);
+          playNom();
+          setTimeout(function () {
+            eaten = false;
+            sx = mx; sy = my;
+            visible = true;
+            spider.classList.add("show");
+          }, 2600);
+        }
+      }
+    }
+
+    function frame(now) {
+      var dt = Math.min((now - lastT) / 16.7, 3); lastT = now;
+      var k = 1 - Math.pow(0.89, dt);
+      if (!released && !eaten) { sx += (mx - sx) * k; sy += (my - sy) * k; }
+      for (var i = sparks.length - 1; i >= 0; i--) {
+        var s = sparks[i];
+        s.x += s.vx * dt; s.y += s.vy * dt;
+        s.vx *= Math.pow(0.96, dt); s.vy *= Math.pow(0.96, dt);
+        s.life -= s.decay * dt;
+        if (s.life <= 0) sparks.splice(i, 1);
+      }
+      ctx.clearRect(0, 0, W, H);
+      if (visible || sparks.length) {
+        var dx = mx - sx, dy = my - sy;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (!released && !eaten && dist > 6) {
+          var cx = (mx + sx) / 2;
+          var cy = (my + sy) / 2 + Math.min(36, dist * 0.12);
+          ctx.strokeStyle = "rgba(217,0,255,.65)";
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(mx, my);
+          ctx.quadraticCurveTo(cx, cy, sx, sy - 15);
+          ctx.stroke();
+        }
+        if (visible && !released && !eaten) {
+          var ang = Math.atan2(my - sy, mx - sx) * 180 / Math.PI + 90;
+          spider.style.transform = "translate(" + sx + "px, " + sy + "px) rotate(" + ang.toFixed(1) + "deg)";
+        }
+        for (var j = 0; j < sparks.length; j++) {
+          var p = sparks[j];
+          ctx.globalAlpha = Math.max(p.life, 0);
+          if (p.web) {
+            ctx.strokeStyle = p.color; ctx.lineWidth = 1;
+            for (var w = 0; w < 4; w++) {
+              var a2 = w * Math.PI / 2 + p.rot;
+              ctx.beginPath();
+              ctx.moveTo(p.x - Math.cos(a2) * p.r * 2, p.y - Math.sin(a2) * p.r * 2);
+              ctx.lineTo(p.x + Math.cos(a2) * p.r * 2, p.y + Math.sin(a2) * p.r * 2);
+              ctx.stroke();
+            }
+          } else {
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, 7);
+            ctx.fill();
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+/* vendored comments-plugin (see imports/comments-plugin/main.pjs). Calls its own origin server; the public API + server code stay coupled, so if the plugin updates, re-vendor this. */
+function zenhubComments(opts) {
+if(!opts) opts = {};
+let width = opts.width;
+let height = opts.height;
+if(!width) width = "300px";
+if(!height) height = "250px";
+if(typeof width === "number") width += "px";
+if(typeof height === "number") height += "px";
+// Explicitly-given width/height are placed before the custom containerStyle/style, so the CSS cascade lets the custom style override them only if it actually sets those properties.
+let customStyle = opts.containerStyle || opts.style;
+let explicitSizeRules = `${opts.width ? `width:${width}; ` : ""}${opts.height ? `height:${height}; ` : ""}`;
+let containerStyle = customStyle ? explicitSizeRules + customStyle : `width:${width}; height:${height};`;
+
+let iframeUniqueId = "id"+Math.random().toString().replaceAll(".", "")+ Math.random().toString().replaceAll(".", "");
+let ctx = {};
+ctx.currentInputElText = "";
+ctx.iframeUniqueId = iframeUniqueId;
+
+function parseChannelRuleSegment(rawRules) {
+  if(rawRules === undefined || rawRules === null || rawRules === "") return {valid:true, rules:{}};
+  if(typeof rawRules !== "string") return {valid:false, error:"rules must be a string"};
+  let items = rawRules.split(",");
+  if(items.length === 0) return {valid:false, error:"rules cannot be empty"};
+  let rules = {};
+  for(let item of items) {
+    if(!item) return {valid:false, error:"rules cannot contain empty items"};
+    let colonIndex = item.indexOf(":");
+    if(colonIndex <= 0 || colonIndex === item.length-1) return {valid:false, error:`invalid rule '${item}'`};
+    let key = item.slice(0, colonIndex);
+    let value = item.slice(colonIndex+1);
+    if(rules[key] !== undefined) return {valid:false, error:`duplicate '${key}:' rule`};
+    if(key === "u") {
+      if(!/^[a-z0-9|]+$/.test(value) || /\|\|/.test(value) || value.startsWith("|") || value.endsWith("|")) {
+        return {valid:false, error:"invalid usernames in 'u:' rule"};
+      }
+    } else if(key === "auth") {
+      if(!/^[a-f0-9]{64}$/.test(value)) {
+        return {valid:false, error:"invalid hash in 'auth:' rule"};
+      }
+    } else if(key === "ids") {
+      if(value !== "channel") return {valid:false, error:"'ids:' rule currently only supports 'channel'"};
+    } else {
+      return {valid:false, error:`unknown rule '${key}:'`};
+    }
+    rules[key] = value;
+  }
+  return {valid:true, rules};
+}
+
+function parseRawChannelSpec(rawChannel) {
+  if(rawChannel === undefined || rawChannel === null || rawChannel === "") return {valid:true, rawChannel:"", channelName:"", rules:{}};
+  let channel = rawChannel.toString();
+  let parts = channel.split("+");
+  if(parts.length > 2) return {valid:false, error:"too many '+' segments"};
+  if(!/^[a-z0-9\-]+$/.test(parts[0] || "")) return {valid:false, error:"channel names can only contain lower-case letters, numbers, and hyphens"};
+  let parsedRules = parseChannelRuleSegment(parts[1]);
+  if(!parsedRules.valid) return parsedRules;
+  return {
+    valid:true,
+    rawChannel: channel,
+    channelName: parts[0],
+    rulesSegment: parts[1] || "",
+    rules: parsedRules.rules,
+  };
+}
+
+console.debug("comments-plugin 1");
+
+function addMethodsToReturnValue(stringObj) {
+  stringObj.submit = async function(optionalText, opts={}) {
+    // Note: if optionalText is specified, that text will be submitted instead of what's currently in the text box, and the text box will not be cleared after submission.
+    if(optionalText) optionalText = optionalText.toString();
+    
+    let nickname = opts.nickname ? opts.nickname.toString() : null;
+    let auth = null;
+    if(opts.auth !== undefined && opts.auth !== null) {
+      if(!opts.auth || typeof opts.auth !== "object" || typeof opts.auth.publicKey !== "string" || typeof opts.auth.decryptChallenge !== "function") {
+        throw new Error("Invalid auth option. Expected {publicKey, decryptChallenge}.");
+      }
+      auth = {
+        publicKey: opts.auth.publicKey,
+        enabled: true,
+      };
+    }
+    
+    let resolver, rejecter;
+    let promise = new Promise((resolve, reject) => {
+      resolver = resolve;
+      rejecter = reject;
+    });
+    let requestId = Math.random().toString()+Math.random().toString();
+    let timeoutMs = Number(opts.timeoutMs);
+    if(!Number.isFinite(timeoutMs) || timeoutMs < 1000) timeoutMs = 60000;
+    let timeoutId;
+    function cleanup() {
+      if(timeoutId) clearTimeout(timeoutId);
+      window.removeEventListener("message", messageHandler);
+    }
+    async function messageHandler(e) {
+      if(e.origin !== "https://comments-plugin.perchance.org") return;
+      if(e.data.iframeUniqueId !== ctx.iframeUniqueId) return;
+      if(e.data.requestId !== requestId) return;
+      
+      if(e.data.type === "message_submit_response") {
+        console.debug(`parent frame got message_submit_response:`, e.data.success);
+        cleanup();
+        if(e.data.success) {
+          resolver({success:true});
+        } else {
+          rejecter(new Error(e.data.message || "Failed to submit comment."));
+        }
+      } else if(e.data.type === "auth_challenge_decrypt_request") {
+        (async () => {
+          try {
+            let proof = await opts.auth.decryptChallenge(e.data.challenge);
+            e.source.postMessage({type:"auth_challenge_decrypt_response", success:true, proof, authRequestId:e.data.authRequestId, channel:ctx.urlHashData.channel, iframeUniqueId:ctx.iframeUniqueId, requestId}, e.origin);
+          } catch(error) {
+            e.source.postMessage({type:"auth_challenge_decrypt_response", success:false, message:error?.message || "Failed to decrypt auth challenge.", authRequestId:e.data.authRequestId, channel:ctx.urlHashData.channel, iframeUniqueId:ctx.iframeUniqueId, requestId}, e.origin);
+          }
+        })();
+      } else {
+        console.warn("Invalid event type for this requestId?");
+      }
+    }
+    window.addEventListener("message", messageHandler);
+    timeoutId = setTimeout(() => {
+      cleanup();
+      rejecter(new Error("Timed out while waiting for the comment to be submitted."));
+    }, timeoutMs);
+    while(!ctx.finishedLoading) { console.debug("Waiting for comments-plugin iframe to load before sending .submit() postMessage"); await new Promise(r => setTimeout(r, 500)); }
+    ctx.iframeContentWindow.postMessage({type:"trigger_programmatic_submit", text:optionalText, nickname, auth, channel:ctx.urlHashData.channel, requestId}, "https://comments-plugin.perchance.org");
+    return promise;
+  };
+  
+  Object.defineProperty(stringObj, 'inputText', {
+    get: function() {
+      return ctx.currentInputElText;
+    },
+    set: function(value) {
+      ctx.currentInputElText = value;
+      ctx.iframeContentWindow.postMessage({type:"set_input_el_text", channel:ctx.urlHashData.channel, text:value}, "https://comments-plugin.perchance.org");
+    },
+  });
+  
+  stringObj.setNicknameForNextComment = async function(nickname) {
+    ctx.iframeContentWindow.postMessage({type:"set_next_submit_nickname", channel:ctx.urlHashData.channel, nickname:nickname}, "https://comments-plugin.perchance.org");
+  };
+  stringObj.setAvatarUrlForNextComment = async function(avatarUrl) {
+    ctx.iframeContentWindow.postMessage({type:"set_next_submit_avatar_url", channel:ctx.urlHashData.channel, nickname:avatarUrl}, "https://comments-plugin.perchance.org");
+  };
+
+  let queuedUserBans = [];
+  let queuedUserUnbans = [];
+  function processQueuedDynamicBans() {
+    for(let userId of queuedUserBans) ctx.iframeContentWindow.postMessage({type:"ban_user", channel:ctx.urlHashData.channel, userId}, "https://comments-plugin.perchance.org");
+    queuedUserBans = [];
+    for(let userId of queuedUserUnbans) ctx.iframeContentWindow.postMessage({type:"unban_user", channel:ctx.urlHashData.channel, userId}, "https://comments-plugin.perchance.org");
+    queuedUserUnbans = [];
+  }
+  ctx.finishedLoadingHandlers.push(processQueuedDynamicBans);
+  
+  stringObj.banUser = async function(userId) {
+    userId = userId.evaluateItem.split("-").pop();
+    if(ctx.finishedLoading) {
+      ctx.iframeContentWindow.postMessage({type:"ban_user", channel:ctx.urlHashData.channel, userId}, "https://comments-plugin.perchance.org");
+    } else {
+      queuedUserBans.push(userId);
+    }
+  };
+  
+  stringObj.unbanUser = async function(userId) {
+    userId = userId.evaluateItem.split("-").pop();
+    if(ctx.finishedLoading) {
+      ctx.iframeContentWindow.postMessage({type:"unban_user", channel:ctx.urlHashData.channel, userId}, "https://comments-plugin.perchance.org");
+    } else {
+      queuedUserUnbans.push(userId);
+    }
+  };
+  
+  Object.defineProperty(stringObj, 'comments', { get: () => ctx.allComments.slice(0) });
+  Object.defineProperty(stringObj, 'channel', { get: () => ctx.urlHashData.channel });
+  
+  return stringObj;
+}
+
+let queryParams = {};
+if(opts.adminPasswordHash) queryParams.adminPasswordHash = opts.adminPasswordHash.evaluateItem;
+
+let urlHashData = {};
+urlHashData.iframeUniqueId = iframeUniqueId;
+if(opts.adminPasswordHash) urlHashData.adminPasswordHash = opts.adminPasswordHash;
+if(opts.bannedWords) {
+  if(typeof opts.bannedWords === "string") {
+    urlHashData.bannedWords = opts.bannedWords.trim().split(",").map(w => w.trim()).filter(w => w);
+  } else if(!opts.bannedWords.getLength && opts.getPropertyNames && opts.getPropertyNames.includes("bannedWords")) {
+    urlHashData.bannedWords = opts.bannedWords.getRawListText.split("=").slice(1).join("=").trim().split(",").map(w => w.trim()).filter(w => w);
+  } else {
+    urlHashData.bannedWords = opts.bannedWords.selectAll.map(item => item.getRawListText.replace("/\\^", "/^"));
+  }
+}
+
+if(opts.commentPlaceholderText) urlHashData.commentPlaceholderText = opts.commentPlaceholderText.evaluateItem;
+if(opts.submitButtonText) urlHashData.submitButtonText = opts.submitButtonText.evaluateItem;
+if(opts.submitButtonSuccessText) urlHashData.submitButtonSuccessText = opts.submitButtonSuccessText.evaluateItem;
+if(opts.hideComments) urlHashData.hideComments = opts.hideComments;
+if(opts.hideDates) urlHashData.hideDates = opts.hideDates;
+if(opts.hideCommentsBeforeDate) urlHashData.hideCommentsBeforeDate = opts.hideCommentsBeforeDate;
+
+if(opts.hideSettingsButton) urlHashData.hideSettingsButton = opts.hideSettingsButton;
+if(opts.hideFullscreenButton) urlHashData.hideFullscreenButton = opts.hideFullscreenButton;
+if(opts.submitButtonStyle) urlHashData.submitButtonStyle = opts.submitButtonStyle.evaluateItem;
+if(opts.settingsButtonStyle) urlHashData.settingsButtonStyle = opts.settingsButtonStyle.evaluateItem;
+if(opts.fullscreenButtonStyle) urlHashData.fullscreenButtonStyle = opts.fullscreenButtonStyle.evaluateItem;
+if(opts.messageBubbleStyle) urlHashData.messageBubbleStyle = opts.messageBubbleStyle.evaluateItem;
+if(opts.messageFeedStyle) urlHashData.messageFeedStyle = opts.messageFeedStyle.evaluateItem;
+if(opts.inputAreaStyle) urlHashData.inputAreaStyle = opts.inputAreaStyle.evaluateItem;
+if(opts.loadFonts) urlHashData.loadFonts = opts.loadFonts.evaluateItem;
+if(opts.forceColorScheme) urlHashData.forceColorScheme = opts.forceColorScheme.evaluateItem;
+
+try { urlHashData.transparentBackground = /(^|\s)background(|-color): *(transparent|none transparent)/.test(containerStyle); } catch(e) { console.log(e); }
+
+if(opts.channelLabel) urlHashData.channelLabel = opts.channelLabel.evaluateItem;
+
+
+if(opts.adminFlair) urlHashData.adminFlair = opts.adminFlair.evaluateItem;
+if(opts.deleteButtonIcon) urlHashData.deleteButtonIcon = opts.deleteButtonIcon.evaluateItem;
+if(opts.bannedUsers) urlHashData.bannedUsers = opts.bannedUsers.selectAll.map(l => l.evaluateItem.split("-").slice(-1)[0]).joinItems(",");
+if(opts.rateLimits) urlHashData.rateLimits = opts.rateLimits;
+if(opts.slashCommands) urlHashData.slashCommands = encodeURIComponent(JSON.stringify(opts.slashCommands));
+if(opts.beforeSubmit) urlHashData.beforeSubmitHandlerEnabled = "true";
+if(opts.customEmojiSize) urlHashData.customEmojiSize = opts.customEmojiSize;
+if(opts.loneCustomEmojiSizeMultiplier) urlHashData.loneCustomEmojiSizeMultiplier = opts.loneCustomEmojiSizeMultiplier;
+if(opts.customEmojis) {  
+  if(typeof opts.customEmojis === "string" && (opts.customEmojis.startsWith("https://user-uploads.perchance.org") || opts.customEmojis.startsWith("https://user.uploads.dev"))) {
+    urlHashData.customEmojis = opts.customEmojis.trim();
+  } else { 
+    let text = opts.customEmojis.getRawListText;
+    text = text.slice(text.indexOf("\n")).trim(); // remove list name
+    // note: no need to remove indentation - parsing code in embed does that performantly
+    
+    // we need to evaluateItem for things like `@import = {import:my-emoji-list-url}
+    urlHashData.customEmojis = /@import\s*=\s*[[{]/.test(text) ? text.replace(/@import\s*=\s*[[{].+/, m=>m.evaluateItem) : text;
+  }
+}
+urlHashData.channel = opts.channel ? opts.channel.evaluateItem : "";
+
+if(!window.___commentsPluginSlashCommandsByChannel12321) window.___commentsPluginSlashCommandsByChannel12321 = {};
+window.___commentsPluginSlashCommandsByChannel12321[urlHashData.channel] = opts.slashCommands;    
+
+let folderName = window.generatorName; 
+if(opts.channel) {
+  let channel = opts.channel.evaluateItem.toString();
+  let parsedChannel = parseRawChannelSpec(channel);
+  if(!parsedChannel.valid) return `(ERROR: You gave a channel name of '${channel}' to the comments plugin, but it is invalid: ${parsedChannel.error}. Channel names can only contain lower-case letters, numbers, and hyphens, like 'my-cool-channel-33', and can optionally include raw rules like "+u:username1|username2,ids:channel" or "+auth:64_hex_sha256_public_key,ids:channel" at the end.)`;
+  folderName += `+${parsedChannel.rawChannel}`;
+}
+
+// I've deprecated `reverseCommentOrder`, but it won't hurt existing implementations because the "reversed" order (new comments at bottom) is now default.
+// if(opts.reverseCommentOrder) urlHashData.reverseCommentOrder = opts.reverseCommentOrder;
+urlHashData.reverseCommentOrder = true;
+if(opts.newestCommentsAtTop) urlHashData.reverseCommentOrder = false; 
+
+let queryString = new URLSearchParams(queryParams).toString();
+
+let loadMoreButton = document.createElement("button");
+let originalLoadMoreButtonTextContent = "load more";
+let postMessageSource = null;
+loadMoreButton.innerHTML = originalLoadMoreButtonTextContent;
+loadMoreButton.style.cssText = "display:none; margin:0.5rem auto;";
+loadMoreButton.addEventListener("click", function() {
+  originalLoadMoreButtonTextContent = loadMoreButton.textContent;
+  loadMoreButton.textContent = "loading...";
+  loadMoreButton.disabled = true;
+  document.querySelector(`.${iframeUniqueId}`).contentWindow.postMessage({iframeUniqueId, loadMoreButtonClick:true}, "*");
+});
+
+ctx.loadMoreButton = loadMoreButton;
+ctx.opts = opts;
+ctx.urlHashData = urlHashData;
+ctx.allComments = [];
+ctx.onLoadAlreadyFired = false;
+ctx.alreadyGotCommentIds = new Set();
+ctx.finishedLoadingHandlers = [];
+
+if(!window.___alreadyAddedCommentsPluginStuff43211234) {
+
+  window.___commentsPluginIframeUniqueIdToContext = new Map();
+  
+  // the iframe send us a message when it is finished loading (this is to get around Glitch's uncustomizable loading screens)
+  window.addEventListener("message", async function(e) {
+    if(e.origin !== "https://comments-plugin.perchance.org") return;
+    if(!e.data.iframeUniqueId) return;
+    
+    // May need to wait a moment for the replacedDuringUpdate iframes to be 'tracked' since my current code hackily does that with a 'polling' method.
+    while(!window.___commentsPluginIframeUniqueIdToContext.get(e.data.iframeUniqueId)) { console.debug("Waiting for comments-plugin iframe to be tracked."); await new Promise(r => setTimeout(r, 500)); }
+    
+    let ctx = window.___commentsPluginIframeUniqueIdToContext.get(e.data.iframeUniqueId)
+    let opts = ctx.opts
+    let loadMoreButton = ctx.loadMoreButton;
+    
+    // if(e.data.type === "perchance_comments_new_message_added") {
+    //   console.debug("new message:", e.data.messageData);
+    //   console.debug("event:", e);
+    //   console.debug("window.___commentsPluginIframeContentWindowToContext:", window.___commentsPluginIframeUniqueIdToContext);
+    //   console.debug("ctx:", ctx);
+    //   console.debug("opts:", opts);
+    // }
+    
+    if(e.data.type === "perchance_comments_new_message_added") {
+      if(!ctx.alreadyGotCommentIds.has(e.data.messageData.id)) {
+        ctx.allComments.push(e.data.messageData);
+        ctx.alreadyGotCommentIds.add(e.data.messageData.id);
+        ctx.allComments.sort((a,b) => a.time-b.time);
+        
+        if(opts.onComment) {
+          opts.onComment(e.data.messageData);
+        }
+      }
+    } else if(e.data.type === "input_el_text_change") {
+      console.debug(`parent frame got input_el_text_change:`, e.data.text);
+      ctx.currentInputElText = e.data.text;
+      if(opts.onInputTextChange) {
+        opts.onInputTextChange(e.data.text);
+      }
+    } else if(e.data.type === "perchance_comments_on_load_data") {
+      let newComments = e.data.onLoadData.comments.filter(c => !ctx.alreadyGotCommentIds.has(c.id));
+      for(let c of newComments) ctx.alreadyGotCommentIds.add(c.id);
+      ctx.allComments.push(...newComments);
+      ctx.allComments.sort((a,b) => a.time-b.time);
+      
+      if(ctx.onLoadAlreadyFired) {
+        // the comments plugin sometimes self-reloads atm, which is not ideal, but it's fine so long as we don't count it as an actual reload.
+        // instead, we trigger onComment for any new comments, and that's it.
+        for(let comment of newComments) {
+          opts.onComment(comment);
+        }
+        return;
+      }
+      ctx.onLoadAlreadyFired = true;
+      
+      postMessageSource = e.source;
+      if(opts.onLoad) {
+        if(e.data.onLoadData.comments.length > 0) {
+          loadMoreButton.style.display = "block";
+        }
+        if(e.data.noMoreCommentsBeforeThis) {
+          loadMoreButton.style.display = "none";
+        }
+        opts.onLoad(e.data.onLoadData.comments, {loadMoreButton});
+      }
+    } else if(e.data.type === "perchance_comments_on_load_more") {
+      let newComments = e.data.onLoadMoreData.comments.filter(c => !ctx.alreadyGotCommentIds.has(c.id));
+      for(let c of newComments) ctx.alreadyGotCommentIds.add(c.id);
+      ctx.allComments.push(...newComments);
+      ctx.allComments.sort((a,b) => a.time-b.time);
+      
+      if(e.data.onLoadMoreData.comments.length > 0) {
+        loadMoreButton.disabled = false;
+        loadMoreButton.textContent = originalLoadMoreButtonTextContent;
+      } else {
+        loadMoreButton.style.display = "none";
+      }
+      if(e.data.noMoreCommentsBeforeThis) {
+        loadMoreButton.style.display = "none";
+        loadMoreButton.disabled = true;
+      }
+      if(opts.onLoadMore) {
+        opts.onLoadMore(e.data.onLoadMoreData.comments);
+      }
+    } else if(e.data.type === "perchance_comments_load_more_no_more") {
+      loadMoreButton.style.display = "none";
+    } else if(e.data.type === "perchance_comments_finished_loading") {
+      ctx.finishedLoading = true;
+      for(let handler of ctx.finishedLoadingHandlers) {
+        try { handler() } catch(e) { console.error(e); }
+      }
+      // hide the loader of the iframe:
+      let ctn = document.querySelector(`.${e.data.iframeUniqueId}`).closest(".comments-plugin-ctn");
+      // have to check if exists because i think with fullscreen button it's not in the ctn anymore:
+      if(ctn) ctn.querySelector(".__perchance-comments-loading-facade-12345").style.display = "none";
+      // and then tell it its parent origin:
+      e.source.postMessage({parentOrigin:window.origin}, e.origin);
+    } else if(e.data.type === "evaluateText") {
+      // EDIT: This is unused, so I'm commenting it out. It's likely a very bad idea anyway, since it creates a larger XSS type attack surface stuff like send-me-a-secret-message where keys may be stored in localStorage
+      // let result = e.data.text.evaluateItem;
+      // e.source.postMessage({requestId:e.data.requestId, result}, e.origin);
+    } else if(e.data.type === "before_submit_handler_call") {
+      let result;
+      if(opts.beforeSubmit) {
+        try {
+          result = await opts.beforeSubmit({inputText:e.data.inputText});
+          if(result !== undefined) result = JSON.parse(JSON.stringify(result));
+        } catch(e) {
+          result = null; // IMPORTANT: return null if it fails, which cancels the submission. Important for cases like: perchance.org/send-me-a-secret-message where continue-submission-on-error is 'dangerous'
+          alert(`beforeSubmit function failed with error: ${e.message}`);
+          console.error(e);
+        }
+      }
+      await new Promise(r => setTimeout(r, 50)); // important: allow e.g. set_input_el_text to be sent before this submit handler call is considered "done"
+      e.source.postMessage({requestId:e.data.requestId, result}, e.origin);
+    } else if(e.data.type === "slash_command") {
+      let commandName = e.data.commandName;
+      let argText = e.data.argText;
+      let slashCommands = window.___commentsPluginSlashCommandsByChannel12321[e.data.channel];
+      if(slashCommands[commandName] === undefined) {
+        alert("Please refresh the page before testing newly-added commands.");
+        return "";
+      }
+      slashCommands[commandName].input = argText;
+      let resultText = slashCommands[commandName].output.evaluateItem;
+      e.source.postMessage({requestId:e.data.requestId, resultText}, e.origin);
+    } else if(e.data.type === "toggle_fullscreen") {
+      let iframe = document.querySelector(`.${e.data.iframeUniqueId}`);
+      
+      // If iframe is currently fullscreen, then it's not in a `ctn`, so we use the pre-assigned data-comments-ctn-id to find the iframe's ctn so we can put it back in:
+      let ctn = iframe.closest(".comments-plugin-ctn") || document.querySelector(`[data-comments-ctn-id="${iframe.dataset.commentsCtnId}"]`);
+      
+      if(ctn.dataset.isFullscreen === "no") {
+        document.body.appendChild(iframe);
+        iframe.style.position = "fixed";
+        iframe.style.zIndex = "999999999"; // <-- caution: don't lower this
+        iframe.style.top = "0"; iframe.style.left = "0";
+        document.scrollingElement.style.overflow = "hidden";
+        ctn.dataset.isFullscreen = "yes";
+        // link the iframe and ctn with an id so we can get the ctn, given the id from the iframe that sent the "toggle_fullscreen" message:
+        let commentsCtnId = Math.random();
+        ctn.dataset.commentsCtnId = commentsCtnId;
+        iframe.dataset.commentsCtnId = commentsCtnId;
+      } else {
+        ctn.appendChild(iframe);
+        iframe.style.position = "";
+        iframe.style.zIndex = "";
+        iframe.style.top = ""; iframe.style.left = ""; 
+        document.scrollingElement.style.overflow = "";
+        ctn.dataset.isFullscreen = "no";
+      }
+//         if(ctn.dataset.isFullscreen === "no") {
+//           ctn.dataset.originalCssHeight = ctn.style.height;
+//           ctn.dataset.originalCssWidth = ctn.style.width;
+//           ctn.dataset.originalCssPosition = ctn.style.position;
+//           ctn.dataset.originalCssZIndex = ctn.style.zIndex;
+        
+//           // we need to change the ancestor z indices too:
+//           let ancestorEls = [];
+//           let aEl = ctn.parentElement;
+//           while(aEl !== document.body) {
+//             ancestorEls.push(aEl);
+//             aEl = aEl.parentElement;
+//           }
+//           let ancestorZIndices = ancestorEls.map(el => el.style.zIndex);
+//           ctn.dataset.originalAncestorZIndices = JSON.stringify(ancestorZIndices);
+//           ancestorEls.forEach(el => el.style.zIndex="63829472");
+        
+//           ctn.style.height = "";
+//           ctn.style.width = "";
+//           ctn.style.position = "fixed";
+//           ctn.style.zIndex = "63829472";
+//           ctn.style.top = "0"; ctn.style.left = "0"; ctn.style.right = "0"; ctn.style.bottom = "0";
+//           document.scrollingElement.style.overflow = "hidden";
+//           ctn.dataset.isFullscreen = "yes";
+//         } else if(ctn.dataset.isFullscreen === "yes") {
+//           ctn.style.height = ctn.dataset.originalCssHeight;
+//           ctn.style.width = ctn.dataset.originalCssWidth;
+//           ctn.style.position = ctn.dataset.originalCssPosition;
+//           ctn.style.zIndex = ctn.dataset.originalCssZIndex;
+        
+        
+//           let ancestorEls = [];
+//           let aEl = ctn.parentElement;
+//           while(aEl !== document.body) {
+//             ancestorEls.push(aEl);
+//             aEl = aEl.parentElement;
+//           }
+//           let originalAncestorZIndices = JSON.parse(ctn.dataset.originalAncestorZIndices);
+//           ancestorEls.forEach((el, i) => el.style.zIndex=originalAncestorZIndices[i]);
+        
+//           ctn.style.top = ""; ctn.style.left = ""; ctn.style.right = ""; ctn.style.bottom = "";
+//           document.scrollingElement.style.overflow = "";
+//           ctn.dataset.isFullscreen = "no";
+//         }
+    }
+  }, false);
+
+  let cssText = `
+  .comments-plugin-ctn {
+    position:relative;
+    display:inline-block;
+  }
+  .loading-spinner-434142 { 
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #5d5d5d;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }`;
+  let styleEl = document.createElement('style');
+  styleEl.appendChild(document.createTextNode(cssText));
+  document.head.appendChild(styleEl);
+  
+  // let addCommentsPluginInterval = setInterval(() => {
+  //   document.querySelectorAll(".___perchance-comments-plugin-marker").forEach(markerEl => {
+  //     // detect if a comments section has been injected after it yet (edit: for some reason it's injected before it?):
+  //     if((!markerEl.nextElementSibling || markerEl.nextElementSibling.dataset.isCommentsSection !== "true") && (!markerEl.previousElementSibling || markerEl.previousElementSibling.dataset.isCommentsSection !== "true")) {
+  //       let div = document.createElement("div");
+  //       let containerStyle = markerEl.dataset.containerStyle;
+  //       let queryString = markerEl.dataset.queryString;
+  //       let folderName = markerEl.dataset.folderName;
+  //       div.innerHTML = `<div class="comments-plugin-ctn" data-is-comments-section="true" style="position:relative; display:inline-block; ${containerStyle}">
+  //         <div class="__perchance-comments-loading-facade-12345" style="position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:white; border:1px solid rgba(0,0,0,0.25); border-radius:2px;"><div class="loading-spinner-434142"></div></div>
+  //         <iframe class="___perchance-comments-plugin-iframe-12345" src="https://comments-plugin.perchance.org/embed/${folderName}?${queryString}" style="border:0; width:100%; height:100%;"></iframe>
+  //       </div>`;
+  //       let iframeContainer = div.firstElementChild;
+  //       //debugger;
+  //       markerEl.after(iframeContainer);
+  //       clearInterval(addCommentsPluginInterval);
+  //     }
+  //   });
+  // }, 200);
+  
+  window.___alreadyAddedCommentsPluginStuff43211234 = true;
+}
+
+let colorScheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+if(opts.forceColorScheme) colorScheme = opts.forceColorScheme.evaluateItem;
+
+function lazyLoadIframe({urlHashDataEncoded}) {
+  let commentsCtn = document.querySelector(`[data-comments-section-folder-name="${folderName}"]:not(.already-added-intersection-observer-to-this-comments-plugin-ctn)`); // get the first one that we haven't added an intersection observer for yet - this is needed because they could have multiple instances of the same channel on the page, and we don't want to add all the intersection observers to the first one
+  if(!commentsCtn) return; // i think this happens sometimes due to timing/race condition where iframe is deleted in a very small time window
+  commentsCtn.classList.add("already-added-intersection-observer-to-this-comments-plugin-ctn");
+
+  let observer1, observer2;
+  // lazyload the iframe, because some generator pages have literally dozens of different channels.
+  // I'm adding multiple observers because the default `root` is the browser viewport, and margin doesn't make sense for that, since it's not scrollable, but we still want it in case of the comments being in weird non-documentElement scrollable area or something. Note really sure how it works.
+  const observerFn = entries => {
+    if(entries[0].isIntersecting) {
+      observer1.disconnect();
+      observer2.disconnect();
+      console.debug("comments ctn: Visible");
+      let placeholder = commentsCtn.querySelector(".__perchance-comments-iframe-placeholder-el-12345");
+      if(placeholder) {
+        let iframeHtml = `<iframe class="${iframeUniqueId} ___perchance-comments-plugin-iframe-12345" src="https://comments-plugin.perchance.org/embed/${folderName}?${queryString}#${urlHashDataEncoded}" style="border:0; width:100%; height:100%; user-select:none;" ${urlHashData.transparentBackground ? `allowtransparency="true"` : ""}></iframe>`;
+        placeholder.outerHTML = iframeHtml;
+        ctx.iframeContentWindow = document.querySelector("."+iframeUniqueId).contentWindow;
+        window.___commentsPluginIframeUniqueIdToContext.set(iframeUniqueId, ctx);
+      }
+    }
+  };
+  setTimeout(() => { // slight delay in case of e.g. tabs being rendered in such a way that they're all momentarily visible (we don't wnat to load them all at once - only the active tab)
+    observer1 = new IntersectionObserver(observerFn, {
+      rootMargin: "6000px", // we basically want to trigger ~all visible elements anyway - just not stuff hidden within e.g. tabs plugin or whatever.
+    });
+    observer1.observe(commentsCtn);
+    observer2 = new IntersectionObserver(observerFn, {
+      root: document.documentElement,
+      rootMargin: "6000px", // we basically want to trigger ~all visible elements anyway - just not stuff hidden within e.g. tabs plugin or whatever.
+    });
+    observer2.observe(commentsCtn);
+  }, 5);
+}
+
+let containerHtml = `<div data-is-fullscreen="no" data-comments-section-folder-name="${folderName}" class="comments-plugin-ctn" data-is-comments-section="true" style="${containerStyle}">
+  <div class="__perchance-comments-loading-facade-12345" style="position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:${colorScheme === "light" ? "white" : "#131516"}; border:1px solid rgba(0,0,0,0.25); border-radius:2px;"><div class="loading-spinner-434142"></div></div>
+  <span class="__perchance-comments-iframe-placeholder-el-12345"></span>
+</div>`;
+
+if(opts.replacedDuringUpdate) {
+  // setTimeout(async () => {
+  //   while(!document.querySelector("."+iframeUniqueId)) {
+  //     console.debug("Waiting for comments-plugin iframe to appear in document.");
+  //     await new Promise(r => setTimeout(r, 500));
+  //   }
+  //   ctx.iframeContentWindow = document.querySelector("."+iframeUniqueId).contentWindow;
+  //   window.___commentsPluginIframeUniqueIdToContext.set(iframeUniqueId, ctx);
+  // }, 10);
+  // return addMethodsToReturnValue(new String(`<div data-is-fullscreen="no" data-comments-section-folder-name="${folderName}" class="comments-plugin-ctn" data-is-comments-section="true" style="${containerStyle}">
+  //   <div class="__perchance-comments-loading-facade-12345" style="position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:${colorScheme === "light" ? "white" : "#131516"}; border:1px solid rgba(0,0,0,0.25); border-radius:2px;"><div class="loading-spinner-434142"></div></div>
+  //   <iframe loading="lazy" class="${iframeUniqueId} ___perchance-comments-plugin-iframe-12345" src="https://comments-plugin.perchance.org/embed/${folderName}?${queryString}#${encodeURIComponent(JSON.stringify(urlHashData))}" style="border:0; width:100%; height:100%;"></iframe>
+  // </div>`));
+  setTimeout(async () => {
+    let urlHashDataEncoded = encodeURIComponent(JSON.stringify(urlHashData));
+    lazyLoadIframe({urlHashDataEncoded})
+  }, 10);
+  return addMethodsToReturnValue(new String(containerHtml));
+}
+  
+if(!document.querySelector(`[data-comments-section-folder-name="${folderName}"]`)) {
+
+  function swapMarkerElForRealEl() {
+    let markerEl = document.querySelector(`[data-marker-tag="temporaryMarkerElForCommentsPlugin84738932-folderName-${folderName}"]`);
+    if(!markerEl) return;
+    let containerStyle = markerEl.dataset.containerStyle;
+    let queryString = markerEl.dataset.queryString;
+    let urlHashDataEncoded = markerEl.dataset.urlHashDataEncoded;
+    // let folderName = markerEl.dataset.folderName;
+
+    // NOTE: we don't use replaceWith here because that approach would mean that this would get updated during update() calls
+    markerEl.outerHTML = containerHtml;
+    
+    lazyLoadIframe({urlHashDataEncoded});
+  }
+
+  // setTimeout(swapMarkerElForRealEl, 50);
+
+  // the above commented-out setTimeout one-liner was the previous approach. the below MutationObserver-based monstrosity is a bit better because it ensures the swap happens *the moment* that the marker is added to the page, and we can wait a long time without the need for polling
+  let markerEl = document.querySelector(`[data-marker-tag="temporaryMarkerElForCommentsPlugin84738932-folderName-${folderName}"]`);
+  if(markerEl) {
+    swapMarkerElForRealEl();
+  } else {
+    // they generated the comments HTML, but haven't put it in the page yet, so we wait for it using a mutation observer:
+    let foundElement = false;
+    let markerTagValue = `temporaryMarkerElForCommentsPlugin84738932-folderName-${folderName}`;
+    let observer = new MutationObserver((mutations) => {
+      for(let mutation of mutations) {
+        for(let node of mutation.addedNodes) {
+          if(node.dataset && node.dataset.markerTag === markerTagValue) {
+            foundElement = true;
+          } else if(node.querySelector) { // skip #text, #comment, etc.
+            // since mutation observers don't trigger for all subnodes - only the highest-level nodes in a mutation
+            let markerEl = node.querySelector(`[data-marker-tag="temporaryMarkerElForCommentsPlugin84738932-folderName-${folderName}"]`);
+            if(markerEl) {
+              foundElement = true;
+            }
+          }
+          if(foundElement) {
+            observer.disconnect();
+            swapMarkerElForRealEl();
+            return;
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => {
+      if(!foundElement) {
+        console.error("Couldn't find marker element for comments plugin?");
+        observer.disconnect();
+      }
+    }, 10000);
+  }
+
+  return addMethodsToReturnValue(new String(`<span data-marker-tag="temporaryMarkerElForCommentsPlugin84738932-folderName-${folderName}" data-folder-name="${folderName}" data-container-style="${containerStyle}" data-query-string="${queryString}" data-url-hash-data-encoded="${encodeURIComponent(JSON.stringify(urlHashData))}"></span>`));
+} else {
+  return "";
+}
+
+
+
+
+//   // This is a temporary fix because editing the text next to where the plugin is placed (within the same HTML "node"?) will cause the
+//   // comments section to disappear which causes users to think that they can't edit the positioning of the comments. So we tell them to
+//   // refresh the page. Ideally I'd fix this like I did with the text-to-image-plugin gallery - I just return/create a "fresh" one whenever
+//   // the old one isn't detected with querySelector.
+//   setTimeout(() => {
+//     if(document.querySelectorAll(".___perchance-comments-plugin-marker").length !== document.querySelectorAll(".comments-plugin-ctn").length) {
+//       document.querySelectorAll(".___perchance-comments-plugin-marker").forEach(markerEl => {
+//         markerEl.style.cssText = `display:inline-block; border:1px solid grey; ${markerEl.dataset.containerStyle}`;
+//         markerEl.innerHTML = `<div style="height:100%; display:flex; align-items:center; justify-content:center;"><span style="opacity:0.6; padding:1rem;">Please save your generator and refresh the page to reload the comments plugin.</span></div>`;
+//       });
+//     }
+//   }, 600);
+	
+// 	// can't just inject the iframe directly otherwise it gets reloaded every time update() is called. So we need the setInterval monstrosity above.
+// 	return `<span class="___perchance-comments-plugin-marker" data-folder-name="${folderName}" data-container-style="${containerStyle}" data-query-string="${queryString}"></span>`;
+
+
+
+
+
+
+
+
+
+
+}
+
+(function () {
+
+  var MARKER_R = "\u00a7ZHR\u00a7";
+  var MARKER_C = "\u00a7ZHC\u00a7";
+  var MARKER_D = "\u00a7ZHD\u00a7";
+
+  function hideLoader() {}
+
+  function hashStr(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) { h = (Math.imul(31, h) + s.charCodeAt(i)) | 0; }
+    return h >>> 0;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function el(tag, cls, attrs) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (attrs) { for (var k in attrs) { if (k === "text") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); } }
+    return n;
+  }
+
+  function webSticker() {
+    var s = el("span", "sticker");
+    s.innerHTML = '<svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><g stroke="#d900ff" stroke-width="1" fill="none"><path d="M10 10 L10 1 M10 10 L16.4 4.5 M10 10 L18.1 10.8 M10 10 L16 16.5 M10 10 L10 19 M10 10 L4 16.5 M10 10 L1.9 10.8 M10 10 L4 4.5"/><circle cx="10" cy="10" r="2.4"/><circle cx="10" cy="10" r="4.8"/><circle cx="10" cy="10" r="7.2"/></g></svg>';
+    return s;
+  }
+
+  var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  function fmtTime(t) {
+    var d = new Date(t);
+    if (isNaN(d.getTime())) return "";
+    var h = d.getHours() % 12 || 12;
+    var m = String(d.getMinutes()).padStart(2, "0");
+    return MONTHS[d.getMonth()] + " " + d.getDate() + ", " + h + ":" + m + (d.getHours() < 12 ? " AM" : " PM");
+  }
+
+  function sanId(id) { return String(id).replace(/[^a-zA-Z0-9_-]/g, ""); }
+
+  function parseMarker(msg) {
+    if (typeof msg !== "string") return null;
+    var isD = msg.indexOf(MARKER_D) === 0;
+    var isC = msg.indexOf(MARKER_C) === 0;
+    var startLen = isD ? MARKER_D.length : (isC ? MARKER_C.length : (msg.indexOf(MARKER_R) === 0 ? MARKER_R.length : -1));
+    if (startLen === -1) return null;
+    var rest = msg.slice(startLen);
+    var i = rest.indexOf("\u00a7");
+    if (i <= 0) return null;
+    var parsed = { isPeel: isD, isCorrection: isC, parentId: rest.slice(0, i), text: rest.slice(i + 1) };
+    if (isD) parsed.text = "";
+    return parsed;
+  }
+
+  function cleanMsg(msg) {
+    return String(msg == null ? "" : msg).replace(/<br\s*\/?>/gi, "\n");
+  }
+
+  function ripPath(rng) {
+    if (rng() < 0.65) return null;
+    var pts;
+    if (rng() < 0.5) {
+      pts = ["0 0", "100% 0", "100% " + (84 + rng() * 5).toFixed(1) + "%"];
+      var n = 4 + Math.floor(rng() * 2);
+      for (var i = 0; i <= n; i++) {
+        var x = 100 - (i / n) * (15 + rng() * 5);
+        var y = 88 + (i / n) * (11 + rng() * 2);
+        pts.push(x.toFixed(1) + "% " + y.toFixed(1) + "%");
+      }
+      pts.push((100 - 22 - rng() * 6).toFixed(1) + "% 100%");
+      pts.push("0 100%");
+    } else {
+      pts = ["0 0", "100% 0", "100% 100%", (22 + rng() * 6).toFixed(1) + "% 100%"];
+      var n2 = 4 + Math.floor(rng() * 2);
+      for (var j = 0; j <= n2; j++) {
+        var x2 = (j / n2) * (15 + rng() * 5);
+        var y2 = 100 - (j / n2) * (11 + rng() * 2);
+        pts.push(x2.toFixed(1) + "% " + y2.toFixed(1) + "%");
+      }
+      pts.push("0 " + (88 + rng() * 5).toFixed(1) + "%");
+    }
+    return "polygon(" + pts.join(", ") + ")";
+  }
+
+  var all = [];
+  var byId = {};
+
+  function storeComment(c) {
+    if (byId[c.id]) return false;
+    byId[c.id] = c;
+    c._reply = parseMarker(c.message);
+    all.push(c);
+    return true;
+  }
+
+  function applyPeels() {
+    var peeled = {};
+    for (var i = 0; i < all.length; i++) {
+      var c = all[i];
+      if (c._reply && c._reply.isPeel) peeled[c._reply.parentId] = true;
+    }
+    for (var j = 0; j < all.length; j++) {
+      var x = all[j];
+      x._isPeeled = !!peeled[x.id];
+      x._parentPeeled = !!(x._reply && peeled[x._reply.parentId]);
+    }
+  }
+
+  function updateCount() {
+    var top = all.filter(function (c) { return !c._reply && !c._isPeeled; }).length;
+    var r = all.filter(function (c) { return c._reply && !c._reply.isCorrection && !c._reply.isPeel && !c._isPeeled && !c._parentPeeled; }).length;
+    countEl.textContent = top + (top === 1 ? " note" : " notes") + " on the wall" + (r ? " \u00b7 " + r + " repl" + (r === 1 ? "y" : "ies") : "");
+  }
+
+  function showPeel(c) {
+    return !!(c.byCurrentUser || modHost.classList.contains("mod"));
+  }
+
+  function makePeelBtn(c) {
+    var b = el("button", "note-btn peel-btn", { type: "button", title: "peel this off the wall", text: "\u2715 peel" });
+    b.onclick = function () { peelMessage(c); };
+    return b;
+  }
+
+  function childMeta(c) {
+    var meta = el("div", "reply-meta");
+    var who = el("span");
+    who.textContent = (c.user && c.user.nickname ? c.user.nickname : "ANON") + " \u00b7 " + fmtTime(c.time);
+    meta.appendChild(who);
+    if (showPeel(c)) meta.appendChild(makePeelBtn(c));
+    return meta;
+  }
+
+  function buildReply(c) {
+    var r = el("div", "tape-strip");
+    r.style.setProperty("--rrot", ((hashStr(c.id) % 500) / 100 - 2.5).toFixed(2) + "deg");
+    var txt = el("span", "reply-txt");
+    txt.textContent = c._reply ? cleanMsg(c._reply.text) : cleanMsg(c.message);
+    r.appendChild(txt); r.appendChild(childMeta(c));
+    return r;
+  }
+
+  function buildPin(c) {
+    var h = hashStr(c.id);
+    var rot = -3.4 + (h % 680) / 100;
+    var rng = mulberry32(h);
+    var rip = ripPath(rng);
+
+    var pin = el("div", "pin", { id: "pin-" + sanId(c.id) });
+    var shadow = el("div", "pin-shadow");
+    shadow.style.setProperty("--rot", rot.toFixed(2) + "deg");
+    shadow.style.animationDelay = "-" + ((h % 85) / 10) + "s";
+
+    var note = el("div", "note");
+    if (rip) note.style.clipPath = rip;
+
+    var kids = all.filter(function (x) {
+      return x._reply && x._reply.parentId === c.id && !x._reply.isPeel && !x._isPeeled;
+    }).sort(function (a, b) { return a.time - b.time; });
+    var corrections = kids.filter(function (k) { return k._reply.isCorrection; });
+    var replies = kids.filter(function (k) { return !k._reply.isCorrection; });
+    var lastCorr = corrections.length ? corrections[corrections.length - 1] : null;
+
+    var stk = webSticker();
+    var noteTop = el("div", "note-top");
+    var date = el("span", "note-date", { text: fmtTime(c.time) });
+    noteTop.appendChild(date);
+
+    var txt = el("p", "note-txt");
+    var baseText = c._reply ? cleanMsg(c._reply.text) : cleanMsg(c.message);
+    if (lastCorr) {
+      var del = el("del");
+      del.textContent = baseText;
+      txt.appendChild(del);
+      txt.appendChild(document.createTextNode("\n" + cleanMsg(lastCorr._reply.text)));
+    } else {
+      txt.textContent = baseText;
+    }
+
+    var foot = el("div", "note-foot");
+    var author = el("span", "author");
+    author.textContent = (c.user && c.user.nickname ? c.user.nickname : "ANON");
+    var btnGroup = el("span", "note-btns");
+    if (c.byCurrentUser && !c._reply) {
+      var fixBtn = el("button", "note-btn fix-btn", { type: "button", title: "post a correction to your note", text: "\u270e fix" });
+      fixBtn.onclick = function () { setFixTarget(c); };
+      btnGroup.appendChild(fixBtn);
+    }
+    var replyBtn = el("button", "note-btn reply-btn", { type: "button", title: "reply to this note", text: "\u27f6 reply" });
+    replyBtn.onclick = function () { setReplyTarget(c); };
+    btnGroup.appendChild(replyBtn);
+    if (showPeel(c)) btnGroup.appendChild(makePeelBtn(c));
+    foot.appendChild(author); foot.appendChild(btnGroup);
+
+    note.appendChild(stk); note.appendChild(noteTop); note.appendChild(txt); note.appendChild(foot);
+    shadow.appendChild(tapeEl()); shadow.appendChild(note);
+
+    var repliesCtn = el("div", "replies");
+    for (var i = 0; i < replies.length; i++) repliesCtn.appendChild(buildReply(replies[i]));
+    pin.appendChild(shadow); pin.appendChild(repliesCtn);
+    return pin;
+  }
+
+  function tapeEl() {
+    return el("i", "tape");
+  }
+
+  function renderBoard() {
+    boardEl.innerHTML = "";
+    var top = all.filter(function (c) { return !c._reply && !c._isPeeled; }).sort(function (a, b) { return b.time - a.time; });
+    var orphans = all.filter(function (c) {
+      return c._reply && !c._reply.isPeel && !byId[c._reply.parentId] && !c._isPeeled && !c._parentPeeled;
+    });
+    var hadNotes = top.length > 0 || orphans.length > 0;
+    for (var i = 0; i < top.length; i++) boardEl.appendChild(buildPin(top[i]));
+    for (var j = 0; j < orphans.length; j++) boardEl.appendChild(buildPin(orphans[j]));
+    if (!hadNotes) showWelcome();
+    updateCount();
+    loadMoreBtnEl.style.display = hadNotes ? "block" : "none";
+  }
+
+  function showWelcome() {
+    boardEl.innerHTML = "";
+    var pin = el("div", "pin welcome-pin");
+    var shadow = el("div", "pin-shadow");
+    shadow.style.setProperty("--rot", "-1.8deg");
+    shadow.style.animationDelay = "-3.1s";
+    var note = el("div", "note");
+    var stk = webSticker();
+    var txt = el("p", "note-txt");
+    txt.textContent = "the wall is empty...\nthat's actually kind of punk.\nbe the first: write what's on your mind on the black note up top and hit \u2702 STICK IT UP.";
+    txt.style.marginTop = "16px";
+    var foot = el("div", "note-foot");
+    var author = el("span", "author", { text: "\u2014 the spider" });
+    foot.appendChild(author);
+    note.appendChild(stk); note.appendChild(txt); note.appendChild(foot);
+    shadow.appendChild(tapeEl()); shadow.appendChild(note);
+    pin.appendChild(shadow); pin.appendChild(el("div", "replies"));
+    boardEl.appendChild(pin);
+  }
+
+  function addLive(c) {
+    var w = boardEl.querySelector(".welcome-pin");
+    if (w) w.remove();
+    if (!c._reply) {
+      var pin = buildPin(c, false);
+      boardEl.insertBefore(pin, boardEl.firstChild);
+    } else {
+      var parentPin = document.getElementById("pin-" + sanId(c._reply.parentId));
+      if (parentPin) {
+        if (c._reply.isCorrection) {
+          var parent = byId[c._reply.parentId];
+          if (parent) parentPin.replaceWith(buildPin(parent, false));
+        } else {
+          parentPin.querySelector(".replies").appendChild(buildReply(c));
+        }
+      } else {
+        boardEl.insertBefore(buildPin(c, true), boardEl.firstChild);
+      }
+    }
+    updateCount();
+    loadMoreBtnEl.style.display = "block";
+  }
+
+  var noteMode = null;
+  var fixPrefilled = false;
+  function updateComposerUi() {
+    if (noteMode) {
+      var isFix = noteMode.type === "fix";
+      stickBtn.textContent = isFix ? "\u270e POST CORRECTION" : "\u27f6 POST REPLY";
+      stickBtn.classList.toggle("mode-fix", isFix);
+      stickBtn.classList.toggle("mode-reply", !isFix);
+      replyTagEl.classList.toggle("fixmode", isFix);
+    } else {
+      stickBtn.textContent = "\u2702 STICK IT UP";
+      stickBtn.classList.remove("mode-fix", "mode-reply");
+      replyTagEl.classList.remove("fixmode");
+    }
+  }
+  function flashPin(c) {
+    var pin = document.getElementById("pin-" + sanId(c.id));
+    if (pin) {
+      pin.classList.add("flash");
+      setTimeout(function () { pin.classList.remove("flash"); }, 1700);
+    }
+  }
+  function setReplyTarget(c) {
+    noteMode = { type: "reply", c: c };
+    replyTagLabelEl.textContent = "\u27f6 replying to";
+    replyTagNameEl.textContent = (c.user && c.user.nickname ? c.user.nickname : "ANON");
+    replyTagEl.hidden = false;
+    composerCtn.classList.add("replying");
+    updateComposerUi();
+    ideaInputEl.focus();
+    ideaInputEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    flashPin(c);
+  }
+  function setFixTarget(c) {
+    noteMode = { type: "fix", c: c };
+    replyTagLabelEl.textContent = "\u270e fixing your note";
+    replyTagNameEl.textContent = (c.user && c.user.nickname ? c.user.nickname : "ANON");
+    replyTagEl.hidden = false;
+    composerCtn.classList.add("replying");
+    ideaInputEl.value = cleanMsg(c.message);
+    fixPrefilled = true;
+    updateComposerUi();
+    ideaInputEl.focus();
+    ideaInputEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    flashPin(c);
+  }
+  function cancelReply() {
+    noteMode = null;
+    replyTagEl.hidden = true;
+    composerCtn.classList.remove("replying");
+    if (fixPrefilled) {
+      ideaInputEl.value = "";
+      fixPrefilled = false;
+    }
+    updateComposerUi();
+  }
+  cancelReplyBtn.onclick = cancelReply;
+
+  var com = null;
+  var pluginLoadMore = null;
+  var peeling = false;
+
+  function initPlugin() {
+    var opts = {
+      channel: "zenhub-board",
+      channelLabel: "ZENHUB idea board",
+      width: "100%",
+      height: 200,
+      newestCommentsAtTop: true,
+      forceColorScheme: "light",
+      adminPasswordHash: "2d11ca4d0e7a1cfab6fc2dfb86374e4617c0e443a76ff8a1ca68bed3c3a2501f",
+      adminFlair: "ZENHUB OWNER",
+      rateLimits: "1 per 3 seconds, 6 per minute, 25 per 10 minutes",
+      bannedWords: "pedo,cp,",
+      onLoad: function (comments, extras) {
+        pluginLoadMore = extras.loadMoreButton;
+        for (var i = 0; i < comments.length; i++) storeComment(comments[i]);
+        applyPeels();
+        renderBoard();
+        hideLoader();
+      },
+      onComment: function (c) {
+        if (!storeComment(c)) return;
+        applyPeels();
+        if ((c._reply && c._reply.isPeel) || c._isPeeled) {
+          renderBoard();
+        } else {
+          addLive(c);
+        }
+      },
+      onLoadMore: function (cs) {
+        for (var i = 0; i < cs.length; i++) storeComment(cs[i]);
+        applyPeels();
+        renderBoard();
+      }
+    };
+    com = zenhubComments(opts);
+    pluginHostEl.innerHTML = com;
+    window.__zenhubCom = com;
+  }
+
+  async function peelMessage(c) {
+    if (peeling) return;
+    if (!confirm("Peel this off the wall? It disappears for everyone \u2014 and there's no un-peel.")) return;
+    peeling = true;
+    try {
+      var nick = nicknameInputEl.value.trim();
+      if (nick) { try { await com.setNicknameForNextComment(nick); } catch (e) {} }
+      await com.submit(MARKER_D + c.id + "\u00a7");
+    } catch (e) {
+      alert("Couldn't peel: " + (e && e.message ? e.message : e));
+    }
+    peeling = false;
+  }
+
+  async function submitNote() {
+    var text = ideaInputEl.value.trim();
+    if (!text) return;
+    stickBtn.disabled = true;
+    stickBtn.textContent = "sticking...";
+    try {
+      var nick = nicknameInputEl.value.trim();
+      if (nick) localStorage.setItem("zenhubNick", nick);
+      var body = text;
+      if (noteMode) {
+        body = (noteMode.type === "fix" ? MARKER_C : MARKER_R) + noteMode.c.id + "\u00a7" + text;
+      }
+      if (nick) { try { await com.setNicknameForNextComment(nick); } catch (e) {} }
+      await com.submit(body);
+      ideaInputEl.value = "";
+      fixPrefilled = false;
+      cancelReply();
+    } catch (e) {
+      alert("Couldn't stick it: " + (e && e.message ? e.message : e));
+    }
+    stickBtn.disabled = false;
+    stickBtn.textContent = "\u2702 STICK IT UP";
+  }
+  stickBtn.onclick = submitNote;
+  ideaInputEl.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); submitNote(); }
+  });
+
+  function buildWeb() {
+    var cx = 110, cy = 110, R = 98, spokes = 9, rings = 6, d = [];
+    for (var i = 0; i < spokes; i++) {
+      var a = i * 2 * Math.PI / spokes;
+      d.push("M" + cx + " " + cy + "L" + (cx + R * Math.cos(a)).toFixed(1) + " " + (cy + R * Math.sin(a)).toFixed(1));
+    }
+    for (var r = 1; r <= rings; r++) {
+      var rad = R * r / rings;
+      for (var s = 0; s < spokes; s++) {
+        var a0 = s * 2 * Math.PI / spokes;
+        var a1 = ((s + 1) % spokes) * 2 * Math.PI / spokes;
+        var x0 = cx + rad * Math.cos(a0), y0 = cy + rad * Math.sin(a0);
+        var x1 = cx + rad * Math.cos(a1), y1 = cy + rad * Math.sin(a1);
+        d.push("M" + x0.toFixed(1) + " " + y0.toFixed(1) + "A" + rad.toFixed(1) + " " + rad.toFixed(1) + " 0 0 1 " + x1.toFixed(1) + " " + y1.toFixed(1));
+      }
+    }
+    var paths = d.map(function (p) { return '<path d="' + p + '"/>'; }).join("");
+    boardWebSvgEl.innerHTML = '<g stroke="#d900ff" stroke-width="1.7" fill="none" opacity=".85">' + paths + "</g>";
+  }
+
+  function toggleRules(force) {
+    var open = force !== undefined ? force : !rulesWrap.classList.contains("open");
+    rulesWrap.classList.toggle("open", open);
+    webWrap.classList.toggle("open", open);
+  }
+  webWrap.addEventListener("click", function () { toggleRules(); });
+  rulesCloseBtn.addEventListener("click", function (e) { e.stopPropagation(); toggleRules(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") toggleRules(false); });
+
+  function toggleMod(force) {
+    var open = force !== undefined ? force : !modHost.classList.contains("mod");
+    modHost.classList.toggle("mod", open);
+    modBackdrop.classList.toggle("open", open);
+    modBar.hidden = !open;
+    renderBoard();
+  }
+  modCloseBtn.onclick = function () { toggleMod(false); };
+  modBackdrop.onclick = function () { toggleMod(false); };
+  modLinkEl.onclick = function (e) { e.preventDefault(); toggleMod(); };
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey && e.shiftKey && (e.key === "M" || e.key === "m")) toggleMod();
+  });
+
+  try { nicknameInputEl.value = localStorage.getItem("zenhubNick") || ""; } catch (e) {}
+
+  loadMoreBtnEl.onclick = function () {
+    if (pluginLoadMore && typeof pluginLoadMore.click === "function") pluginLoadMore.click();
+  };
+
+  buildWeb();
+  initPlugin();
+
+  setTimeout(function () {
+    hideLoader();
+    if (!boardEl.querySelector(".pin")) showWelcome();
+  }, 8000);
+})();
+
+  buildSongs();
+  buildNpcs();
+  buildLinks();
+  buildWeb();
+  initCursorFx();
+</script>
+</body>
+</html>
+
